@@ -31,8 +31,13 @@ We recomment using devcontainer for development. You can find the devcontainer c
 - /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab03_2024.pdf
 - /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab04_2024.pdf
 
+## Data Sets
+
+- https://zenodo.org/records/5830863
+
 ## References
 
+- https://www.researchgate.net/figure/Compositional-process-discovery_fig3_360352443
 - https://github.com/pm4py/pm4py-core
 - https://github.com/Gmod4phun/PetriNetParser
 - https://github.com/Dominik-Hillmann/petrinets
