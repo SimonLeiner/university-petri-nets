@@ -1,0 +1,14 @@
+# jupyter
+ipykernel
+nbconvert
+
+#standard
+numpy
+pandas
+matplotlib
+
+# testing
+pytest
+
+# linting
+pre-commit

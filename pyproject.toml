@@ -1,0 +1,142 @@
+# Basic Project Description.
+[project]
+name = "python_template"
+version = "0.0.1"
+maintainers = [{ name = "Simon Leiner", email = "simon.leiner1@gmail.com" }]
+authors = [{ name = "Simon Leiner", email = "simon.leiner1@gmail.com" }]
+description = "Template for Python"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+keywords = ["Coding", "Python", "Template", "Project"]
+classifiers = [
+    "Intended Audience :: Family",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development",
+]
+
+[tool.black]
+line-length = 150
+
+[tool.docformatter]
+black = true
+make-summary-multi-line = true
+pre-summary-new-line = true
+blank = true
+recursive = true
+in-place = true
+
+# Ruff formatter.
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["ALL"]
+ignore = [
+    "D100",   # Missing docstring in public module  **fix**
+    "D101",
+    "D102",   # Missing docstring in public method  **fix**
+    "D103",   # Missing docstring in public function  **fix**
+    "D104",   # Missing docstring in public package  **fix**
+    "D107",
+    "D105",
+    "D200",   # One-line docstring should fit on one line with quotes (optional style)
+    "D203",   # 1 blank line required before class docstring (optional style)
+    "D205",   # 1 blank line required between summary line and description (optional style)
+    "D212",   # Multi-line docstring summary should start at the first line (optional style)
+    "D400",   # First line should end with a period (not always a first line)
+    "D413",   # Missing blank line after last section ('Parameters')
+    "D415",   # First line should end with a period, question mark, or exclamation point (not always a first line)
+    "D416",   # Section name should end with a colon ('Warnings:', not 'Warnings') (incorrect?)
+    "E741",   # Ambiguous variable name (single char)
+    "E501",   # Line too long (82 > 79 characters)
+    "PD901",  # `df` is a bad variable name. Be kinder to your future self
+    "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
+    "S101",   # Use of assert detected (OK in test suite)
+    "S105",   # Use of hardcoded password (spurious)
+    "S106",   # Use of hardcoded password (spurious)
+    "S113",   # Probable use of requests call without timeout **fix**
+    "S603",   # `subprocess` call: check for execution of untrusted input **fix**
+    "ANN101", # Missing type annotation for self in method
+    "G004",   # Logging statement uses string formatting
+    "TD003",  # Missing link to issue
+    "FIX002", # Line contains TODO, consider resolving the issue
+]
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.isort]
+force-single-line = true
+single-line-exclusions = ["typing"]
+lines-after-imports = 2
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google" # Accepts: "google", "numpy", or "pep257".
+
+[tool.mypy]
+python_version = "3.10"
+disallow_incomplete_defs = true
+explicit_package_bases = true
+ignore_missing_imports = true
+namespace_packages = true
+warn_no_return = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --new-first --failed-first --doctest-modules --doctest-glob=\"*.pyx\""
+asyncio_mode = "strict"
+filterwarnings = ["ignore::UserWarning", "ignore::DeprecationWarning"]
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+
+# Setuptools Flat file structure withour src/
+[tool.setuptools.packages.find]
+where = ["."] # list of folders that contain the packages (["."] by default)
+include = [
+    "*",
+] # package names should match these glob patterns (["*"] by default)
+exclude = [] # exclude packages matching these glob patterns (empty by default)
+namespaces = false # to disable scanning PEP 420 namespaces (true by default)

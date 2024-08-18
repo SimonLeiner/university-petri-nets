@@ -1,0 +1,66 @@
+{
+  "editor.suggestSelection": "first",
+  "editor.formatOnSave": true,
+  "files.autoSave": "afterDelay",
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.fixAll": true,
+    "notebook.source.organizeImports": true
+  },
+  "workbench.colorTheme": "Darcula Pycharm with Dark GUI",
+  "workbench.preferredLightColorTheme": "Default Dark Modern",
+  "todohighlight.isCaseSensitive": false,
+  "todohighlight.defaultStyle": {},
+  "todohighlight.keywords": [
+    {
+      "text": "TODO:",
+      "color": "#A8C023",
+      "backgroundColor": "transparent",
+      "isWholeLine": true,
+    },
+    {
+      "text": "CHECKED:",
+      "color": "#27C067",
+      "backgroundColor": "transparent",
+      "isWholeLine": true,
+    },
+    {
+      "text": "NOTE:",
+      "color": "#1598C0",
+      "backgroundColor": "transparent",
+      "isWholeLine": true,
+    },
+  ],
+  "todohighlight.include": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.html",
+    "**/*.php",
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "editor.fontLigatures": false,
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "explorer.confirmDragAndDrop": false,
+  "remote.autoForwardPortsSource": "hybrid",
+  "explorer.confirmPasteNative": false,
+  "redhat.telemetry.enabled": false
+}
