@@ -1,18 +1,17 @@
 # Basic Project Description.
 [project]
-name = "python_template"
+name = "university-petri-nets"
 version = "0.0.1"
 maintainers = [{ name = "Simon Leiner", email = "simon.leiner1@gmail.com" }]
 authors = [{ name = "Simon Leiner", email = "simon.leiner1@gmail.com" }]
 description = "Template for Python"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = []
-keywords = ["Coding", "Python", "Template", "Project"]
+keywords = ["Coding", "Python"]
 classifiers = [
-    "Intended Audience :: Family",
     "Operating System :: MacOS",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development",
 ]
 
