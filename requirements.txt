@@ -5,10 +5,17 @@ nbconvert
 #standard
 numpy
 pandas
+polars
+
+# plotting
 matplotlib
+plotly
 
 # testing
 pytest
 
 # linting
 pre-commit
+
+# process mining
+pm4py

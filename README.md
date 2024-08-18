@@ -7,3 +7,32 @@
 ## Introduction
 
 This is a general template for python projects. It includes a basic structure for the project, a basic test suite, and a basic CI/CD pipeline.
+
+## Getting Started
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/SimonLeiner/quantum-scope.git
+```
+
+2. Setup the environment:
+
+We recomment using devcontainer for development. You can find the devcontainer configuration in the `.devcontainer` folder. Adjust the configuration to your needs.
+
+## Main Paper
+
+- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/Task/gwf.pdf
+
+## Other Resources
+
+- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab01_2024.pdf
+- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab02_2024.pdf
+- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab03_2024.pdf
+- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab04_2024.pdf
+
+## References
+
+- https://github.com/pm4py/pm4py-core
+- https://github.com/Gmod4phun/PetriNetParser
+- https://github.com/Dominik-Hillmann/petrinets
