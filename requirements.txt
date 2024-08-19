@@ -10,6 +10,7 @@ polars
 # plotting
 matplotlib
 plotly
+graphviz
 
 # testing
 pytest

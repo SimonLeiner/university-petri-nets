@@ -16,3 +16,8 @@ The model discovered by composing the agent model w.r.t. the interface pattern (
 ## References
 
 - https://zenodo.org/records/5830863
+- https://dl.acm.org/doi/10.1007/s10270-022-01008-x
+- https://bitbucket.org/proslabteam/colliery_validation/src/master/
+- https://www.researchgate.net/publication/378548791_A_technique_for_discovering_BPMN_collaboration_diagrams
+- https://github.com/Lihuiling12/TASE
+- https://ieeexplore.ieee.org/document/9849433
