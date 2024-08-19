@@ -1,7 +1,7 @@
 # Petri-Nets
 
-[![codecov](https://codecov.io/gh/SimonLeiner/python_template/graph/badge.svg?token=FYBFTW7BKB)](https://codecov.io/gh/SimonLeiner/python_template)
-[![DeepSource](https://app.deepsource.com/gh/SimonLeiner/python_template.svg/?label=active+issues&show_trend=true&token=zHKCkR8ZqHwQC4IJL31TziwF)](https://app.deepsource.com/gh/SimonLeiner/python_template/)
+[![codecov](https://codecov.io/gh/SimonLeiner/university-petri-nets/graph/badge.svg?token=ylPOjFIKvY)](https://codecov.io/gh/SimonLeiner/university-petri-nets)
+[![DeepSource](https://app.deepsource.com/gh/SimonLeiner/university-petri-nets.svg/?label=active+issues&show_trend=true&token=A94lUpOHD7gzUx7a7331vgmz)](https://app.deepsource.com/gh/SimonLeiner/university-petri-nets/)
 [![Formatting](https://github.com/SimonLeiner/university-petri-nets/actions/workflows/ruff.yml/badge.svg)](https://github.com/SimonLeiner/university-petri-nets/actions/workflows/ruff.yml)
 
 ## Organisation - Project
