@@ -1,11 +1,11 @@
 # jupyter
 ipykernel
 nbconvert
+ipywidgets
 
 #standard
 numpy
 pandas
-polars
 
 # plotting
 matplotlib

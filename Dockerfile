@@ -1,12 +1,15 @@
 # If you have a Mac with an M1 (Apple Silicon) processor, you should use the ARM64 version of Docker images.
 # arm64
 # linux/amd64
+# cvxopt not working on arm64
 
 # install python 3.12 for platform linux/amd64
-FROM python:3.12-slim
+FROM --platform=linux/amd64 python:3.12-slim
 
 # install git 
 RUN apt-get update && apt-get install --no-install-recommends  -y \
+    # graphviz
+    graphviz \
     # github
     git \
     # for installing packages
