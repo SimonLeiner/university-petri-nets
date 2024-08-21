@@ -3,11 +3,13 @@
 from abc import ABCMeta
 from abc import abstractmethod
 
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.obj import PetriNet
+from pm4py.objects.petri_net.utils import petri_utils
+
 
 class InterfacePattern(metaclass=ABCMeta):
     """Base Class for Interface Patterns."""
-
-    # TODO: Message in a dict or queue or Set? Exchange Messages via channels.
 
     def __repr__(self) -> str:
         """String representation of the InterfacePattern object."""
@@ -114,3 +116,50 @@ class IP11(IP5):
 
 class IP12(IP6):
     """Agents X and Y either execute a synchronous action r exchange, but not both."""
+
+
+############################################################################################################
+
+
+# Step 3: Define Interface Pattern IP-1
+def define_interface_pattern_ip1():
+    """
+    Defines the IP-1 interface pattern involving Agent A and Agent B.
+
+    Returns:
+        A tuple (net, initial_marking, final_marking) representing the IP-1 Petri net.
+    """
+    net = PetriNet("IP-1")
+
+    # Define places
+    p_a1 = PetriNet.Place("p_A1")
+    p_b1 = PetriNet.Place("p_B1")
+    p_a2 = PetriNet.Place("p_A2")
+
+    net.places.add(p_a1)
+    net.places.add(p_b1)
+    net.places.add(p_a2)
+
+    # Define transitions
+    t_a1 = PetriNet.Transition("t_A1", "A1")
+    t_b1 = PetriNet.Transition("t_B1", "B1")
+    t_a2 = PetriNet.Transition("t_A2", "A2")
+
+    net.transitions.add(t_a1)
+    net.transitions.add(t_b1)
+    net.transitions.add(t_a2)
+
+    # Define arcs
+    petri_utils.add_arc_from_to(p_a1, t_a1, net)
+    petri_utils.add_arc_from_to(t_a1, p_b1, net)
+    petri_utils.add_arc_from_to(p_b1, t_b1, net)
+    petri_utils.add_arc_from_to(t_b1, p_a2, net)
+    petri_utils.add_arc_from_to(p_a2, t_a2, net)
+
+    # Initial and final markings
+    initial_marking = Marking()
+    final_marking = Marking()
+    initial_marking[p_a1] = 1  # Start with A1
+    final_marking[p_a2] = 1  # End after A2
+
+    return net, initial_marking, final_marking
