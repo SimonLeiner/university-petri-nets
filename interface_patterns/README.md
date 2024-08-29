@@ -1,6 +1,10 @@
 # Interfaces
 
-A specification of agent interactions is called an inter- face. It represents the key interaction-oriented viewpoints of the architecture of a multi-agent system.
+A specification of agent interactions is called an interface. It represents the key interaction-oriented viewpoints of the architecture of a multi-agent system.
+
+An interface pattern is a GWF-net that:
+- Provides a highly abstract view of agent interactions without exposing internal agent behavior;
+- Has a part representing the behavior of each agent.
 
 ![alt text](fig5.png)
 
@@ -21,3 +25,9 @@ Pattern IP-11 extends pattern IP-5 such that agents synchronize and exchange mes
 Pattern IP-12 allows agents to either execute a synchronous activity or exchange mes- sages. This corresponds to an extension of pattern IP-6.
 
 ![alt text](table3.png)
+
+## Generalized Workflow Nets
+
+Various Petri net classes can be used to model the behavior of a multi-agent system. We will use generalized workflow (GWF) nets equipped with initial and final states. They differ from classical workflow nets [6] in allowing initial and final states to be sets of places rather than singletons. For instance, the Petri net shown in Fig. 1 is also a GWF-net with three initial places and two final places, while the behavior of Agent 2 is a classical workflow net.
+
+Workflow (WF) nets [6] are basic models used in process discovery. A WF-net is a Petri net with a distinguished initial and final place. The execution of a trace in an event log corre- sponds to the execution of a WF-net from its initial to its final place. For a more convenient representation of multi-agent systems, we generalize WF-nets, allowing sets of initial and final places rather than singletons.

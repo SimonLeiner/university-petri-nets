@@ -4,28 +4,6 @@ from pm4py.objects.log.importer.xes import factory as xes_importer
 from pm4py.objects.log.util import sorting
 
 
-# Step 1: Event Log Filtering Function
-def filter_logs_by_agent(event_log, agent_column="agent"):
-    """
-    Filters the event log into sub-logs for each agent.
-
-    Args:
-        event_log: The input event log (in XES format, etc.)
-        agent_column: Column name representing agents in the event log.
-
-    Returns:
-        A dictionary where keys are agents and values are filtered sub-logs.
-    """
-    agent_logs = {}
-    for trace in event_log:
-        for event in trace:
-            agent = event[agent_column]
-            if agent not in agent_logs:
-                agent_logs[agent] = []
-            agent_logs[agent].append(trace)
-
-    return agent_logs
-
 
 # Step 2: Discover GWF-nets for each agent
 def discover_model_for_agent(log):
