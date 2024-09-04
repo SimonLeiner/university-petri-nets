@@ -91,17 +91,29 @@ class IP1(BaseInterfacePattern):
         """Defines places p_A1 (Agent A1) and p_A2 (Agent A2).
         'Two Agents A1 and A2'.
         """
-        self.p_a1 = PetriNet.Place("p_A1")
-        self.p_a2 = PetriNet.Place("p_A2")
-        self.net.places.add(self.p_a1)
-        self.net.places.add(self.p_a2)
+        # start places
+        self.p_a1_start = PetriNet.Place("p_A1_start")
+        self.p_a2_start = PetriNet.Place("p_A2_start")
+
+        # new place
+        self.p_a = PetriNet.Place("p_A")
+
+        # end places
+        self.p_a1_end = PetriNet.Place("p_A1_end")
+        self.p_a2_end = PetriNet.Place("p_A2_end")
+
+        self.net.places.add(self.p_a1_start)
+        self.net.places.add(self.p_a2_start)
+        self.net.places.add(self.p_a)
+        self.net.places.add(self.p_a1_end)
+        self.net.places.add(self.p_a2_end)
 
     def _define_transitions(self) -> None:
         """Defines transitions t_send (sending message) and t_receive (receiving message).
         'Single labeled transition used to send/recieve messages'.
         'Channels are added only in a single direction to send/recieve messages'.
         """
-        # A1 sends a message
+        # A1 sends a message with name, label
         self.t_send = PetriNet.Transition("t_send", "a!")
         # A2 receives the message
         self.t_receive = PetriNet.Transition(
@@ -113,17 +125,24 @@ class IP1(BaseInterfacePattern):
 
     def _define_arcs(self) -> None:
         """Defines the arcs connecting places and transitions."""
-        # A1 sends a message
-        petri_utils.add_arc_from_to(self.p_a1, self.t_send, self.net)
-        # Connection from sending to receiving
-        petri_utils.add_arc_from_to(self.t_send, self.t_receive, self.net)
-        # A2 receives the message
-        petri_utils.add_arc_from_to(self.t_receive, self.p_a2, self.net)
+        petri_utils.add_arc_from_to(self.p_a1_start, self.t_send, self.net)
+        petri_utils.add_arc_from_to(self.p_a2_start, self.t_receive, self.net)
+
+        petri_utils.add_arc_from_to(self.t_send, self.p_a, self.net)
+        petri_utils.add_arc_from_to(self.p_a, self.t_receive, self.net)
+
+        petri_utils.add_arc_from_to(self.t_send, self.p_a1_end, self.net)
+        petri_utils.add_arc_from_to(self.t_receive, self.p_a2_end, self.net)
 
     def _define_markings(self) -> None:
         """Defines the initial and final markings."""
-        self.initial_marking[self.p_a1] = 1  # Start with A1 ready to send
-        self.final_marking[self.p_a2] = 1  # End when A2 receives the message
+        # Start with A1 ready to send
+        self.initial_marking[self.p_a1_start] = 1
+        self.initial_marking[self.p_a2_start] = 1
+
+        # End when A2 receives the message
+        self.final_marking[self.p_a1_end] = 1
+        self.final_marking[self.p_a2_end] = 1
 
 
 class IP2(BaseInterfacePattern):

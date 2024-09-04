@@ -86,7 +86,9 @@ ignore = [
     "ANN101", # Missing type annotation for self in method
     "G004",   # Logging statement uses string formatting
     "TD003",  # Missing link to issue
+    "TD002",  # Line contains `TODO`, consider adding a link to an issue
     "FIX002", # Line contains TODO, consider resolving the issue
+
 ]
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]

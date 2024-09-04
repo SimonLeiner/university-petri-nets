@@ -15,6 +15,7 @@ def filter_logs_by_agent(
     Comments:
         - Step 1: Event Log Filtering Function
         - An event log of a multi-agent system is filtered by actions executed by different agents. Correspondingly, we construct a set of sub-logs. For instance, filtering the records in the event log given in Table 1 by the “Pete” value of the “Agent” attribute, we obtain the sub-log presented in Table 2.
+        - pm4py.filter_event_attribute_values
 
     Returns:
         A dictionary where each key is an agent identifier and the corresponding value is a sub-log of the
