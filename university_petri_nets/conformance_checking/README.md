@@ -23,6 +23,8 @@ Conformance Checking Dimensions that determine the quality of a process model:
 
 # Additional Clafirications:
 
+- **Soundness: (Proper Termination)** A process model is sound if it can replay all traces in the event log. The `inductive miner` guarantees the soundness of the discovered model. Corollary 2:GWF-net discovered from an event log L using Algorithm 1 is sound.
+
 - **Fitness:** is a value in the interval [0, 1] that demonstrates how well a process model can replay every trace from an event log. In the general case shown in Fig. 13, a part of an event log (unfitting traces) may not be covered by the firing sequences in a process model. The more the number of unfitting traces in L is, the lower the fitness of a process model is. By Definition 8, a process model perfectly fits an event log (fitness = 1) if it can execute all traces in this event log, i.e., there are no unfitting traces.
 Note that, by Corollary 1, GWF-nets obtained by Algo- rithm 1 perfectly fit event logs. Multi-Agent systems models perfectly fit the event log.
 

@@ -1,6 +1,9 @@
 import pandas as pd
 
 
+# TODO: Depreciated. Will be removed in the future.
+
+
 def filter_logs_by_agent(
     df_log: pd.DataFrame,
     agent_column: str = "org:resource",

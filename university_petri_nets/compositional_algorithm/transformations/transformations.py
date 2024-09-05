@@ -1,5 +1,3 @@
-"""This module contains the Transformations."""
-
 from abc import ABCMeta
 from abc import abstractmethod
 
@@ -7,6 +5,19 @@ from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net.utils.petri_utils import add_place
+
+
+def refine_p1() -> PetriNet:
+    """P1 Transformation (Place Duplication)."""
+    raise NotImplementedError
+
+
+def abstract_p1() -> PetriNet:
+    """P1 Inverse Transformation (Place Merging)."""
+    raise NotImplementedError
+
+
+# TODO: Depreciated. Will be removed in the future.
 
 
 class BaseTransformation(metaclass=ABCMeta):

@@ -1,10 +1,12 @@
+from collections import deque
+
 import pandas as pd
 import pm4py
 from interface_patterns.interface_patterns import BaseInterfacePattern
 from pm4py.objects.petri_net.obj import PetriNet
 
 
-# TODO: Check and more algorithms.
+# TODO: Check and adjust for more algorithms.
 def discover(
     df_log: pd.DataFrame,
     algorithm: pm4py.discover_petri_net_inductive,
@@ -26,9 +28,58 @@ def discover(
 
 
 # TODO: Implement.
-def is_refinement() -> None:
-    """Checks if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern."""
+def is_isomorphic() -> bool:
+    """Checks if two Petri nets are identical."""
     raise NotImplementedError
+
+
+# TODO: Correct Implementation.
+def is_refinement(
+    initial_net: PetriNet,
+    target_net: PetriNet,
+    transformations: list,
+) -> bool:
+    """Checks if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern.
+
+    Args:
+        initial_net (PetriNet): The agent GWF-net.
+        target_net (PetriNet): The corresponding part in the interface pattern.
+        transformations (list): The list of transformations to apply.
+
+    Comments:
+        -  We use BFS to find a sequence of transformations that transforms the input net into the target net.
+
+    Returns:
+        bool: True if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern.
+    """
+    # Create a queue for BFS and add the initial net
+    queue = deque([(initial_net, [])])
+
+    # To keep track of visited states
+    visited = set()
+
+    while queue:
+        current_net, transformation_sequence = queue.popleft()
+
+        # Check if the current net is isomorphic to the target net
+        if is_isomorphic(current_net, target_net):
+            return True
+
+        # Mark the current net as visited (you may need a hashable form of the net)
+        visited.add(
+            id(current_net),
+        )  # Use `id` to track visited Petri nets by object reference
+
+        # Apply each of the 4 transformations
+        for transformation in transformations:
+            new_net = transformation(current_net)
+
+            # If the new net hasn't been visited, add it to the queue
+            if id(new_net) not in visited:
+                queue.append((new_net, [*transformation_sequence, transformation]))
+
+    # If no transformation sequence leads to the target net
+    return False
 
 
 # TODO: Implement.
