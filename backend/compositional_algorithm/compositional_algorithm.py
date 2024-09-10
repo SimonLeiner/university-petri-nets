@@ -30,6 +30,8 @@ def discover(
 # TODO: Implement.
 def is_isomorphic() -> bool:
     """Checks if two Petri nets are identical."""
+    # https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.isomorphism.is_isomorphic.html
+    # from networkx.algorithms import isomorphism, optimize_graph_edit_distance, graph_edit_distance, simrank_similarity
     raise NotImplementedError
 
 
