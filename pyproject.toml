@@ -16,7 +16,7 @@ classifiers = [
 ]
 
 [tool.black]
-line-length = 150
+line-length = 250
 
 [tool.docformatter]
 black = true
