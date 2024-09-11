@@ -32,3 +32,9 @@ RUN git init . && pre-commit install
 
 # set working directory
 WORKDIR /workspace
+
+# Expose the port FastAPI server will run on
+EXPOSE 4000
+
+# Command to run the FastAPI server
+CMD ["uvicorn", "server:app", "--reload", "--host", "0.0.0.0", "--port", "4000"]

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.signavio.com/bpmn20" typeLanguage="http://www.w3.org/2001/XMLSchema"><bpmn:process id="id_1673185834540" isClosed="false" isExecutable="false" processType="None">
+    		
+    <bpmn:endEvent id="id_1673185834541" name="end">
+      			
+      <bpmn:incoming>id_1673185834549</bpmn:incoming>
+      		
+    </bpmn:endEvent>
+    		
+    <bpmn:intermediateCatchEvent id="id_1673185834542" name="Rex_done">
+      			
+      <bpmn:incoming>id_1673185834548</bpmn:incoming>
+      			
+      <bpmn:outgoing>id_1673185834549</bpmn:outgoing>
+      		
+    <bpmn:signalEventDefinition id="signal_Rex_done_0"/></bpmn:intermediateCatchEvent>
+    		
+    <bpmn:intermediateThrowEvent id="id_1673185834543" name="Rex_target_found">
+      			
+      <bpmn:incoming>id_1673185834546</bpmn:incoming>
+      			
+      <bpmn:outgoing>id_1673185834548</bpmn:outgoing>
+      		
+    <bpmn:signalEventDefinition id="signal_Rex_target_found_0"/></bpmn:intermediateThrowEvent>
+    		
+    <bpmn:task completionQuantity="1" id="id_1673185834544" isForCompensation="false" name="Rex_Explore" startQuantity="1">
+      			
+      <bpmn:incoming>id_1673185834547</bpmn:incoming>
+      			
+      <bpmn:outgoing>id_1673185834546</bpmn:outgoing>
+      		
+    </bpmn:task>
+    		
+    <bpmn:startEvent id="id_1673185834545" isInterrupting="true" name="start" parallelMultiple="false">
+      			
+      <bpmn:outgoing>id_1673185834547</bpmn:outgoing>
+      		
+    </bpmn:startEvent>
+    		
+    <bpmn:sequenceFlow id="id_1673185834546" name="" sourceRef="id_1673185834544" targetRef="id_1673185834543"/>
+    		
+    <bpmn:sequenceFlow id="id_1673185834547" name="" sourceRef="id_1673185834545" targetRef="id_1673185834544"/>
+    		
+    <bpmn:sequenceFlow id="id_1673185834548" name="" sourceRef="id_1673185834543" targetRef="id_1673185834542"/>
+    		
+    <bpmn:sequenceFlow id="id_1673185834549" name="" sourceRef="id_1673185834542" targetRef="id_1673185834541"/>
+    	
+  </bpmn:process><collaboration xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" id="collaboration_1048c146-2335-4960-b58f-cd195f75df2e">
+    <participant id="Rex_1673185834674" name="Rex" processRef="id_1673185834540"/>
+  <participant id="Dingo_1673185835583" name="Dingo" processRef="id_1673185835570"/></collaboration><bpmndi:BPMNDiagram id="id_1673185834550" name="diagram">
+    		
+    <bpmndi:BPMNPlane bpmnElement="collaboration_1048c146-2335-4960-b58f-cd195f75df2e" id="id_1673185834551">
+      			
+      <bpmndi:BPMNShape bpmnElement="id_1673185834541" id="id_1673185834541_gui">
+        				
+        <omgdc:Bounds height="30" width="30" x="6000.0" y="0.0"/>
+        			
+      </bpmndi:BPMNShape>
+      			
+      <bpmndi:BPMNShape bpmnElement="id_1673185834542" id="id_1673185834542_gui">
+        				
+        <omgdc:Bounds height="60" width="82" x="4696.0" y="0.0"/>
+        			
+      </bpmndi:BPMNShape>
+      			
+      <bpmndi:BPMNShape bpmnElement="id_1673185834543" id="id_1673185834543_gui">
+        				
+        <omgdc:Bounds height="60" width="120" x="3391.0" y="0.0"/>
+        			
+      </bpmndi:BPMNShape>
+      			
+      <bpmndi:BPMNShape bpmnElement="id_1673185834544" id="id_1673185834544_gui">
+        				
+        <omgdc:Bounds height="60" width="98" x="2087.0" y="0.0"/>
+        			
+      </bpmndi:BPMNShape>
+      			
+      <bpmndi:BPMNShape bpmnElement="id_1673185834545" id="id_1673185834545_gui">
+        				
+        <omgdc:Bounds height="30" width="30" x="783.0" y="0.0"/>
+        			
+      </bpmndi:BPMNShape>
+      			
+      <bpmndi:BPMNEdge bpmnElement="id_1673185834546" id="id_1673185834546_gui">
+        				
+        <omgdi:waypoint x="2185.0" y="30.0"/>
+        				
+        <omgdi:waypoint x="2788.0" y="30.0"/>
+        				
+        <omgdi:waypoint x="2788.0" y="30.0"/>
+        				
+        <omgdi:waypoint x="3391.0" y="30.0"/>
+        			
+      </bpmndi:BPMNEdge>
+      			
+      <bpmndi:BPMNEdge bpmnElement="id_1673185834547" id="id_1673185834547_gui">
+        				
+        <omgdi:waypoint x="813.0" y="15.0"/>
+        				
+        <omgdi:waypoint x="1450.0" y="15.0"/>
+        				
+        <omgdi:waypoint x="1450.0" y="30.0"/>
+        				
+        <omgdi:waypoint x="2087.0" y="30.0"/>
+        			
+      </bpmndi:BPMNEdge>
+      			
+      <bpmndi:BPMNEdge bpmnElement="id_1673185834548" id="id_1673185834548_gui">
+        				
+        <omgdi:waypoint x="3511.0" y="30.0"/>
+        				
+        <omgdi:waypoint x="4103.5" y="30.0"/>
+        				
+        <omgdi:waypoint x="4103.5" y="30.0"/>
+        				
+        <omgdi:waypoint x="4696.0" y="30.0"/>
+        			
+      </bpmndi:BPMNEdge>
+      			
+      <bpmndi:BPMNEdge bpmnElement="id_1673185834549" id="id_1673185834549_gui">
+        				
+        <omgdi:waypoint x="4778.0" y="30.0"/>
+        				
+        <omgdi:waypoint x="5389.0" y="30.0"/>
+        				
+        <omgdi:waypoint x="5389.0" y="15.0"/>
+        				
+        <omgdi:waypoint x="6000.0" y="15.0"/>
+        			
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="Rex_1673185834674" id="collaboration_1048c146-2335-4960-b58f-cd195f75df2e_di" isHorizontal="true">
+        <omgdc:Bounds height="3510.0" width="7800.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      		
+    <bpmndi:BPMNEdge bpmnElement="id_1673185835577" id="id_1673185835577_gui">
+        				
+        <omgdi:waypoint x="3950.0" y="890.0"/>
+        				
+        <omgdi:waypoint x="4439.5" y="890.0"/>
+        				
+        <omgdi:waypoint x="4439.5" y="890.0"/>
+        				
+        <omgdi:waypoint x="4929.0" y="890.0"/>
+        			
+      </bpmndi:BPMNEdge><bpmndi:BPMNEdge bpmnElement="id_1673185835578" id="id_1673185835578_gui">
+        				
+        <omgdi:waypoint x="1834.0" y="890.0"/>
+        				
+        <omgdi:waypoint x="2310.0" y="890.0"/>
+        				
+        <omgdi:waypoint x="2310.0" y="890.0"/>
+        				
+        <omgdi:waypoint x="2786.0" y="890.0"/>
+        			
+      </bpmndi:BPMNEdge><bpmndi:BPMNEdge bpmnElement="id_1673185835579" id="id_1673185835579_gui">
+        				
+        <omgdi:waypoint x="2879.0" y="890.0"/>
+        				
+        <omgdi:waypoint x="3368.0" y="890.0"/>
+        				
+        <omgdi:waypoint x="3368.0" y="890.0"/>
+        				
+        <omgdi:waypoint x="3857.0" y="890.0"/>
+        			
+      </bpmndi:BPMNEdge><bpmndi:BPMNShape bpmnElement="id_1673185835576" id="id_1673185835576_gui">
+        				
+        <omgdc:Bounds height="60" width="93" x="3857.0" y="860.0"/>
+        			
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="id_1673185835575" id="id_1673185835575_gui">
+        				
+        <omgdc:Bounds height="60" width="120" x="1714.0" y="860.0"/>
+        			
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="Dingo_1673185835583" id="collaboration_7a210074-2043-4228-9ced-4d25d11073eb_di" isHorizontal="true">
+        <omgdc:Bounds height="3510.0" width="7800.0" x="0.0" y="860.0"/>
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="id_1673185835574" id="id_1673185835574_gui">
+        				
+        <omgdc:Bounds height="60" width="93" x="2786.0" y="860.0"/>
+        			
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="id_1673185835573" id="id_1673185835573_gui">
+        				
+        <omgdc:Bounds height="60" width="93" x="4929.0" y="860.0"/>
+        			
+      </bpmndi:BPMNShape></bpmndi:BPMNPlane>
+    	
+  </bpmndi:BPMNDiagram><bpmn:process id="id_1673185835570" isClosed="false" isExecutable="false" processType="None">
+    		
+    
+    		
+    
+    		
+    <bpmn:endEvent id="id_1673185835573" name="Dingo_done">
+      			
+      <bpmn:incoming>id_1673185835577</bpmn:incoming>
+      			
+      
+      		
+    <bpmn:signalEventDefinition id="signal_Dingo_done_1"/></bpmn:endEvent>
+    		
+    <bpmn:task completionQuantity="1" id="id_1673185835574" isForCompensation="false" name="Dingo_GoTo" startQuantity="1">
+      			
+      <bpmn:incoming>id_1673185835578</bpmn:incoming>
+      			
+      <bpmn:outgoing>id_1673185835579</bpmn:outgoing>
+      		
+    </bpmn:task>
+    		
+    <bpmn:startEvent id="id_1673185835575" name="Dingo_target_found">
+      			
+      
+      			
+      <bpmn:outgoing>id_1673185835578</bpmn:outgoing>
+      		
+    <bpmn:signalEventDefinition id="signal_Dingo_target_found_1"/></bpmn:startEvent>
+    		
+    <bpmn:task completionQuantity="1" id="id_1673185835576" isForCompensation="false" name="Dingo_Fire" startQuantity="1">
+      			
+      <bpmn:incoming>id_1673185835579</bpmn:incoming>
+      			
+      <bpmn:outgoing>id_1673185835577</bpmn:outgoing>
+      		
+    </bpmn:task>
+    		
+    <bpmn:sequenceFlow id="id_1673185835577" name="" sourceRef="id_1673185835576" targetRef="id_1673185835573"/>
+    		
+    <bpmn:sequenceFlow id="id_1673185835578" name="" sourceRef="id_1673185835575" targetRef="id_1673185835574"/>
+    		
+    <bpmn:sequenceFlow id="id_1673185835579" name="" sourceRef="id_1673185835574" targetRef="id_1673185835576"/>
+    		
+    
+    		
+    
+    	
+  </bpmn:process></bpmn:definitions>

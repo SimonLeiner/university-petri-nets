@@ -31,7 +31,7 @@ def discover(
     Returns:
         The discovered Petri net model for the agent.
     """
-    net, initial_marking, final_marking = algorithm(df_log, algorithm_kwargs)
+    net, initial_marking, final_marking = algorithm(df_log, **algorithm_kwargs)
     return net, initial_marking, final_marking
 
 
@@ -225,17 +225,21 @@ def replace(
 
 def compositional_discovery(
     df_log: pd.Dataframe,
+    algorithm: callable,
     interface_pattern: BaseInterfacePattern,
     transformations: list[BaseTransformation],
     agent_column: str = "org:resource",
+    **algorithm_kwargs: dict,
 ) -> PetriNet:
     """Compositional Process Discovery Algorithm as described in Algorithm 1.
 
     Args:
         df_log (pd.DataFrame): The event log for the multi-agent system.
+        algorithm (callable): The process discovery algorithm to use.
         interface_pattern (BaseInterfacePattern): The interface pattern to use that consists of A1,...An Agents.
         transformations (list[BaseTransformation]): The list of transformations
         agent_column (str): The column in the event log that contains the agent names.
+        algorithm_kwargs (dict): Additional arguments to pass to the algorithm.
 
     Comments:
         - TODO: Checks agent i for subnet i and not agent i for all subnets.
@@ -257,7 +261,7 @@ def compositional_discovery(
             df_log_agent = df_log[df_log[agent_column] == agent]
 
             # discover net
-            gwf_agent_net, _, _ = discover(df_log_agent)
+            gwf_agent_net, _, _ = discover(df_log_agent, algorithm, **algorithm_kwargs)
 
             # get the corresponding interface subset pattern
             interface_subset_pattern = interface_pattern.get_net(f"A{i}")

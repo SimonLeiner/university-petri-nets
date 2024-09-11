@@ -6,13 +6,9 @@ services:
       context: ./backend
     ports:
       - "4000:4000"
-    networks:
-      - app-network
     restart: always  # Restart policy for the backend service
-    environment:
-      - NODE_ENV=development  # Example environment variable
     volumes:
-      - ./backend:/usr/src/app  # Mount the backend directory
+      - ./backend:/usr/src/workspace  # Mount the backend directory
 
   frontend:
     container_name: frontend
@@ -20,15 +16,11 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
-    networks:
-      - app-network
     restart: always  # Restart policy for the frontend service
     depends_on:
       - backend  # Ensure frontend starts after backend
-    environment:
-      - NODE_ENV=development  # Example environment variable
     volumes:
-      - ./frontend:/usr/src/app  # Mount the frontend directory
+      - ./frontend:/usr/src/workspace  # Mount the frontend directory
 
 networks:
   app-network:

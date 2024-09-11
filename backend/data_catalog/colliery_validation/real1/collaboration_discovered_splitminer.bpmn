@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.omg.org/bpmn20" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"><process id="id_1673185891799" isClosed="false" processType="None">
+    
+    <startEvent id="id_1673185891800" isInterrupting="true" name="" parallelMultiple="false"/>
+    
+    <endEvent id="id_1673185891801" name=""/>
+    
+    <bpmn:intermediateCatchEvent id="id_1673185891802" name="Rex_done"><bpmn:signalEventDefinition id="signal_Rex_done_0"/></bpmn:intermediateCatchEvent>
+    
+    <task completionQuantity="1" id="id_1673185891803" isForCompensation="false" name="Rex_Explore" startQuantity="1"/>
+    
+    <bpmn:intermediateThrowEvent id="id_1673185891804" name="Rex_target_found"><bpmn:signalEventDefinition id="signal_Rex_target_found_0"/></bpmn:intermediateThrowEvent>
+    
+    <sequenceFlow id="id_1673185891805" name="" sourceRef="id_1673185891802" targetRef="id_1673185891801"/>
+    
+    <sequenceFlow id="id_1673185891806" name="" sourceRef="id_1673185891803" targetRef="id_1673185891804"/>
+    
+    <sequenceFlow id="id_1673185891807" name="" sourceRef="id_1673185891800" targetRef="id_1673185891803"/>
+    
+    <sequenceFlow id="id_1673185891808" name="" sourceRef="id_1673185891804" targetRef="id_1673185891802"/>
+    
+  </process><collaboration id="collaboration_632cb56d-2433-4312-bb4c-24c1b39ca76c">
+    <participant id="Rex_1673185891919" name="Rex" processRef="id_1673185891799"/>
+  <participant id="Dingo_1673185891983" name="Dingo" processRef="id_1673185891972"/></collaboration><bpmndi:BPMNDiagram id="id_1673185891809">
+    
+    <bpmndi:BPMNPlane bpmnElement="collaboration_632cb56d-2433-4312-bb4c-24c1b39ca76c">
+      
+      <bpmndi:BPMNShape bpmnElement="id_1673185891804">
+        
+        <dc:Bounds height="40.0" width="80.0" x="206.0" y="101.0"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNShape bpmnElement="id_1673185891800">
+        
+        <dc:Bounds height="25.0" width="25.0" x="1.0" y="108.5"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNShape bpmnElement="id_1673185891802">
+        
+        <dc:Bounds height="40.0" width="80.0" x="336.0" y="101.0"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNShape bpmnElement="id_1673185891801">
+        
+        <dc:Bounds height="25.0" width="25.0" x="466.0" y="108.5"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNShape bpmnElement="id_1673185891803">
+        
+        <dc:Bounds height="40.0" width="80.0" x="76.0" y="101.0"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape>
+      
+      <bpmndi:BPMNEdge bpmnElement="id_1673185891806">
+        
+        <di:waypoint x="116.0" y="121.0"/>
+        
+        <di:waypoint x="246.0" y="121.0"/>
+        
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNEdge bpmnElement="id_1673185891807">
+        
+        <di:waypoint x="13.5" y="121.0"/>
+        
+        <di:waypoint x="116.0" y="121.0"/>
+        
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNEdge bpmnElement="id_1673185891808">
+        
+        <di:waypoint x="246.0" y="121.0"/>
+        
+        <di:waypoint x="376.0" y="121.0"/>
+        
+      </bpmndi:BPMNEdge>
+      
+      <bpmndi:BPMNEdge bpmnElement="id_1673185891805">
+        
+        <di:waypoint x="376.0" y="121.0"/>
+        
+        <di:waypoint x="478.5" y="121.0"/>
+        
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="Rex_1673185891919" id="collaboration_632cb56d-2433-4312-bb4c-24c1b39ca76c_di" isHorizontal="true">
+        <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+      </bpmndi:BPMNShape>
+      
+    <bpmndi:BPMNEdge bpmnElement="id_1673185891979">
+        
+        <di:waypoint x="13.5" y="312.0"/>
+        
+        <di:waypoint x="116.0" y="312.0"/>
+        
+      </bpmndi:BPMNEdge><bpmndi:BPMNShape bpmnElement="id_1673185891975">
+        
+        <dc:Bounds height="40.0" width="80.0" x="206.0" y="292.0"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="id_1673185891976">
+        
+        <dc:Bounds height="40.0" width="80.0" x="76.0" y="292.0"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape><bpmndi:BPMNEdge bpmnElement="id_1673185891982">
+        
+        <di:waypoint x="376.0" y="312.0"/>
+        
+        <di:waypoint x="506.0" y="312.0"/>
+        
+      </bpmndi:BPMNEdge><bpmndi:BPMNShape bpmnElement="id_1673185891973">
+        
+        <dc:Bounds height="25.0" width="25.0" x="1.0" y="299.5"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="id_1673185891974">
+        
+        <dc:Bounds height="25.0" width="25.0" x="596.0" y="299.5"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape><bpmndi:BPMNEdge bpmnElement="id_1673185891981">
+        
+        <di:waypoint x="506.0" y="312.0"/>
+        
+        <di:waypoint x="608.5" y="312.0"/>
+        
+      </bpmndi:BPMNEdge><bpmndi:BPMNShape bpmnElement="id_1673185891977">
+        
+        <dc:Bounds height="40.0" width="80.0" x="336.0" y="292.0"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="Dingo_1673185891983" id="collaboration_f85cc191-af14-416a-9b20-fc946087109d_di" isHorizontal="true">
+        <dc:Bounds height="0.0" width="0.0" x="0.0" y="191.0"/>
+      </bpmndi:BPMNShape><bpmndi:BPMNShape bpmnElement="id_1673185891978">
+        
+        <dc:Bounds height="40.0" width="80.0" x="466.0" y="292.0"/>
+        
+        <bpmndi:BPMNLabel/>
+        
+      </bpmndi:BPMNShape><bpmndi:BPMNEdge bpmnElement="id_1673185891983">
+        
+        <di:waypoint x="116.0" y="312.0"/>
+        
+        <di:waypoint x="246.0" y="312.0"/>
+        
+      </bpmndi:BPMNEdge><bpmndi:BPMNEdge bpmnElement="id_1673185891980">
+        
+        <di:waypoint x="246.0" y="312.0"/>
+        
+        <di:waypoint x="376.0" y="312.0"/>
+        
+      </bpmndi:BPMNEdge></bpmndi:BPMNPlane>
+    
+  </bpmndi:BPMNDiagram></definitions>

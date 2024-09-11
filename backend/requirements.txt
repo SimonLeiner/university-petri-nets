@@ -13,6 +13,8 @@ matplotlib
 plotly
 graphviz
 
+# environment variables
+python-dotenv
 
 # linting
 pre-commit

@@ -1473,3 +1473,23 @@ class IP12(BaseInterfacePattern):
 
         self.final_marking[self.places["p4"]] = 1
         self.final_marking[self.places["p8"]] = 1
+
+
+# List of supported interface patterns
+INTERFACE_PATTERNS: list[BaseInterfacePattern] = [
+    IP1,
+    IP2,
+    IP3,
+    IP4,
+    IP5,
+    IP6,
+    IP7,
+    IP8,
+    IP9,
+    IP10,
+    IP11,
+    IP12,
+]
+
+# Control the public API of the module
+__all__ = ["INTERFACE_PATTERNS"]

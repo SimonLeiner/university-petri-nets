@@ -420,3 +420,15 @@ class P4(PlaceTransformation):
         # What about the marking?
 
         return net
+
+
+# List of supported transformations
+TRANSFORMATIONS: list[BaseTransformation] = [
+    P1,
+    P2,
+    P3,
+    P4,
+]
+
+# Control the public API of the module
+__all__ = ["TRANSFORMATIONS"]

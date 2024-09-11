@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.signavio.com/bpmn20" exporter="Camunda Modeler" exporterVersion="4.2.0">
+  <process id="id_1624358181533" processType="None" isClosed="false" isExecutable="false">
+    <startEvent id="id_1624358181534" name="Paper Received">
+      <outgoing>id_1624358181540</outgoing>
+      <messageEventDefinition id="MessageEventDefinition_1624358181863" />
+    </startEvent>
+    <task id="id_1624358181535" name="Paper Review">
+      <incoming>id_1624358181540</incoming>
+      <outgoing>id_1624358181543</outgoing>
+    </task>
+    <sendTask id="id_1624358181536" name="Submit Review">
+      <incoming>id_1624358181543</incoming>
+      <outgoing>id_1624358181542</outgoing>
+    </sendTask>
+    <receiveTask id="id_1624358181537" name="Feedback Received">
+      <incoming>id_1624358181542</incoming>
+      <outgoing>id_1624358181544</outgoing>
+    </receiveTask>
+    <endEvent id="id_1624358181539" name="">
+      <incoming>id_1624358181544</incoming>
+    </endEvent>
+    <sequenceFlow id="id_1624358181544" name="" sourceRef="id_1624358181537" targetRef="id_1624358181539" />
+    <sequenceFlow id="id_1624358181543" name="" sourceRef="id_1624358181535" targetRef="id_1624358181536" />
+    <sequenceFlow id="id_1624358181542" name="" sourceRef="id_1624358181536" targetRef="id_1624358181537" />
+    <sequenceFlow id="id_1624358181540" name="" sourceRef="id_1624358181534" targetRef="id_1624358181535" />
+  </process>
+  <collaboration id="collaboration_92996a93-50a2-4493-9253-03f7d2af7384">
+    <participant id="Reviewer_1624358181559" name="Reviewer" processRef="id_1624358181533" />
+    <participant id="Contact_Author_1624358175436" name="Contact_Author" processRef="id_1624358174994" />
+    <participant id="PC_Chair_1624358178434" name="PC_Chair" processRef="id_1624358178391" />
+    <messageFlow id="Flow_1624358181736" name="Manuscript" sourceRef="id_1624358175008" targetRef="id_1624358178403" />
+    <messageFlow id="Flow_1624358181755" name="Review Request" sourceRef="id_1624358178406" targetRef="id_1624358181534" />
+    <messageFlow id="Flow_1624358181772" name="Feedback" sourceRef="id_1624358178393" targetRef="id_1624358181537" />
+    <messageFlow id="Flow_1624358181791" name="Review" sourceRef="id_1624358181536" targetRef="id_1624358178405" />
+    <messageFlow id="Flow_1624358181811" name="Notification" sourceRef="id_1624358178407" targetRef="id_1624358175012" />
+  </collaboration>
+  <process id="id_1624358174994" processType="None" isClosed="false" isExecutable="false">
+    <task id="id_1624358174995" name="Write Paper">
+      <incoming>id_1624358175036</incoming>
+      <outgoing>id_1624358175013</outgoing>
+    </task>
+    <endEvent id="id_1624358174996" name="">
+      <incoming>id_1624358175021</incoming>
+    </endEvent>
+    <exclusiveGateway id="id_1624358174997" name="">
+      <incoming>id_1624358175018</incoming>
+      <incoming>id_1624358175033</incoming>
+      <outgoing>id_1624358175017</outgoing>
+      <outgoing>id_1624358175014</outgoing>
+    </exclusiveGateway>
+    <startEvent id="id_1624358174998" name="">
+      <outgoing>id_1624358175036</outgoing>
+    </startEvent>
+    <exclusiveGateway id="id_1624358174999" name="" gatewayDirection="Converging">
+      <incoming>id_1624358175022</incoming>
+      <incoming>id_1624358175027</incoming>
+      <incoming>id_1624358175026</incoming>
+      <outgoing>id_1624358175025</outgoing>
+      <outgoing>id_1624358175032</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358175000" name="" gatewayDirection="Diverging">
+      <incoming>id_1624358175015</incoming>
+      <incoming>id_1624358175014</incoming>
+      <outgoing>id_1624358175023</outgoing>
+      <outgoing>id_1624358175034</outgoing>
+      <outgoing>id_1624358175019</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358175001" name="" gatewayDirection="Diverging">
+      <incoming>id_1624358175030</incoming>
+      <outgoing>id_1624358175022</outgoing>
+      <outgoing>id_1624358175031</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358175002" name="" gatewayDirection="Converging">
+      <incoming>id_1624358175024</incoming>
+      <incoming>id_1624358175034</incoming>
+      <incoming>id_1624358175035</incoming>
+      <outgoing>id_1624358175021</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358175003" name="">
+      <incoming>id_1624358175028</incoming>
+      <incoming>id_1624358175032</incoming>
+      <outgoing>id_1624358175018</outgoing>
+      <outgoing>id_1624358175016</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358175004" name="" gatewayDirection="Diverging">
+      <incoming>id_1624358175013</incoming>
+      <outgoing>id_1624358175020</outgoing>
+      <outgoing>id_1624358175029</outgoing>
+    </exclusiveGateway>
+    <task id="id_1624358175005" name="Read Notification">
+      <incoming>id_1624358175017</incoming>
+      <outgoing>id_1624358175015</outgoing>
+    </task>
+    <task id="id_1624358175006" name="Revise For Resubmission">
+      <incoming>id_1624358175023</incoming>
+      <outgoing>id_1624358175024</outgoing>
+    </task>
+    <task id="id_1624358175007" name="Finalize Manuscript">
+      <incoming>id_1624358175020</incoming>
+      <outgoing>id_1624358175027</outgoing>
+    </task>
+    <sendTask id="id_1624358175008" name="Submit Manuscript">
+      <incoming>id_1624358175025</incoming>
+      <outgoing>id_1624358175028</outgoing>
+    </sendTask>
+    <task id="id_1624358175009" name="Check Journal Submission Guide">
+      <incoming>id_1624358175029</incoming>
+      <outgoing>id_1624358175030</outgoing>
+    </task>
+    <task id="id_1624358175010" name="Prepare Camera Ready">
+      <incoming>id_1624358175019</incoming>
+      <outgoing>id_1624358175035</outgoing>
+    </task>
+    <task id="id_1624358175011" name="Apply Changes">
+      <incoming>id_1624358175031</incoming>
+      <outgoing>id_1624358175026</outgoing>
+    </task>
+    <intermediateCatchEvent id="id_1624358175012" name="Notification Received">
+      <incoming>id_1624358175016</incoming>
+      <outgoing>id_1624358175033</outgoing>
+      <messageEventDefinition id="MessageEventDefinition_16243581818330.005158068057526277" />
+    </intermediateCatchEvent>
+    <sequenceFlow id="id_1624358175036" name="" sourceRef="id_1624358174998" targetRef="id_1624358174995" />
+    <sequenceFlow id="id_1624358175035" name="" sourceRef="id_1624358175010" targetRef="id_1624358175002" />
+    <sequenceFlow id="id_1624358175034" name="" sourceRef="id_1624358175000" targetRef="id_1624358175002" />
+    <sequenceFlow id="id_1624358175033" name="" sourceRef="id_1624358175012" targetRef="id_1624358174997" />
+    <sequenceFlow id="id_1624358175032" name="" sourceRef="id_1624358174999" targetRef="id_1624358175003" />
+    <sequenceFlow id="id_1624358175031" name="" sourceRef="id_1624358175001" targetRef="id_1624358175011" />
+    <sequenceFlow id="id_1624358175030" name="" sourceRef="id_1624358175009" targetRef="id_1624358175001" />
+    <sequenceFlow id="id_1624358175029" name="" sourceRef="id_1624358175004" targetRef="id_1624358175009" />
+    <sequenceFlow id="id_1624358175028" name="" sourceRef="id_1624358175008" targetRef="id_1624358175003" />
+    <sequenceFlow id="id_1624358175027" name="" sourceRef="id_1624358175007" targetRef="id_1624358174999" />
+    <sequenceFlow id="id_1624358175026" name="" sourceRef="id_1624358175011" targetRef="id_1624358174999" />
+    <sequenceFlow id="id_1624358175025" name="" sourceRef="id_1624358174999" targetRef="id_1624358175008" />
+    <sequenceFlow id="id_1624358175024" name="" sourceRef="id_1624358175006" targetRef="id_1624358175002" />
+    <sequenceFlow id="id_1624358175023" name="" sourceRef="id_1624358175000" targetRef="id_1624358175006" />
+    <sequenceFlow id="id_1624358175022" name="" sourceRef="id_1624358175001" targetRef="id_1624358174999" />
+    <sequenceFlow id="id_1624358175021" name="" sourceRef="id_1624358175002" targetRef="id_1624358174996" />
+    <sequenceFlow id="id_1624358175020" name="" sourceRef="id_1624358175004" targetRef="id_1624358175007" />
+    <sequenceFlow id="id_1624358175019" name="" sourceRef="id_1624358175000" targetRef="id_1624358175010" />
+    <sequenceFlow id="id_1624358175018" name="" sourceRef="id_1624358175003" targetRef="id_1624358174997" />
+    <sequenceFlow id="id_1624358175017" name="" sourceRef="id_1624358174997" targetRef="id_1624358175005" />
+    <sequenceFlow id="id_1624358175016" name="" sourceRef="id_1624358175003" targetRef="id_1624358175012" />
+    <sequenceFlow id="id_1624358175015" name="" sourceRef="id_1624358175005" targetRef="id_1624358175000" />
+    <sequenceFlow id="id_1624358175014" name="" sourceRef="id_1624358174997" targetRef="id_1624358175000" />
+    <sequenceFlow id="id_1624358175013" name="" sourceRef="id_1624358174995" targetRef="id_1624358175004" />
+  </process>
+  <process id="id_1624358178391" processType="None" isClosed="false" isExecutable="false">
+    <task id="id_1624358178392" name="Prepare Rejection Letter">
+      <incoming>id_1624358178412</incoming>
+      <outgoing>id_1624358178415</outgoing>
+    </task>
+    <sendTask id="id_1624358178393" name="Send Feedback">
+      <incoming>id_1624358178416</incoming>
+      <outgoing>id_1624358178413</outgoing>
+    </sendTask>
+    <endEvent id="id_1624358178395" name="">
+      <incoming>id_1624358178419</incoming>
+    </endEvent>
+    <exclusiveGateway id="id_1624358178396" name="" gatewayDirection="Converging">
+      <incoming>id_1624358178421</incoming>
+      <incoming>id_1624358178418</incoming>
+      <outgoing>id_1624358178409</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358178397" name="" gatewayDirection="Converging">
+      <incoming>id_1624358178415</incoming>
+      <incoming>id_1624358178410</incoming>
+      <outgoing>id_1624358178416</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358178398" name="" gatewayDirection="Diverging">
+      <incoming>id_1624358178408</incoming>
+      <outgoing>id_1624358178411</outgoing>
+      <outgoing>id_1624358178421</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358178399" name="" gatewayDirection="Diverging">
+      <incoming>id_1624358178424</incoming>
+      <outgoing>id_1624358178417</outgoing>
+      <outgoing>id_1624358178418</outgoing>
+    </exclusiveGateway>
+    <exclusiveGateway id="id_1624358178400" name="">
+      <incoming>id_1624358178417</incoming>
+      <incoming>id_1624358178411</incoming>
+      <outgoing>id_1624358178412</outgoing>
+      <outgoing>id_1624358178425</outgoing>
+    </exclusiveGateway>
+    <task id="id_1624358178401" name="Discuss">
+      <incoming>id_1624358178409</incoming>
+      <outgoing>id_1624358178424</outgoing>
+    </task>
+    <task id="id_1624358178402" name="Prepare Acceptance Letter">
+      <incoming>id_1624358178425</incoming>
+      <outgoing>id_1624358178410</outgoing>
+    </task>
+    <startEvent id="id_1624358178403" name="Review Management">
+      <outgoing>id_1624358178423</outgoing>
+      <messageEventDefinition id="MessageEventDefinition_1624358181898" />
+    </startEvent>
+    <task id="id_1624358178404" name="Review Evaluation">
+      <incoming>id_1624358178422</incoming>
+      <outgoing>id_1624358178408</outgoing>
+    </task>
+    <receiveTask id="id_1624358178405" name="Receive and Combine Reviews">
+      <incoming>id_1624358178414</incoming>
+      <outgoing>id_1624358178422</outgoing>
+    </receiveTask>
+    <sendTask id="id_1624358178406" name="Assign Paper">
+      <incoming>id_1624358178423</incoming>
+      <outgoing>id_1624358178414</outgoing>
+    </sendTask>
+    <sendTask id="id_1624358178407" name="Send Results">
+      <incoming>id_1624358178413</incoming>
+      <outgoing>id_1624358178419</outgoing>
+    </sendTask>
+    <sequenceFlow id="id_1624358178425" name="" sourceRef="id_1624358178400" targetRef="id_1624358178402" />
+    <sequenceFlow id="id_1624358178424" name="" sourceRef="id_1624358178401" targetRef="id_1624358178399" />
+    <sequenceFlow id="id_1624358178423" name="" sourceRef="id_1624358178403" targetRef="id_1624358178406" />
+    <sequenceFlow id="id_1624358178422" name="" sourceRef="id_1624358178405" targetRef="id_1624358178404" />
+    <sequenceFlow id="id_1624358178421" name="" sourceRef="id_1624358178398" targetRef="id_1624358178396" />
+    <sequenceFlow id="id_1624358178419" name="" sourceRef="id_1624358178407" targetRef="id_1624358178395" />
+    <sequenceFlow id="id_1624358178418" name="" sourceRef="id_1624358178399" targetRef="id_1624358178396" />
+    <sequenceFlow id="id_1624358178417" name="" sourceRef="id_1624358178399" targetRef="id_1624358178400" />
+    <sequenceFlow id="id_1624358178416" name="" sourceRef="id_1624358178397" targetRef="id_1624358178393" />
+    <sequenceFlow id="id_1624358178415" name="" sourceRef="id_1624358178392" targetRef="id_1624358178397" />
+    <sequenceFlow id="id_1624358178414" name="" sourceRef="id_1624358178406" targetRef="id_1624358178405" />
+    <sequenceFlow id="id_1624358178413" name="" sourceRef="id_1624358178393" targetRef="id_1624358178407" />
+    <sequenceFlow id="id_1624358178412" name="" sourceRef="id_1624358178400" targetRef="id_1624358178392" />
+    <sequenceFlow id="id_1624358178411" name="" sourceRef="id_1624358178398" targetRef="id_1624358178400" />
+    <sequenceFlow id="id_1624358178410" name="" sourceRef="id_1624358178402" targetRef="id_1624358178397" />
+    <sequenceFlow id="id_1624358178409" name="" sourceRef="id_1624358178396" targetRef="id_1624358178401" />
+    <sequenceFlow id="id_1624358178408" name="" sourceRef="id_1624358178404" targetRef="id_1624358178398" />
+  </process>
+  <bpmndi:BPMNDiagram id="id_1624358181545" name="diagram">
+    <bpmndi:BPMNPlane id="id_1624358181546" bpmnElement="collaboration_92996a93-50a2-4493-9253-03f7d2af7384">
+      <bpmndi:BPMNShape id="collaboration_92996a93-50a2-4493-9253-03f7d2af7384_di" bpmnElement="Reviewer_1624358181559" isHorizontal="true">
+        <omgdc:Bounds x="160" y="80" width="1048" height="121" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="id_1624358181544_gui" bpmnElement="id_1624358181544">
+        <omgdi:waypoint x="943" y="173" />
+        <omgdi:waypoint x="954.5" y="173" />
+        <omgdi:waypoint x="954.5" y="173" />
+        <omgdi:waypoint x="966" y="173" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358181543_gui" bpmnElement="id_1624358181543">
+        <omgdi:waypoint x="611" y="173" />
+        <omgdi:waypoint x="636" y="173" />
+        <omgdi:waypoint x="636" y="173" />
+        <omgdi:waypoint x="661" y="173" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358181542_gui" bpmnElement="id_1624358181542">
+        <omgdi:waypoint x="770" y="173" />
+        <omgdi:waypoint x="796.5" y="173" />
+        <omgdi:waypoint x="796.5" y="173" />
+        <omgdi:waypoint x="823" y="173" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358181540_gui" bpmnElement="id_1624358181540">
+        <omgdi:waypoint x="467" y="173" />
+        <omgdi:waypoint x="487" y="173" />
+        <omgdi:waypoint x="487" y="173" />
+        <omgdi:waypoint x="507" y="173" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="id_1624358181534_gui" bpmnElement="id_1624358181534">
+        <omgdc:Bounds x="352" y="143" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="331" y="179" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358181535_gui" bpmnElement="id_1624358181535">
+        <omgdc:Bounds x="507" y="143" width="104" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358181536_gui" bpmnElement="id_1624358181536">
+        <omgdc:Bounds x="661" y="143" width="109" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358181537_gui" bpmnElement="id_1624358181537">
+        <omgdc:Bounds x="823" y="143" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358181539_gui" bpmnElement="id_1624358181539">
+        <omgdc:Bounds x="966" y="143" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="collaboration_a4978c2d-815f-4b94-a299-c2df157abcb8_di" bpmnElement="Contact_Author_1624358175436" isHorizontal="true">
+        <omgdc:Bounds x="160" y="253" width="2795" height="694" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="id_1624358175036_gui" bpmnElement="id_1624358175036">
+        <omgdi:waypoint x="272" y="603" />
+        <omgdi:waypoint x="306" y="603" />
+        <omgdi:waypoint x="306" y="603" />
+        <omgdi:waypoint x="340" y="603" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175035_gui" bpmnElement="id_1624358175035">
+        <omgdi:waypoint x="2169" y="556" />
+        <omgdi:waypoint x="2182" y="556" />
+        <omgdi:waypoint x="2182" y="566" />
+        <omgdi:waypoint x="2195" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175034_gui" bpmnElement="id_1624358175034">
+        <omgdi:waypoint x="1965" y="566" />
+        <omgdi:waypoint x="2080" y="566" />
+        <omgdi:waypoint x="2080" y="546" />
+        <omgdi:waypoint x="2195" y="546" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175033_gui" bpmnElement="id_1624358175033">
+        <omgdi:waypoint x="1563" y="692" />
+        <omgdi:waypoint x="1667" y="692" />
+        <omgdi:waypoint x="1667" y="586" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175032_gui" bpmnElement="id_1624358175032">
+        <omgdi:waypoint x="1145" y="556" />
+        <omgdi:waypoint x="1253" y="556" />
+        <omgdi:waypoint x="1253" y="546" />
+        <omgdi:waypoint x="1361" y="546" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175031_gui" bpmnElement="id_1624358175031">
+        <omgdi:waypoint x="826" y="458" />
+        <omgdi:waypoint x="826" y="360" />
+        <omgdi:waypoint x="951" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175030_gui" bpmnElement="id_1624358175030">
+        <omgdi:waypoint x="741" y="505" />
+        <omgdi:waypoint x="768.5" y="505" />
+        <omgdi:waypoint x="768.5" y="488" />
+        <omgdi:waypoint x="796" y="488" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175029_gui" bpmnElement="id_1624358175029">
+        <omgdi:waypoint x="498" y="573" />
+        <omgdi:waypoint x="498" y="505" />
+        <omgdi:waypoint x="621" y="505" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175028_gui" bpmnElement="id_1624358175028">
+        <omgdi:waypoint x="1343" y="655" />
+        <omgdi:waypoint x="1352" y="655" />
+        <omgdi:waypoint x="1352" y="566" />
+        <omgdi:waypoint x="1361" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175027_gui" bpmnElement="id_1624358175027">
+        <omgdi:waypoint x="916" y="719" />
+        <omgdi:waypoint x="1000.5" y="719" />
+        <omgdi:waypoint x="1000.5" y="566" />
+        <omgdi:waypoint x="1085" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175026_gui" bpmnElement="id_1624358175026">
+        <omgdi:waypoint x="1060" y="360" />
+        <omgdi:waypoint x="1115" y="360" />
+        <omgdi:waypoint x="1115" y="526" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175025_gui" bpmnElement="id_1624358175025">
+        <omgdi:waypoint x="1115" y="586" />
+        <omgdi:waypoint x="1115" y="655" />
+        <omgdi:waypoint x="1223" y="655" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175024_gui" bpmnElement="id_1624358175024">
+        <omgdi:waypoint x="2169" y="787" />
+        <omgdi:waypoint x="2225" y="787" />
+        <omgdi:waypoint x="2225" y="586" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175023_gui" bpmnElement="id_1624358175023">
+        <omgdi:waypoint x="1935" y="586" />
+        <omgdi:waypoint x="1935" y="787" />
+        <omgdi:waypoint x="2049" y="787" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175022_gui" bpmnElement="id_1624358175022">
+        <omgdi:waypoint x="856" y="488" />
+        <omgdi:waypoint x="970.5" y="488" />
+        <omgdi:waypoint x="970.5" y="546" />
+        <omgdi:waypoint x="1085" y="546" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175021_gui" bpmnElement="id_1624358175021">
+        <omgdi:waypoint x="2255" y="556" />
+        <omgdi:waypoint x="2282.5" y="556" />
+        <omgdi:waypoint x="2282.5" y="556" />
+        <omgdi:waypoint x="2310" y="556" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175020_gui" bpmnElement="id_1624358175020">
+        <omgdi:waypoint x="528" y="603" />
+        <omgdi:waypoint x="662" y="603" />
+        <omgdi:waypoint x="662" y="719" />
+        <omgdi:waypoint x="796" y="719" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175019_gui" bpmnElement="id_1624358175019">
+        <omgdi:waypoint x="1965" y="546" />
+        <omgdi:waypoint x="2007" y="546" />
+        <omgdi:waypoint x="2007" y="556" />
+        <omgdi:waypoint x="2049" y="556" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175018_gui" bpmnElement="id_1624358175018">
+        <omgdi:waypoint x="1421" y="566" />
+        <omgdi:waypoint x="1529" y="566" />
+        <omgdi:waypoint x="1529" y="546" />
+        <omgdi:waypoint x="1637" y="546" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175017_gui" bpmnElement="id_1624358175017">
+        <omgdi:waypoint x="1667" y="586" />
+        <omgdi:waypoint x="1667" y="655" />
+        <omgdi:waypoint x="1772" y="655" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175016_gui" bpmnElement="id_1624358175016">
+        <omgdi:waypoint x="1411" y="546" />
+        <omgdi:waypoint x="1460" y="546" />
+        <omgdi:waypoint x="1460" y="692" />
+        <omgdi:waypoint x="1537" y="692" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175015_gui" bpmnElement="id_1624358175015">
+        <omgdi:waypoint x="1892" y="655" />
+        <omgdi:waypoint x="1898.5" y="655" />
+        <omgdi:waypoint x="1898.5" y="566" />
+        <omgdi:waypoint x="1905" y="566" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175014_gui" bpmnElement="id_1624358175014">
+        <omgdi:waypoint x="1697" y="556" />
+        <omgdi:waypoint x="1801" y="556" />
+        <omgdi:waypoint x="1801" y="546" />
+        <omgdi:waypoint x="1905" y="546" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358175013_gui" bpmnElement="id_1624358175013">
+        <omgdi:waypoint x="438" y="603" />
+        <omgdi:waypoint x="453" y="603" />
+        <omgdi:waypoint x="453" y="603" />
+        <omgdi:waypoint x="468" y="603" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="id_1624358174995_gui" bpmnElement="id_1624358174995">
+        <omgdc:Bounds x="340" y="573" width="98" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358174996_gui" bpmnElement="id_1624358174996">
+        <omgdc:Bounds x="2310" y="526" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358174997_gui" bpmnElement="id_1624358174997" isMarkerVisible="true">
+        <omgdc:Bounds x="1637" y="526" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358174998_gui" bpmnElement="id_1624358174998">
+        <omgdc:Bounds x="212" y="573" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358174999_gui" bpmnElement="id_1624358174999" isMarkerVisible="true">
+        <omgdc:Bounds x="1085" y="526" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175000_gui" bpmnElement="id_1624358175000" isMarkerVisible="true">
+        <omgdc:Bounds x="1905" y="526" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175001_gui" bpmnElement="id_1624358175001" isMarkerVisible="true">
+        <omgdc:Bounds x="796" y="458" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175002_gui" bpmnElement="id_1624358175002" isMarkerVisible="true">
+        <omgdc:Bounds x="2195" y="526" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175003_gui" bpmnElement="id_1624358175003" isMarkerVisible="true">
+        <omgdc:Bounds x="1361" y="526" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175004_gui" bpmnElement="id_1624358175004" isMarkerVisible="true">
+        <omgdc:Bounds x="468" y="573" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175005_gui" bpmnElement="id_1624358175005">
+        <omgdc:Bounds x="1772" y="625" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175006_gui" bpmnElement="id_1624358175006">
+        <omgdc:Bounds x="2049" y="757" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175007_gui" bpmnElement="id_1624358175007">
+        <omgdc:Bounds x="796" y="689" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175008_gui" bpmnElement="id_1624358175008">
+        <omgdc:Bounds x="1223" y="625" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175009_gui" bpmnElement="id_1624358175009">
+        <omgdc:Bounds x="621" y="475" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175010_gui" bpmnElement="id_1624358175010">
+        <omgdc:Bounds x="2049" y="526" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175011_gui" bpmnElement="id_1624358175011">
+        <omgdc:Bounds x="951" y="330" width="109" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358175012_gui" bpmnElement="id_1624358175012">
+        <omgdc:Bounds x="1532" y="662" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1522" y="624.5" width="55" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="collaboration_e2df7e56-4b3f-419e-a90f-9c19172b051e_di" bpmnElement="PC_Chair_1624358178434" isHorizontal="true">
+        <omgdc:Bounds x="160" y="997" width="2621" height="367" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="id_1624358178425_gui" bpmnElement="id_1624358178425">
+        <omgdi:waypoint x="1530" y="1199.2" />
+        <omgdi:waypoint x="1573.5" y="1199.2" />
+        <omgdi:waypoint x="1573.5" y="1119.2" />
+        <omgdi:waypoint x="1617" y="1119.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178424_gui" bpmnElement="id_1624358178424">
+        <omgdi:waypoint x="1302" y="1131.2" />
+        <omgdi:waypoint x="1327" y="1131.2" />
+        <omgdi:waypoint x="1327" y="1141.2" />
+        <omgdi:waypoint x="1352" y="1141.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178423_gui" bpmnElement="id_1624358178423">
+        <omgdi:waypoint x="475" y="1199.2" />
+        <omgdi:waypoint x="492.5" y="1199.2" />
+        <omgdi:waypoint x="492.5" y="1199.2" />
+        <omgdi:waypoint x="510" y="1199.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178422_gui" bpmnElement="id_1624358178422">
+        <omgdi:waypoint x="796" y="1199.2" />
+        <omgdi:waypoint x="822.5" y="1199.2" />
+        <omgdi:waypoint x="822.5" y="1199.2" />
+        <omgdi:waypoint x="849" y="1199.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178421_gui" bpmnElement="id_1624358178421">
+        <omgdi:waypoint x="1015" y="1169.2" />
+        <omgdi:waypoint x="1015" y="1131.2" />
+        <omgdi:waypoint x="1100" y="1131.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178419_gui" bpmnElement="id_1624358178419">
+        <omgdi:waypoint x="2150" y="1199.2" />
+        <omgdi:waypoint x="2163" y="1199.2" />
+        <omgdi:waypoint x="2163" y="1199.2" />
+        <omgdi:waypoint x="2176" y="1199.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178418_gui" bpmnElement="id_1624358178418">
+        <omgdi:waypoint x="1352" y="1121.2" />
+        <omgdi:waypoint x="1256" y="1121.2" />
+        <omgdi:waypoint x="1256" y="1141.2" />
+        <omgdi:waypoint x="1160" y="1141.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178417_gui" bpmnElement="id_1624358178417">
+        <omgdi:waypoint x="1412" y="1131.2" />
+        <omgdi:waypoint x="1441" y="1131.2" />
+        <omgdi:waypoint x="1441" y="1209.2" />
+        <omgdi:waypoint x="1470" y="1209.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178416_gui" bpmnElement="id_1624358178416">
+        <omgdi:waypoint x="1824" y="1199.2" />
+        <omgdi:waypoint x="1861" y="1199.2" />
+        <omgdi:waypoint x="1861" y="1199.2" />
+        <omgdi:waypoint x="1898" y="1199.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178415_gui" bpmnElement="id_1624358178415">
+        <omgdi:waypoint x="1737" y="1279.2" />
+        <omgdi:waypoint x="1794" y="1279.2" />
+        <omgdi:waypoint x="1794" y="1229.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178414_gui" bpmnElement="id_1624358178414">
+        <omgdi:waypoint x="614" y="1199.2" />
+        <omgdi:waypoint x="645" y="1199.2" />
+        <omgdi:waypoint x="645" y="1199.2" />
+        <omgdi:waypoint x="676" y="1199.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178413_gui" bpmnElement="id_1624358178413">
+        <omgdi:waypoint x="2007" y="1199.2" />
+        <omgdi:waypoint x="2026.5" y="1199.2" />
+        <omgdi:waypoint x="2026.5" y="1199.2" />
+        <omgdi:waypoint x="2046" y="1199.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178412_gui" bpmnElement="id_1624358178412">
+        <omgdi:waypoint x="1500" y="1229.2" />
+        <omgdi:waypoint x="1500" y="1279.2" />
+        <omgdi:waypoint x="1617" y="1279.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178411_gui" bpmnElement="id_1624358178411">
+        <omgdi:waypoint x="1045" y="1199.2" />
+        <omgdi:waypoint x="1257.5" y="1199.2" />
+        <omgdi:waypoint x="1257.5" y="1189.2" />
+        <omgdi:waypoint x="1470" y="1189.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178410_gui" bpmnElement="id_1624358178410">
+        <omgdi:waypoint x="1737" y="1119.2" />
+        <omgdi:waypoint x="1794" y="1119.2" />
+        <omgdi:waypoint x="1794" y="1169.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178409_gui" bpmnElement="id_1624358178409">
+        <omgdi:waypoint x="1160" y="1121.2" />
+        <omgdi:waypoint x="1193" y="1121.2" />
+        <omgdi:waypoint x="1193" y="1131.2" />
+        <omgdi:waypoint x="1226" y="1131.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="id_1624358178408_gui" bpmnElement="id_1624358178408">
+        <omgdi:waypoint x="969" y="1199.2" />
+        <omgdi:waypoint x="977" y="1199.2" />
+        <omgdi:waypoint x="977" y="1199.2" />
+        <omgdi:waypoint x="985" y="1199.2" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="id_1624358178392_gui" bpmnElement="id_1624358178392">
+        <omgdc:Bounds x="1617" y="1249" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178393_gui" bpmnElement="id_1624358178393">
+        <omgdc:Bounds x="1898" y="1169" width="109" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178395_gui" bpmnElement="id_1624358178395">
+        <omgdc:Bounds x="2176" y="1169" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178396_gui" bpmnElement="id_1624358178396" isMarkerVisible="true">
+        <omgdc:Bounds x="1100" y="1101" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178397_gui" bpmnElement="id_1624358178397" isMarkerVisible="true">
+        <omgdc:Bounds x="1764" y="1169" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178398_gui" bpmnElement="id_1624358178398" isMarkerVisible="true">
+        <omgdc:Bounds x="985" y="1169" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178399_gui" bpmnElement="id_1624358178399" isMarkerVisible="true">
+        <omgdc:Bounds x="1352" y="1101" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178400_gui" bpmnElement="id_1624358178400" isMarkerVisible="true">
+        <omgdc:Bounds x="1470" y="1169" width="60" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178401_gui" bpmnElement="id_1624358178401">
+        <omgdc:Bounds x="1226" y="1101" width="76" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178402_gui" bpmnElement="id_1624358178402">
+        <omgdc:Bounds x="1617" y="1089" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178403_gui" bpmnElement="id_1624358178403">
+        <omgdc:Bounds x="355" y="1169" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="340" y="1205" width="66" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178404_gui" bpmnElement="id_1624358178404">
+        <omgdc:Bounds x="849" y="1169" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178405_gui" bpmnElement="id_1624358178405">
+        <omgdc:Bounds x="676" y="1169" width="120" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178406_gui" bpmnElement="id_1624358178406">
+        <omgdc:Bounds x="510" y="1169" width="104" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="id_1624358178407_gui" bpmnElement="id_1624358178407">
+        <omgdc:Bounds x="2046" y="1169" width="104" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1624358181736_di" bpmnElement="Flow_1624358181736">
+        <omgdi:waypoint x="1283" y="625" />
+        <omgdi:waypoint x="415" y="1169.2" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="847" y="897" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1624358181755_di" bpmnElement="Flow_1624358181755">
+        <omgdi:waypoint x="562" y="1229.2" />
+        <omgdi:waypoint x="409.5" y="203" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="470" y="716" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1624358181772_di" bpmnElement="Flow_1624358181772">
+        <omgdi:waypoint x="1952.5" y="1229.2" />
+        <omgdi:waypoint x="883" y="203" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1418" y="716" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1624358181791_di" bpmnElement="Flow_1624358181791">
+        <omgdi:waypoint x="715.5" y="143" />
+        <omgdi:waypoint x="736" y="1169.2" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="732" y="656" width="38" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1624358181811_di" bpmnElement="Flow_1624358181811">
+        <omgdi:waypoint x="2098" y="1169" />
+        <omgdi:waypoint x="2098" y="934" />
+        <omgdi:waypoint x="1550" y="934" />
+        <omgdi:waypoint x="1550" y="698" />
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds x="1510" y="816" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

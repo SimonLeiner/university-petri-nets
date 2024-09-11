@@ -1,0 +1,3493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  XES version 1849.2016 (IEEE 1849-2016)  -->
+<!--  Created by Fluxicon Disco (fluxicon.com/disco)  -->
+<!--  (c) 2023 by Fluxicon BV, Bomanshof 259, 5611 NS Eindhoven, The Netherlands  -->
+<log xes.version="1849.2016" xmlns="http://www.xes-standard.org" xes.creator="Fluxicon Disco">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
+	<extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext"/>
+	<extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext"/>
+	<extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext"/>
+	<global scope="trace">
+		<string key="concept:name" value="name"/>
+		<string key="variant" value="string"/>
+		<int key="variant-index" value="0"/>
+	</global>
+	<global scope="event">
+		<string key="concept:name" value="name"/>
+		<string key="lifecycle:transition" value="transition"/>
+		<string key="org:resource" value="resource"/>
+		<date key="time:timestamp" value="2023-01-04T17:22:17.353+01:00"/>
+		<string key="org:group" value="string"/>
+	</global>
+	<classifier name="Activity" keys="concept:name"/>
+	<classifier name="Resource" keys="org:group"/>
+	<string key="lifecycle:model" value="standard"/>
+	<string key="creator" value="Fluxicon Disco"/>
+	<string key="library" value="Fluxicon Octane"/>
+	<trace>
+		<string key="concept:name" value="1"/>
+		<string key="variant" value="Variant 1"/>
+		<int key="variant-index" value="1"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:33:26.100+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.06413386960719768, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:33:26.190+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.00010638680036825447, y: 1.0002194981437427} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_2"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:33:38.500+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.9190541205617676, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_5"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:33:38.700+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -2.093475205888116e-05, y: 1.0002799766467172} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_6"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:33:47.319+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_7"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:34:14.900+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:34:15.110+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:34:24.292+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.505033505041352, y: 4.075741727582832} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_8"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:34:24.296+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.7153444406101588, y: 4.474889054129994} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_10"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:34:34.441+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_11"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:03.170+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:04.190+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:05.150+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.485613321545598, y: 3.259674682075118} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_15"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:05.230+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 8.987394769429534, y: 4.084337864919093} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_16"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:06.197+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_18"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:18.250+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:19.270+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:27.166+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.485613321435817, y: 3.2596746771147527} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_22"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:27.167+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.207046914306828, y: 3.751023067968853} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_23"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:30.221+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_24"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:32.330+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:32.350+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:52.370+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:52.390+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:35:55.390+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="2"/>
+		<string key="variant" value="Variant 3"/>
+		<int key="variant-index" value="3"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:40:31.410+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.060939137189566714, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_26"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:40:31.430+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.0001071437590272257, y: 1.0002172117493957} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_27"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:40:58.450+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.26094000000128, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_30"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:40:58.470+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -0.0002672191001738918, y: 1.0000429300392255} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_31"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:41:07.286+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_32"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:41:49.490+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:41:50.510+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:41:50.530+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.3113151149323965, y: -0.6356495051512913} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_36"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:41:50.550+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 8.745640055835171, y: 4.786241629823354} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_37"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:41:59.240+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_38"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:25.570+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:25.590+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:25.610+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.27532458657585, y: -0.7654476671296617} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_42"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:25.630+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.360954843992449, y: -0.1208855350028736} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_43"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:30.282+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_44"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:30.650+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:31.670+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:31.690+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.275520708595371, y: -0.7871228640863324} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_45"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:31.710+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.360302329760529, y: -0.13388570166675534} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_46"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:40.282+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_47"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:40.730+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:40.750+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:41.770+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.276673159867869, y: -0.7992328030899024} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_48"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:41.790+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.365196448139415, y: -0.15281054451820794} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_50"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:50.218+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_51"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:50.810+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:50.830+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:51.850+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.276057454049147, y: -0.7862879878316008} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_52"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:42:51.870+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.36480577461968, y: -0.16023224963716037} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_54"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:00.247+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_55"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:00.890+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:00.910+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:01.930+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.2765550607124965, y: -0.7928615439952313} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_56"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:01.950+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.364754332782915, y: -0.1634248208739377} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_58"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:10.265+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_59"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:10.970+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:10.990+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:11.101+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274507499820247, y: -0.7807606997358832} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_60"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:11.103+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.364749376838615, y: -0.16649936926284964} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_61"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:19.228+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_63"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:20.105+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:21.107+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:21.109+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274504864351679, y: -0.7811606911992391} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_64"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:21.111+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.363877833643642, y: -0.17288383409112823} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_65"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:30.065+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_67"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:30.113+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:31.115+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:31.117+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274504864351679, y: -0.7811606912132649} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_68"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:31.119+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.363056305258765, y: -0.1788032941200357} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_69"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:38.259+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_71"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:40.121+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:41.123+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:41.125+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274464907093231, y: -0.7879605732351364} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_72"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:41.127+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.361282229775712, y: -0.18734245436201122} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_73"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:49.236+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_75"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:50.129+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:51.131+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:51.133+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274467434150769, y: -0.7885605683690545} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_76"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:43:51.135+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.359781234133291, y: -0.19440208971556935} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_77"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:00.057+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_79"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:00.137+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:01.139+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:01.141+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.279349959449994, y: -0.8210062940645165} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_80"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:01.143+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.357686410871285, y: -0.20163632144478488} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_81"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:08.325+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_83"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:10.145+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:11.147+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:11.149+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274495418991766, y: -0.7939604956527256} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_84"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:11.151+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.355754153131274, y: -0.20766700065906113} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_85"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:18.249+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_87"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:20.153+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:20.155+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:21.157+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274505988665205, y: -0.7947604260371065} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_88"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:21.159+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.353038379353819, y: -0.21415305136215804} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_90"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:29.233+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_91"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:30.161+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:30.163+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:31.165+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274514635435203, y: -0.7953603637511092} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_92"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:31.167+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.347971108436782, y: -0.223601138958152} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_94"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:38.290+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_95"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:40.169+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:40.171+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:41.173+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.274514635435728, y: -0.7953603637992872} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_96"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:41.175+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 7.345304547564932, y: -0.22898692439974558} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_98"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:49.278+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_99"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:50.177+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:44:51.179+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:45:27.181+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:45:27.183+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:45:29.183+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="3"/>
+		<string key="variant" value="Variant 4"/>
+		<int key="variant-index" value="4"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:47:30.185+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.058800000000317196, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_101"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:47:30.187+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.00011622638380181636, y: 1.000211659681992} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_102"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:47:43.303+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 1.5050298734534342, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_105"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:47:43.303+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -2.8145857529024507e-05, y: 1.0002730498319932} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_106"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:47:52.334+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_107"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:23.193+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:23.195+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:23.197+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 3.9096393793765682, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_111"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:23.199+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 1.2596540194904178, y: 4.4698778007165} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_112"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:28.356+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_113"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:52.201+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:52.203+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:59.405+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 10.25192278397529, y: 5.054410247390317} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_117"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:48:59.407+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 3.4247103691929834, y: 4.824471965236351} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_118"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:09.373+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_119"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:17.209+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:17.211+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:19.213+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 10.330475328008074, y: 5.071515273124552} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_120"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:19.215+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.747393880440304, y: 5.03338584555996} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_121"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:23.410+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_123"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:24.217+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:24.219+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:25.221+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 10.33047536656363, y: 5.071515285023202} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_124"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:25.223+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.800190476238349, y: 5.0365505117608285} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_126"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:30.351+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_127"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:34.225+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:49:35.227+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:52:17.229+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:52:17.231+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:52:19.231+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="4"/>
+		<string key="variant" value="Variant 1"/>
+		<int key="variant-index" value="1"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:53:54.233+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.10439999999970977, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_129"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:53:54.235+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.0001147979499691901, y: 1.000211844730048} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_131"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:54:12.237+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 4.370940062002183, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_133"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:54:12.239+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -9.361176492958898e-05, y: 1.0002099034656162} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_134"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:54:21.580+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_135"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:01.241+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:02.243+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:04.245+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 8.358911813775979, y: 3.945284499955072} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_139"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:04.247+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 3.818440475575889, y: 4.5589884031552455} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_140"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:13.490+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_141"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:32.249+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:32.251+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:33.253+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 8.356897795989102, y: 3.941598645106711} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_142"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:33.255+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 8.056061845331804, y: 3.9674514134031047} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_143"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:34.538+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_144"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:34.557+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:34.659+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:35.261+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 8.356897795553634, y: 3.9415986443092748} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_145"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:35.263+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 8.126705899762532, y: 3.9604844433966404} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_146"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:40.516+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_147"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:44.265+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:55:45.267+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:57:00.269+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:57:00.271+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T15:57:02.271+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="5"/>
+		<string key="variant" value="Variant 2"/>
+		<int key="variant-index" value="2"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:00:54.273+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.05879999999971076, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_149"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:00:54.275+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.00010928550736854452, y: 1.0002169340478901} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_151"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:10.777+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 3.4199414389809664, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_153"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:10.779+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -9.445210151980688e-05, y: 1.000209333978612} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_154"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:19.746+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_155"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:54.281+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:54.283+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:55.285+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 6.9095999999996405, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_159"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:55.287+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 2.860322520299598, y: 4.510519111267059} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_160"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:01:56.768+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_161"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:02:12.289+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:02:13.291+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:05:35.293+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:05:35.295+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:05:36.295+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="6"/>
+		<string key="variant" value="Variant 2"/>
+		<int key="variant-index" value="2"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:08:16.297+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.060000000000317466, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_166"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:08:16.999+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.00011175580433827184, y: 1.0002144261569303} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_168"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:08:29.301+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.9113126975452669, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_170"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:08:29.303+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -2.5351878528789245e-05, y: 1.0002755550601456} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_171"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:08:39.020+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_172"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:09:05.305+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:09:05.307+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:10:17.317+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 5.169792935896778, y: -1.6599439216364464} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_179"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:10:17.319+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 4.554098065896813, y: -1.1240272104004403} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_180"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:10:21.905+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_181"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:10:22.313+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:10:22.315+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:14:08.325+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:14:08.327+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:14:10.327+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="7"/>
+		<string key="variant" value="Variant 5"/>
+		<int key="variant-index" value="5"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:15:34.329+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.05580000000031814, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_183"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:15:34.331+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.00010581646232086176, y: 1.0002195719957057} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_185"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:15:55.333+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 5.845140000457506, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_187"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:15:55.335+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -0.00017610825455248796, y: 1.0001306886114696} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_188"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:16:04.127+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_189"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:16:42.337+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:16:42.339+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:16:49.341+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.248484508266817, y: 4.175451799445359} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_193"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:16:49.343+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 5.3062870843194165, y: 4.665046446685627} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_195"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:00.345+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.183163358077469, y: 3.757414718984478} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_197"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:00.347+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 5.306765035650378, y: 4.703198030926474} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_198"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:02.144+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_199"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:21.349+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:22.351+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:23.353+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 8.945202315916774, y: 2.218430129729893} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_203"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:23.355+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 8.662085836874855, y: 3.850641922307481} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_204"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:32.157+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_205"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:33.349+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:34.351+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:43.358+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 8.945202314328036, y: 2.2184301195058667} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_206"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:43.360+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 8.846073103180494, y: 3.878994510368832} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_207"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:17:48.170+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_208"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:20:05.363+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:20:05.365+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:20:08.365+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="8"/>
+		<string key="variant" value="Variant 6"/>
+		<int key="variant-index" value="6"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:08.371+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 1.5810218885345437, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_213"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:08.373+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -8.222299177092683e-05, y: 1.00022072031941} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_214"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:17.148+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_215"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:45.375+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:45.377+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:47.379+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.254940010694499, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_219"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:47.381+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 1.2766798080061776, y: 4.474161356652895} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_220"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:56.220+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_221"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:57.383+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:23:57.385+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:23.387+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.792885605612266, y: 6.259100943099088} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_222"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:23.389+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 8.734713548336186, y: 4.9478404900852} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_224"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:26.198+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_225"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:38.391+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:39.393+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:47.395+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.71673917740372, y: 6.229147804241686} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_229"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:47.397+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.356450151530856, y: 5.731581290180036} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_230"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:52.152+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_231"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:52.399+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:24:53.401+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:28:29.403+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:28:29.405+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:28:34.405+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="9"/>
+		<string key="variant" value="Variant 7"/>
+		<int key="variant-index" value="7"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:01.411+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 2.2206218730386245, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_233"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:01.413+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -7.046599778181623e-05, y: 1.00023232908218} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_234"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:10.184+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_235"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:22.294+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:23.296+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:44.419+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 2.6837227955131087, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_236"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:44.421+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 1.808768912414075, y: 4.465774574640178} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_237"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:30:48.190+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_238"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:31:05.423+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:31:06.425+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:31:08.427+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 7.865399995385637, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_242"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:31:08.429+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 2.154018907117757, y: 4.67414061321246} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_243"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:31:17.232+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_244"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:31:30.431+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:31:31.433+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:35:23.435+02:00"/>
+			<string key="concept:name" value="LOW_BATTERY"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:35:23.437+02:00"/>
+			<string key="concept:name" value="RETURN_TO_BASE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:35:25.437+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+	<trace>
+		<string key="concept:name" value="10"/>
+		<string key="variant" value="Variant 8"/>
+		<int key="variant-index" value="8"/>
+		<string key="creator" value="Fluxicon Disco"/>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:37:03.439+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 0.05940000000031759, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_249"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:37:03.441+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 0.00011410219630608921, y: 1.00021216642158} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_251"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:37:17.443+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 2.431779669786172, y: 5.000000000000022} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_253"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:37:17.445+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: -4.9865143631494323e-05, y: 1.0002520059626339} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_254"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:37:27.257+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_255"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:37:59.447+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:00.449+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:08.451+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 10.021802833280562, y: 6.315178869601397} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_259"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:08.453+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 1.983248625318834, y: 4.4635842207242185} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_260"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:18.268+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_261"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:39.455+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:40.457+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:45.459+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.92807576857436, y: 6.299834391801375} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_265"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:45.461+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.497174726652016, y: 6.156192877327319} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_266"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:54.234+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_267"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:54.463+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:55.465+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:55.467+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.911712926214449, y: 6.2910036543815915} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_268"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:38:55.469+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.51052875139539, y: 6.160049072677677} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_269"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:04.250+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_270"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:04.471+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:05.473+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:05.475+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.89863208694555, y: 6.283476868268146} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_271"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:05.477+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.542470207502577, y: 6.169496874853133} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_272"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:14.266+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_273"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:14.479+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:15.481+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:15.483+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.905613567308906, y: 6.287975703045279} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_274"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:15.485+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.557129148466396, y: 6.173847628690726} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_275"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:24.195+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_276"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:24.487+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:24.489+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:25.491+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.889484236624385, y: 6.277722749790943} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_277"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:25.493+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.56409615080056, y: 6.17588521334276} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_279"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:34.179+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_280"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:34.495+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:34.497+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:35.499+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.889427912536021, y: 6.27841200613382} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_281"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:35.501+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.56910286070953, y: 6.177380108135433} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_283"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:44.183+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_284"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:44.503+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:44.505+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:45.507+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.88400414541945, y: 6.275014543333969} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_285"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:45.709+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.574694815408607, y: 6.179044491846273} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_287"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:54.192+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_288"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:54.511+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:54.513+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:55.515+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.884004144770088, y: 6.275014542927151} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_289"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:39:55.517+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.578557290454802, y: 6.180197013231802} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_291"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:04.261+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_292"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:04.519+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:04.521+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:05.523+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.85580968063987, y: 6.255907728541466} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_293"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:06.525+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.58819115957852, y: 6.183115829797179} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_295"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:14.260+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_296"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:14.527+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:14.529+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:15.531+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.859008604161717, y: 6.257749872321002} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_297"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:15.533+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.595124090397722, y: 6.185214427720676} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_299"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:24.264+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_300"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:24.535+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:24.537+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:25.539+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.865717414059512, y: 6.263149286146879} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_301"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:25.541+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.60493144941732, y: 6.188217877838592} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_303"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:34.200+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_304"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:34.543+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:34.545+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:35.547+02:00"/>
+			<string key="concept:name" value="WEED_POSITION"/>
+			<string key="payload" value="{ weed: {x: 9.865717413434353, y: 6.263149285724553} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="weed_position"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="weed_position_305"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:35.549+02:00"/>
+			<string key="concept:name" value="TRACTOR_POSITION"/>
+			<string key="payload" value="{ header: tractor_1, weed: {x: 9.610889810934339, y: 6.190031950857543} }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="tractor_position"/>
+			<string key="msgRole" value="send"/>
+			<string key="msgInstanceID" value="tractor_position_307"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:44.188+02:00"/>
+			<string key="concept:name" value="CLOSEST_TRACTOR"/>
+			<string key="payload" value="{ name: tractor_1 }"/>
+			<string key="org:group" value="tractor_1"/>
+			<string key="msgProtocol" value="Pub/Sub"/>
+			<string key="msgName" value="closest_tractor"/>
+			<string key="msgRole" value="receive"/>
+			<string key="msgInstanceID" value="closest_tractor_308"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:44.551+02:00"/>
+			<string key="concept:name" value="MOVE"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:45.553+02:00"/>
+			<string key="concept:name" value="CUT_GRASS"/>
+			<string key="payload" value="/tractor_1"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+		<event>
+			<string key="lifecycle:transition" value="complete"/>
+			<string key="org:resource" value="tractor_1"/>
+			<date key="time:timestamp" value="2022-10-11T16:40:48.370+02:00"/>
+			<string key="concept:name" value="STOP"/>
+			<string key="org:group" value="tractor_1"/>
+		</event>
+	</trace>
+</log>
