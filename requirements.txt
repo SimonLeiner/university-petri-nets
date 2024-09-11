@@ -2,6 +2,7 @@
 ipykernel
 nbconvert
 ipywidgets
+tqdm
 
 #standard
 numpy
@@ -12,11 +13,10 @@ matplotlib
 plotly
 graphviz
 
-# testing
-pytest
 
 # linting
 pre-commit
 
 # process mining
 pm4py
+networkx

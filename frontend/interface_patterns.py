@@ -33,46 +33,19 @@ class BaseInterfacePattern(metaclass=ABCMeta):
         """String representation of the InterfacePattern object."""
         return f"<{self.__class__.__name__}>"
 
-    def __init__(self, name: str, num_agents: int) -> None:
+    def __init__(self, name: str) -> None:
         """
         Initializes the Petri net and markings.
 
         Args:
             name (str): The name of the Petri net.
-            num_agents (int): The number of agents involved in the interface pattern.
         """
-        # copy values for later usage
-        self.name = name
-        self.num_agents = num_agents
+        # Initialize the Petri net
+        self.net = PetriNet(name)
 
-        # empty dict to store the nets
-        self.nets = {}
-        # create Nets A1,...,An
-        for i in range(1, self.num_agents):
-            self.nets[f"A{i}"] = PetriNet(f"A{i}")
-
-        # add the composite net
-        self.nets[self.name] = PetriNet(self.name)
-
-        # inital and final markings can be set for nets dynamically
+        # Initialize the initial and final markings
         self.initial_marking = Marking()
         self.final_marking = Marking()
-
-        # define the places and transitions for all nets
-        self._define_places()
-        self._define_transitions()
-
-        # define arcs for all subnets
-        self._define_arcs()
-
-        # Now, merge the places, transitions, and arcs of Agent1 and Agent2 into the total net
-        self._combine_nets()
-
-        # connect the subnets by adding the arcs
-        self._connect_nets()
-
-        # define the markings in all nets
-        self._define_markings()
 
     @abstractmethod
     def _define_places(self) -> None:
@@ -86,58 +59,18 @@ class BaseInterfacePattern(metaclass=ABCMeta):
     def _define_arcs(self) -> None:
         """Define the arcs connecting places and transitions."""
 
-    def _combine_nets(self) -> None:
-        """
-        Merges the places, transitions, and arcs of Agent1 and Agent2 into the total net.
-        """
-        # Merge places from Agents into the composite net
-        for i in range(1, self.num_agents):
-            agent_net = self.nets[f"A{i}"]
-            self.nets[self.name].places.update(agent_net.places)
-
-        # Merge transitions from Agents into the composite net
-        for i in range(1, self.num_agents):
-            agent_net = self.nets[f"A{i}"]
-            self.nets[self.name].transitions.update(agent_net.transitions)
-
-        # Merge arcs from Agents into the composite net
-        for i in range(1, self.num_agents):
-            agent_net = self.nets[f"A{i}"]
-            self.nets[self.name].arcs.update(agent_net.arcs)
-
-    @abstractmethod
-    def _connect_nets(self) -> None:
-        """Connect the sub nets with the appropriate arcs."""
-
     @abstractmethod
     def _define_markings(self) -> None:
         """Define the initial and final markings."""
 
-    def get_nets(self) -> list[PetriNet]:
-        """
-        Returns the individual nets of Agent1, Agent2, and the total combined net.
-
-        Returns:
-            tuple: (agent1_net, agent2_net, total_net)
-        """
-        return self.nets
-
-    def get_net(self, net_name: str) -> tuple:
+    def get_net(self) -> tuple:
         """
         Returns the Petri net along with its initial and final markings.
-
-        Args:
-            net_name (str): The name of the Petri net.
 
         Returns:
             tuple: (net, initial_marking, final_marking)
         """
-        if net_name not in self.nets:
-            msg = f"Net {net_name} not found in the interface pattern"
-            raise ValueError(msg)
-        # get the net
-        net = self.nets[net_name]
-        return net, net.initial_marking, net.final_marking
+        return self.net, self.initial_marking, self.final_marking
 
 
 class IP1(BaseInterfacePattern):
@@ -146,94 +79,64 @@ class IP1(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-1."""
         # Call the superclass constructor
-        super().__init__("IP1", 2)
+        super().__init__("IP-1")
+
+        # define the places, transitions, arcs, and markings
+        self._define_places()
+        self._define_transitions()
+        self._define_arcs()
+        self._define_markings()
 
     def _define_places(self) -> None:
         """Defines places p_A1 (Agent A1) and p_A2 (Agent A2).
         'Two Agents A1 and A2'.
         """
-        # define places for Agent A1
-        self.nets["A1"].places.add(PetriNet.Place("p_A1_1"))
-        self.nets["A1"].places.add(PetriNet.Place("p_A1_2"))
-
-        # define places for Agent A2
-        self.nets["A2"].places.add(PetriNet.Place("p_A2_1"))
-        self.nets["A2"].places.add(PetriNet.Place("p_A2_2"))
-
-        # define places for the total net
-        self.nets[self.name].places.add(PetriNet.Place(f"p_{self.name}_a"))
+        # naming convention vor places: p1, p2 -> from top to bottom, from left to right
+        # Create places
+        self.places = {
+            "p1": PetriNet.Place("p1"),  # Initial Marking for A1
+            "p2": PetriNet.Place("p2"),  # Final Marking for A1
+            "p3": PetriNet.Place("p3"),  # Initial Marking for A2
+            "p4": PetriNet.Place("p4"),  # Final Marking for A2
+            "pa": PetriNet.Place("pa"),  # Channel A1 - A2
+        }
+        for place in self.places.values():
+            self.net.places.add(place)
 
     def _define_transitions(self) -> None:
         """Defines transitions t_send (sending message) and t_receive (receiving message).
         'Single labeled transition used to send/recieve messages'.
         'Channels are added only in a single direction to send/recieve messages'.
         """
-        # define transitions for Agent A1
-        self.nets["A1"].transitions.add(PetriNet.Transition("t_A1_a!"))
-
-        # define transitions for Agent A2
-        self.nets["A2"].transitions.add(PetriNet.Transition("t_A2_a?"))
+        # Create transitions
+        self.transitions = {
+            "a!": PetriNet.Transition("a!", "a!"),
+            "a?": PetriNet.Transition("a?", "a?"),
+        }
+        for transition in self.transitions.values():
+            self.net.transitions.add(transition)
 
     def _define_arcs(self) -> None:
         """Defines the arcs connecting places and transitions."""
-        # arcs for A1
-        petri_utils.add_arc_from_to(
-            self.nets["A1"].places["p_A1_1"],
-            self.nets["A1"].transitions["t_A1_a!"],
-            self.nets["A1"],
-        )
-        petri_utils.add_arc_from_to(
-            self.nets["A1"].transitions["t_A1_a!"],
-            self.nets["A1"].places["p_A1_2"],
-            self.nets["A1"],
-        )
-
-        # define arcs for A2
-        petri_utils.add_arc_from_to(
-            self.nets["A2"].places["p_A2_1"],
-            self.nets["A2"].transitions["t_A2_a?"],
-            self.nets["A2"],
-        )
-        petri_utils.add_arc_from_to(
-            self.nets["A2"].transitions["t_A2_a?"],
-            self.nets["A2"].places["p_A2_2"],
-            self.nets["A2"],
-        )
-
-    @abstractmethod
-    def _connect_nets(self) -> None:
-        """Connect the sub nets with the appropriate arcs."""
-        # arc from A1 to p_a
-        petri_utils.add_arc_from_to(
-            self.nets["A1"].transitions["t_A1_a!"],
-            self.nets[self.name].places[f"p_{self.name}_a"],
-            self.nets[self.name],
-        )
-        # petri net from p_a to A2
-        petri_utils.add_arc_from_to(
-            self.nets[self.name].places[f"p_{self.name}_a"],
-            self.nets["A2"].transitions["t_A2_a?"],
-            self.nets[self.name],
-        )
+        # marks from initial places to transitions
+        petri_utils.add_arc_from_to(self.places["p1"], self.transitions["a!"], self.net)
+        petri_utils.add_arc_from_to(self.places["p3"], self.transitions["a?"], self.net)
+        # Interaction arcs A1 -> A2
+        petri_utils.add_arc_from_to(self.transitions["a!"], self.places["pa"], self.net)
+        petri_utils.add_arc_from_to(self.places["pa"], self.transitions["a?"], self.net)
+        # marks from transitions to final places
+        petri_utils.add_arc_from_to(self.transitions["a!"], self.places["p2"], self.net)
+        petri_utils.add_arc_from_to(self.transitions["a?"], self.places["p4"], self.net)
 
     def _define_markings(self) -> None:
         """Defines the initial and final markings."""
-        # initial marking for A1 and A2
-        self.nets["A1"].initial_marking[self.nets["A1"].places["p_A1_1"]] = 1
-        self.nets["A2"].initial_marking[self.nets["A2"].places["p_A2_1"]] = 1
+        # Start with A1 ready to send
+        self.initial_marking[self.places["p1"]] = 1
+        self.initial_marking[self.places["p3"]] = 1
 
-        # final markings for A1 and A2
-        self.nets["A1"].final_marking[self.nets["A1"].places["p_A1_2"]] = 1
-        self.nets["A2"].final_marking[self.nets["A2"].places["p_A2_2"]] = 1
-
-        # initial and final marking for subnets and total net is the same
-        self.nets[self.name].initial_marking[self.nets[self.name].places["p_A1_1"]] = 1
-        self.nets[self.name].initial_marking[self.nets[self.name].places["p_A2_1"]] = 1
-        self.nets[self.name].final_marking[self.nets[self.name].places["p_A1_2"]] = 1
-        self.nets[self.name].final_marking[self.nets[self.name].places["p_A2_2"]] = 1
-
-
-# TODO: Update the IP-2, IP-3, IP-4, IP-5, IP-6, ... interface patterns
+        # End when A2 receives the message
+        self.final_marking[self.places["p2"]] = 1
+        self.final_marking[self.places["p4"]] = 1
 
 
 class IP2(BaseInterfacePattern):

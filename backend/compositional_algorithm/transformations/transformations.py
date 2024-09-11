@@ -18,8 +18,20 @@ class BaseTransformation(metaclass=ABCMeta):
     def abstract(self) -> None:
         """Abstract transformations."""
 
+    def __repr__(self) -> str:
+        """String representation of the InterfacePattern object."""
+        return f"<{self.__class__.__name__}>"
 
-class P1(BaseTransformation):
+
+class PlaceTransformation(BaseTransformation):
+    pass
+
+
+class TransitionTransformation(BaseTransformation):
+    """Transition Naming: For example a! -> a1! and a2! is not allowed."""
+
+
+class P1(PlaceTransformation):
     """
     P1 Transformation (Place Duplication).
 
@@ -32,12 +44,12 @@ class P1(BaseTransformation):
     """
 
     @staticmethod
-    def refine(net: PetriNet, place: PetriNet.Place) -> PetriNet:
+    def refine(place: PetriNet.Place, net: PetriNet) -> PetriNet:
         """Apply a Place duplication.
 
         Args:
-            net (PetriNet): The Petri Net to refine.
             place (Place): The place to duplicate (Given by name).
+            net (PetriNet): The Petri Net to refine.
 
         Returns:
             - PetriNet: The refined Petri Net.
@@ -115,16 +127,16 @@ class P1(BaseTransformation):
         return net
 
 
-class P2(BaseTransformation):
+class P2(TransitionTransformation):
     """P2 Transformation (Transition Duplication)."""
 
     @staticmethod
-    def refine(net: PetriNet, transition: PetriNet.Transition) -> PetriNet:
+    def refine(transition: PetriNet.Transition, net: PetriNet) -> PetriNet:
         """Apply a Transition duplication.
 
         Args:
-            net (PetriNet): The Petri Net to refine.
             transition (Transition): The transition to duplicate (Given by name).
+            net (PetriNet): The Petri Net to refine.
 
         Returns:
             - PetriNet: The refined Petri Net.
@@ -159,16 +171,16 @@ class P2(BaseTransformation):
 
     @staticmethod
     def abstract(
-        net: PetriNet,
         transition1: PetriNet.Transition,
         transition2: PetriNet.Transition,
+        net: PetriNet,
     ) -> PetriNet:
         """Apply the inverse of Transition Duplication (merge two transitions into one).
 
         Args:
-            net (PetriNet): The Petri Net to abstract.
             transition1 (Transition): The first transition to merge.
             transition2 (Transition): The second transition to merge.
+            net (PetriNet): The Petri Net to abstract.
 
         Returns:
             - PetriNet: The abstracted Petri Net.
@@ -202,20 +214,20 @@ class P2(BaseTransformation):
         return net
 
 
-class P3(BaseTransformation):
+class P3(PlaceTransformation):
     """P3 Transformation (Local transition introduction)."""
 
     @staticmethod
     def refine(
-        net: PetriNet,
         place: PetriNet.Place,
+        net: PetriNet,
     ) -> PetriNet:
         """Apply a Local transition introduction.
 
         Args:
-            net (PetriNet): The Petri Net to refine.
             place (Place): The place to refine.
             transition (Transition): The transition to introduce.
+            net (PetriNet): The Petri Net to refine.
 
         Returns:
             - PetriNet: The refined Petri Net.
@@ -254,18 +266,18 @@ class P3(BaseTransformation):
 
     @staticmethod
     def abstract(
-        net: PetriNet,
         place1: PetriNet.Place,
         place2: PetriNet.Place,
         transition: PetriNet.Transition,
+        net: PetriNet,
     ) -> PetriNet:
         """Apply the inverse of Local transition introduction (remove a local transition).
 
         Args:
-            net (PetriNet): The Petri Net to abstract.
             place1 (Place): The first place to merge.
             place2 (Place): The second place to merge.
             transition (Transition): The transition to remove.
+            net (PetriNet): The Petri Net to abstract.
 
         Returns:
             - PetriNet: The abstracted Petri Net.
@@ -301,19 +313,19 @@ class P3(BaseTransformation):
         return net
 
 
-class P4(BaseTransformation):
+class P4(PlaceTransformation):
     """P4 Transformation (Place split)."""
 
     @staticmethod
     def refine(
-        net: PetriNet,
         place: PetriNet.Place,
+        net: PetriNet,
     ) -> PetriNet:
         """Apply a Place split.
 
         Args:
-            net (PetriNet): The Petri Net to refine.
             place (Place): The place to split.
+            net (PetriNet): The Petri Net to refine.
 
         Returns:
             - PetriNet: The refined Petri Net.
@@ -367,16 +379,16 @@ class P4(BaseTransformation):
 
     @staticmethod
     def abstract(
-        net: PetriNet,
         place1: PetriNet.Place,
         place2: PetriNet.Place,
+        net: PetriNet,
     ) -> PetriNet:
         """Apply the inverse of Place Split (merge two places into one).
 
         Args:
-            net (PetriNet): The Petri Net to abstract.
             place1 (Place): The first place to merge.
             place2 (Place): The second place to merge.
+            net (PetriNet): The Petri Net to abstract.
 
         Returns:
             - PetriNet: The abstracted Petri Net.

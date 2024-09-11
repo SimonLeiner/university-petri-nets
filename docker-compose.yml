@@ -1,0 +1,35 @@
+version: "3.8"  # Use the latest version compatible with your Docker setup
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+    ports:
+      - "4000:4000"
+    networks:
+      - app-network
+    restart: always  # Restart policy for the backend service
+    environment:
+      - NODE_ENV=development  # Example environment variable
+    volumes:
+      - ./backend:/usr/src/app  # Mount the backend directory
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    restart: always  # Restart policy for the frontend service
+    depends_on:
+      - backend  # Ensure frontend starts after backend
+    environment:
+      - NODE_ENV=development  # Example environment variable
+    volumes:
+      - ./frontend:/usr/src/app  # Mount the frontend directory
+
+networks:
+  app-network:
+    driver: bridge

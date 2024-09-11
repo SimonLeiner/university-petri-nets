@@ -1,10 +1,16 @@
+import logging
 from collections import deque
+from copy import deepcopy
 
 import networkx as nx
 import pandas as pd
 from interface_patterns.interface_patterns import BaseInterfacePattern
 from networkx.algorithms import isomorphism
 from pm4py.objects.petri_net.obj import PetriNet
+from tqdm import tqdm
+from transformations.transformations import BaseTransformation
+from transformations.transformations import PlaceTransformation
+from transformations.transformations import TransitionTransformation
 
 
 def discover(
@@ -27,6 +33,27 @@ def discover(
     """
     net, initial_marking, final_marking = algorithm(df_log, algorithm_kwargs)
     return net, initial_marking, final_marking
+
+
+def check_net_valid(current_net: PetriNet, end_net: PetriNet) -> bool:
+    """Checks if the net is valid.
+
+    Args:
+        current_net (PetriNet): The current net.
+        end_net (PetriNet): The target net.
+
+    Comment:
+        - Time complexity: O(1)
+
+    Returns:
+        bool: True if the net is valid
+    """
+    # only one must be true to violate the condition
+    return (
+        len(current_net.places) <= len(end_net.places)
+        and len(current_net.transitions) <= len(end_net.transitions)
+        and len(current_net.arcs) <= len(end_net.arcs)
+    )
 
 
 def convert_petri_net_to_networkx(petri_net: PetriNet) -> nx.DiGraph:
@@ -82,65 +109,124 @@ def is_isomorphic(net1: PetriNet, net2: PetriNet) -> bool:
     return isomorphism.DiGraphMatcher(netx_petri_net1, netx_petri_net2).is_isomorphic()
 
 
-# TODO: Correct Implementation.
 def is_refinement(
-    initial_net: PetriNet,
-    target_net: PetriNet,
-    transformations: list,
-) -> bool:
+    begin_net: PetriNet,
+    end_net: PetriNet,
+    transformations: list[BaseTransformation],
+) -> tuple[bool, list[BaseTransformation]]:
     """Checks if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern.
 
     Args:
-        initial_net (PetriNet): The agent GWF-net.
-        target_net (PetriNet): The corresponding part in the interface pattern.
+        begin_net (PetriNet): The agent GWF-net.
+        end_net (PetriNet): The corresponding part in the interface pattern.
         transformations (list): The list of transformations to apply.
 
     Comments:
-        -  We use BFS to find a sequence of transformations that transforms the input net into the target net.
+        - We use BFS to find a sequence of transformations that transforms the input net into the target net.
+        - TODO: We copy the nets so we apply one one sequence at a time. Is it legit to apply them also in parallel? -> Speed up?
 
     Returns:
-        bool: True if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern.
+        bool: True if the agent GWF-net is a refinement of the corresponding part in the interface pattern.
+        list: The sequence of transformations that lead to the target
     """
+    # split in place and transition transformations
+    place_transformations = [
+        t for t in transformations if isinstance(t, PlaceTransformation)
+    ]
+    transition_transformations = [
+        t for t in transformations if isinstance(t, TransitionTransformation)
+    ]
+
+    # create a deep copy of the begin_net
+    begin_net = deepcopy(begin_net)
+
     # Create a queue for BFS and add the initial net
-    queue = deque([(initial_net, [])])
+    queue = deque([(begin_net, [])])
 
-    # To keep track of visited states
+    # Initialize the set of visited states
     visited = set()
+    visited.add(id(begin_net))
 
-    while queue:
-        current_net, transformation_sequence = queue.popleft()
+    # as long as there is an element in the queue
+    with tqdm(total=None, desc="Processing Queue") as pbar:
+        while queue:
+            # Update progress bar
+            pbar.update(1)
 
-        # Check if the current net is isomorphic to the target net
-        if is_isomorphic(current_net, target_net):
-            return True
+            # dequeue the first element in the queue
+            current_net, transformation_sequence = queue.popleft()
 
-        # Mark the current net as visited (you may need a hashable form of the net)
-        visited.add(
-            id(current_net),
-        )  # Use `id` to track visited Petri nets by object reference
+            # Note: branching logic: we need to apply all possible transformations
+            # for each place in the current net
+            for place in current_net.places:
+                # apply each possible place transformation
+                for place_transformation in place_transformations:
+                    # Note: ensures that subsequent transformations are applied to a fresh instance of the net.
+                    new_net = deepcopy(current_net)
+                    new_net = place_transformation.refine(place, new_net)
 
-        # Apply each of the 4 transformations
-        for transformation in transformations:
-            new_net = transformation(current_net)
+                    # check if the new net is the one we are looking for
+                    if check_net_valid(new_net, end_net):
+                        if is_isomorphic(new_net, end_net):
+                            return True, transformation_sequence
+                        # if not, add the new net to the queue and save what transformation was applied
+                        queue.append(
+                            (new_net, [*transformation_sequence, place_transformation]),
+                        )
+                        # add the new net to the visited set
+                        visited.add(id(new_net))
 
-            # If the new net hasn't been visited, add it to the queue
-            if id(new_net) not in visited:
-                queue.append((new_net, [*transformation_sequence, transformation]))
+            # for each transition in the current net
+            for transition in current_net.transitions:
+                # apply each possible transition transformation
+                for transition_transformation in transition_transformations:
+                    # Note: ensures that subsequent transformations are applied to a fresh instance of the net.
+                    new_net = deepcopy(current_net)
+                    new_net = transition_transformation.refine(
+                        transition,
+                        new_net,
+                    )
 
-    # If no transformation sequence leads to the target net
-    return False
+                    # check if the new net is the one we are looking for
+                    if check_net_valid(new_net, end_net):
+                        if is_isomorphic(new_net, end_net):
+                            return True
+                        # if not, add the new net to the queue and save what transformation was applied
+                        queue.append(
+                            (
+                                new_net,
+                                [*transformation_sequence, transition_transformation],
+                            ),
+                        )
+                    # add the new net to the visited set
+                    visited.add(id(new_net))
+
+    # If no sequence of transformations leads to the target net
+    return False, []
 
 
-# TODO: Implement.
-def replace() -> None:
-    """Substitutes the agent GWF-net with the corresponding part in the interface pattern."""
+def replace(
+    multi_agent_net: PetriNet,
+    interface_subset_pattern: PetriNet,
+    gwf_agent_net: PetriNet,
+) -> PetriNet:
+    """Substitutes the corresponding part in the interface pattern with the agent model.
+
+    Args:
+        multi_agent_net (PetriNet): The multi-agent system GWF-net.
+        interface_subset_pattern (PetriNet): The corresponding part in the interface pattern.
+        gwf_agent_net (PetriNet): The agent GWF-net.
+
+    Returns:
+        PetriNet: The updated multi-agent system GWF-net.
+    """
     raise NotImplementedError
 
 
-# TODO: Check Implementation.
 def compositional_discovery(
     df_log: pd.Dataframe,
     interface_pattern: BaseInterfacePattern,
+    transformations: list[BaseTransformation],
     agent_column: str = "org:resource",
 ) -> PetriNet:
     """Compositional Process Discovery Algorithm as described in Algorithm 1.
@@ -148,9 +234,11 @@ def compositional_discovery(
     Args:
         df_log (pd.DataFrame): The event log for the multi-agent system.
         interface_pattern (BaseInterfacePattern): The interface pattern to use that consists of A1,...An Agents.
+        transformations (list[BaseTransformation]): The list of transformations
         agent_column (str): The column in the event log that contains the agent names.
 
     Comments:
+        - TODO: Checks agent i for subnet i and not agent i for all subnets.
         - Time Complexity: ...
 
     Returns:
@@ -159,48 +247,42 @@ def compositional_discovery(
     # init multi agent system gwf net S
     multi_agent_net = interface_pattern
 
-    # store the agent gwf-nets in a set: R
-    discovered_nets = set()
+    # For each agent in the event log
+    unique_agents = df_log[agent_column].unique()
 
-    # construct agent models
-    for agent in df_log[agent_column].unique():
-        # create sub-logs and discover gwf-nets and add to discovered_nets
-        df_log_agent = df_log[df_log[agent_column] == agent]
-        net, _, _ = discover(df_log_agent)
-        discovered_nets.add(net)
+    with tqdm(total=len(unique_agents), desc="Processing Agents") as pbar:
+        # for each agent in the event log
+        for i, agent in enumerate(unique_agents):
+            # create sub-logs
+            df_log_agent = df_log[df_log[agent_column] == agent]
 
-    # for each directly discovered agent model
-    for net in discovered_nets:
+            # discover net
+            gwf_agent_net, _, _ = discover(df_log_agent)
 
-        # TODO: check if the agent model is a refinement of the interface pattern
-        if is_refinement(net):
-            # substitute the agent model with the corresponding part in the interface pattern
-            replace(net, multi_agent_net)
+            # get the corresponding interface subset pattern
+            interface_subset_pattern = interface_pattern.get_net(f"A{i}")
+
+            # check if discovered net is a refinement of the interface pattern for Agent Ai
+            check_refinement, transformation_list = is_refinement(
+                gwf_agent_net,
+                interface_subset_pattern,
+                transformations,
+            )
+
+            # log the result
+            logging.info(
+                f"Agent {agent} is a refinement: {check_refinement} with transformations: {transformation_list}",
+            )
+
+            if check_refinement:
+                # substitute the agent model with the corresponding part in the interface pattern
+                multi_agent_net = replace(
+                    multi_agent_net,
+                    interface_subset_pattern,
+                    gwf_agent_net,
+                )
+
+            # Update progress bar
+            pbar.update(1)
 
     return multi_agent_net
-
-
-def filter_logs_by_agent(
-    df_log: pd.DataFrame,
-    agent_column: str = "org:resource",
-) -> dict:
-    """
-    Construct a set of sub-logs for each agent in the event log.
-
-    Args:
-        df_log: A pandas DataFrame where each row represents an event.
-        agent_column: The name of the column that contains the agent identifier.
-
-    Comments:
-        - Step 1: Event Log Filtering Function
-        - An event log of a multi-agent system is filtered by actions executed by different agents. Correspondingly, we construct a set of sub-logs. For instance, filtering the records in the event log given in Table 1 by the “Pete” value of the “Agent” attribute, we obtain the sub-log presented in Table 2.
-        - pm4py.filter_event_attribute_values
-
-    Returns:
-        A dictionary where each key is an agent identifier and the corresponding value is a sub-log of the
-    """
-    # subset the log by agent and store in a dictionary
-    agent_logs = {}
-    for agent in df_log[agent_column].unique():
-        agent_logs[agent] = df_log[df_log[agent_column] == agent]
-    return agent_logs
