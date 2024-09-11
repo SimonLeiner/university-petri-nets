@@ -34,7 +34,7 @@ Your web interface should allow for the following configurations:
 git clone https://github.com/SimonLeiner/quantum-scope.git
 ```
 
-2. Setup the environment:
+2. TODO: Setup the environment:
 
 We recomment using devcontainer for development. You can find the devcontainer configuration in the `.devcontainer` folder. Adjust the configuration to your needs.
 

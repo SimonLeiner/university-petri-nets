@@ -1,4 +1,6 @@
-# Frontend with React
+# React + Vite
 
-# TODO:
-- ausgrauen agent behavior
+## Getting Started
+- https://github.com/nvm-sh/nvm
+- https://vitejs.dev/guide/
+- https://eslint.org/

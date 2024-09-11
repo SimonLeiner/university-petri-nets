@@ -10,7 +10,7 @@ Interface patterns are distinguished by the number of inter- acting parties:
 Interface patterns are also classified according to the way agents interact:
     - Single transmission patterns (IP-1, IP-2, IP-3);
     - Multiple transmission patterns (IP-7).
-"""
+"""  # noqa: INP001
 
 from abc import ABCMeta
 from abc import abstractmethod
