@@ -147,23 +147,20 @@ def compositional_discovery(
 
     Args:
         df_log (pd.DataFrame): The event log for the multi-agent system.
-        interface_pattern (BaseInterfacePattern): The interface pattern to use.
+        interface_pattern (BaseInterfacePattern): The interface pattern to use that consists of A1,...An Agents.
         agent_column (str): The column in the event log that contains the agent names.
 
     Comments:
-        - Merge or compose the nets according to your specific composition rules.
-            composed_net = pm4py.algo.conformance.alignments.petri_net.composer.compose(
-                [composed_net, net],
-            )
+        - Time Complexity: ...
 
     Returns:
         multi_agent_net (Petri net): a multi-agent system GWF-net.
     """
-    # store the agent gwf-nets in a set
-    discovered_nets = {}
-
-    # init multi agent system gwf net
+    # init multi agent system gwf net S
     multi_agent_net = interface_pattern
+
+    # store the agent gwf-nets in a set: R
+    discovered_nets = set()
 
     # construct agent models
     for agent in df_log[agent_column].unique():
@@ -172,9 +169,10 @@ def compositional_discovery(
         net, _, _ = discover(df_log_agent)
         discovered_nets.add(net)
 
-    # for each agent model
+    # for each directly discovered agent model
     for net in discovered_nets:
-        # check if the agent model is a refinement of the interface pattern
+
+        # TODO: check if the agent model is a refinement of the interface pattern
         if is_refinement(net):
             # substitute the agent model with the corresponding part in the interface pattern
             replace(net, multi_agent_net)
