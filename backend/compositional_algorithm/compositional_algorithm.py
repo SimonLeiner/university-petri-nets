@@ -2,22 +2,22 @@ from collections import deque
 
 import networkx as nx
 import pandas as pd
-import pm4py
 from interface_patterns.interface_patterns import BaseInterfacePattern
 from networkx.algorithms import isomorphism
 from pm4py.objects.petri_net.obj import PetriNet
 
 
-# TODO: Check and adjust for more algorithms.
 def discover(
     df_log: pd.DataFrame,
-    algorithm: pm4py.discover_petri_net_inductive,
+    algorithm: callable,
+    **algorithm_kwargs,  # noqa: ANN003
 ) -> PetriNet:
     """Discover a GWF-net (process model) for the agent using  for instance the Inductive Miner.
 
     Args:
-        df_log: The event log for the agent as a Pandas DataFrame.
-        algorithm: The process discovery algorithm to use.
+        df_log (pd.DataFrame): The event log for the agent.
+        algorithm (callable): The process discovery algorithm to use.
+        algorithm_kwargs: Additional arguments to pass to the algorithm.
 
     Comments:
         - See implmentation: inductive_miner.apply(log, variant=variant, parameters=parameters)
@@ -25,7 +25,7 @@ def discover(
     Returns:
         The discovered Petri net model for the agent.
     """
-    net, initial_marking, final_marking = algorithm(df_log)
+    net, initial_marking, final_marking = algorithm(df_log, algorithm_kwargs)
     return net, initial_marking, final_marking
 
 
