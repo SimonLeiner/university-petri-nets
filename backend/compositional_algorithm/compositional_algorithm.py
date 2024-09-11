@@ -1,8 +1,10 @@
 from collections import deque
 
+import networkx as nx
 import pandas as pd
 import pm4py
 from interface_patterns.interface_patterns import BaseInterfacePattern
+from networkx.algorithms import isomorphism
 from pm4py.objects.petri_net.obj import PetriNet
 
 
@@ -27,12 +29,57 @@ def discover(
     return net, initial_marking, final_marking
 
 
-# TODO: Implement.
-def is_isomorphic() -> bool:
-    """Checks if two Petri nets are identical."""
-    # https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.isomorphism.is_isomorphic.html
-    # from networkx.algorithms import isomorphism, optimize_graph_edit_distance, graph_edit_distance, simrank_similarity
-    raise NotImplementedError
+def convert_petri_net_to_networkx(petri_net: PetriNet) -> nx.DiGraph:
+    """Converts a Petri net from pm4py format to a networkx DiGraph.
+
+    Args:
+        petri_net (PetriNet): The Petri net to convert.
+
+    Comments:
+        - https://networkx.org/documentation/stable/reference/classes/digraph.html
+        - The Petri net is a directed graph, so we use networkx's DiGraph.
+        - Runtime of O(n) where n is the number of nodes.
+
+    Returns:
+        nx.DiGraph: The converted Petri net as a networkx
+    """
+    graph = nx.DiGraph()
+
+    # Add places and transitions as nodes
+    for place in petri_net.places:
+        graph.add_node(place, type="place")
+
+    for transition in petri_net.transitions:
+        graph.add_node(transition, type="transition")
+
+    # Add arcs as edges
+    for arc in petri_net.arcs:
+        graph.add_edge(arc.source, arc.target)
+
+    return graph
+
+
+def is_isomorphic(net1: PetriNet, net2: PetriNet) -> bool:
+    """Checks if two Petri nets are identical.
+
+    Args:
+        net1 (PetriNet): The first Petri net.
+        net2 (PetriNet): The second Petri net.
+
+    Comments:
+        - https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.isomorphism.is_isomorphic.html
+        - The method works for generic graphs, and Petri nets can be represented as directed graphs.
+        - uses the VF2 algorithm for graph isomorphism with O(n!) complexity.
+
+    Returns:
+        bool: True if the two Petri nets are isomorphic.
+    """
+    # Convert pm4py Petri nets to networkx graphs
+    netx_petri_net1 = convert_petri_net_to_networkx(net1)
+    netx_petri_net2 = convert_petri_net_to_networkx(net2)
+
+    # Use networkx's is_isomorphic function
+    return isomorphism.DiGraphMatcher(netx_petri_net1, netx_petri_net2).is_isomorphic()
 
 
 # TODO: Correct Implementation.
@@ -133,3 +180,29 @@ def compositional_discovery(
             replace(net, multi_agent_net)
 
     return multi_agent_net
+
+
+def filter_logs_by_agent(
+    df_log: pd.DataFrame,
+    agent_column: str = "org:resource",
+) -> dict:
+    """
+    Construct a set of sub-logs for each agent in the event log.
+
+    Args:
+        df_log: A pandas DataFrame where each row represents an event.
+        agent_column: The name of the column that contains the agent identifier.
+
+    Comments:
+        - Step 1: Event Log Filtering Function
+        - An event log of a multi-agent system is filtered by actions executed by different agents. Correspondingly, we construct a set of sub-logs. For instance, filtering the records in the event log given in Table 1 by the “Pete” value of the “Agent” attribute, we obtain the sub-log presented in Table 2.
+        - pm4py.filter_event_attribute_values
+
+    Returns:
+        A dictionary where each key is an agent identifier and the corresponding value is a sub-log of the
+    """
+    # subset the log by agent and store in a dictionary
+    agent_logs = {}
+    for agent in df_log[agent_column].unique():
+        agent_logs[agent] = df_log[df_log[agent_column] == agent]
+    return agent_logs
