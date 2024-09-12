@@ -22,3 +22,7 @@ pre-commit
 # process mining
 pm4py
 networkx
+
+# backend
+fastapi
+uvicorn

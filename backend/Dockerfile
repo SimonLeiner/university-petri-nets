@@ -6,6 +6,9 @@
 # install python 3.12 for platform linux/amd64
 FROM --platform=linux/amd64 python:3.12-slim
 
+# set working directory
+WORKDIR /workspace
+
 # install git 
 RUN apt-get update && apt-get install --no-install-recommends  -y \
     # graphviz
@@ -29,9 +32,6 @@ RUN pip install -U -r requirements.txt
 # setting up pre commit hooks
 COPY .pre-commit-config.yaml .
 RUN git init . && pre-commit install
-
-# set working directory
-WORKDIR /workspace
 
 # Expose the port FastAPI server will run on
 EXPOSE 4000

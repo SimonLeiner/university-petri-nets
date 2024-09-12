@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <header>
+        <h1>Data Dashboard</h1>
+      </header>
+
+      <main>
+        {/* Plotting Section */}
+        <section className="plotting">
+          <h2>Plotting</h2>
+          <div className="plot-area">
+            {/* Plotting content will go here */}
+            <p>This is the plotting section.</p>
+          </div>
+        </section>
+
+        {/* Statistics Section */}
+        <section className="statistics">
+          <h2>Statistics</h2>
+          <div className="statistics-area">
+            {/* Statistics content will go here */}
+            <p>This is the statistics section.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
