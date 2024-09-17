@@ -22,26 +22,6 @@ services:
     volumes:
       - ./frontend:/usr/src/app # Mount the frontend directory
 
-  splitminer:
-    build:
-      context: ./splitminer
-    ports:
-      - "8080:8080"
-    depends_on:
-      - backend # Ensure splitminer starts after backend
-    volumes:
-      - ./splitminer:/usr/src/splitminer # Mount the splitminer directory
-
-  codebase:
-    build:
-      context: ./codebase
-    ports:
-      - "8080:8080"
-    depends_on:
-      - backend # Ensure codebase starts after backend
-    volumes:
-      - ./codebase:/usr/src/codebase # Mount the codebase directory
-
 networks:
   app-network:
     driver: bridge
