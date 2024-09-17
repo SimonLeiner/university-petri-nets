@@ -2,7 +2,7 @@
 FROM node:22-alpine
 
 # set working directory
-WORKDIR /workspace
+WORKDIR /app
 
 # install git 
 RUN apk update && apk install --no-install-recommends  -y \

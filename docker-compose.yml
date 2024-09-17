@@ -1,4 +1,4 @@
-version: "3.8"  # Use the latest version compatible with your Docker setup
+version: "3.8" # Use the latest version compatible with your Docker setup
 services:
   backend:
     container_name: backend
@@ -6,9 +6,9 @@ services:
       context: ./backend
     ports:
       - "4000:4000"
-    restart: always  # Restart policy for the backend service
+    restart: always # Restart policy for the backend service
     volumes:
-      - ./backend:/usr/src/workspace  # Mount the backend directory
+      - ./backend:/usr/src/workspace # Mount the backend directory
 
   frontend:
     container_name: frontend
@@ -16,11 +16,31 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
-    restart: always  # Restart policy for the frontend service
+    restart: always # Restart policy for the frontend service
     depends_on:
-      - backend  # Ensure frontend starts after backend
+      - backend # Ensure frontend starts after backend
     volumes:
-      - ./frontend:/usr/src/workspace  # Mount the frontend directory
+      - ./frontend:/usr/src/app # Mount the frontend directory
+
+  splitminer:
+    build:
+      context: ./splitminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend # Ensure splitminer starts after backend
+    volumes:
+      - ./splitminer:/usr/src/splitminer # Mount the splitminer directory
+
+  codebase:
+    build:
+      context: ./codebase
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend # Ensure codebase starts after backend
+    volumes:
+      - ./codebase:/usr/src/codebase # Mount the codebase directory
 
 networks:
   app-network:

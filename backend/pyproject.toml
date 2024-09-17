@@ -88,6 +88,8 @@ ignore = [
     "TD003",  # Missing link to issue
     "TD002",  # Line contains `TODO`, consider adding a link to an issue
     "FIX002", # Line contains TODO, consider resolving the issue
+    "FBT001", # 
+    "FBT002", # 
 
 ]
 # Allow fix for all enabled rules (when `--fix`) is provided.

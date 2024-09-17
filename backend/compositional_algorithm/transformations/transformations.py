@@ -54,29 +54,24 @@ class P1(PlaceTransformation):
         Returns:
             - PetriNet: The refined Petri Net.
         """
-        # Retrieve the place to duplicate
+        # TODO: Check if the place to duplicate exists in the Petri net
+        if place.name not in [p.name for p in net.places]:
+            msg = f"Place {place.name} not found in Petri net."
+            raise ValueError(msg)
         if place not in net.places:
-            msg = f"Place {place} not found in Petri net."
+            msg = f"Place {place.name} not found in Petri net."
             raise ValueError(msg)
 
-        # Create new places
-        new_place1 = add_place(net, name=f"{place.name}_1")
-        new_place2 = add_place(net, name=f"{place.name}_2")
+        # Create a new place
+        new_place = add_place(net, name=place.name)
 
-        # Duplicate incoming arcs from the original place to both new places and remove the original arcs
-        for in_arc in list(place.in_arcs):
-            add_arc_from_to(in_arc.source, new_place1, net)
-            add_arc_from_to(in_arc.source, new_place2, net)
-            net.arcs.remove(in_arc)
+        # Adjust incoming arcs
+        for in_arc in place.in_arcs:
+            add_arc_from_to(in_arc.source, new_place, net)
 
-        # Duplicate outgoing arcs from the original place to both new places and remove the original arcs
-        for out_arc in list(place.out_arcs):
-            add_arc_from_to(new_place1, out_arc.target, net)
-            add_arc_from_to(new_place2, out_arc.target, net)
-            net.arcs.remove(out_arc)
-
-        # Remove the old place from the net
-        net.places.remove(place)
+        # Adjust outgoing arcs
+        for out_arc in place.out_arcs:
+            add_arc_from_to(new_place, out_arc.target, net)
 
         # What about the marking?
 
@@ -98,6 +93,8 @@ class P1(PlaceTransformation):
         Returns:
             - PetriNet: The abstracted Petri Net.
         """
+        msg = "P1 abstract method not implemented yet."
+        raise NotImplementedError(msg)
         # Check if both places to merge exist
         if place1 not in net.places or place2 not in net.places:
             msg = f"One or both places {place1} and {place2} not found in Petri net."
@@ -232,9 +229,12 @@ class P3(PlaceTransformation):
         Returns:
             - PetriNet: The refined Petri Net.
         """
-        # Check if the place to refine exists
+        # TODO: Check if the place to duplicate exists in the Petri net
+        if place.name not in [p.name for p in net.places]:
+            msg = f"Place {place.name} not found in Petri net."
+            raise ValueError(msg)
         if place not in net.places:
-            msg = f"Place {place} not found in Petri net."
+            msg = f"Place {place.name} not found in Petri net."
             raise ValueError(msg)
 
         # Create new places
@@ -282,6 +282,8 @@ class P3(PlaceTransformation):
         Returns:
             - PetriNet: The abstracted Petri Net.
         """
+        msg = "P3 abstract method not implemented yet."
+        raise NotImplementedError(msg)
         # Check if the transition and places exist in the Petri net
         if transition not in net.transitions:
             msg = "Transition does not exist in the Petri net."
