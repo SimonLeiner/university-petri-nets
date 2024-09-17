@@ -20,6 +20,9 @@ from backend.compositional_algorithm.transformations.transformations import (
 from backend.compositional_algorithm.transformations.transformations import (
     PlaceTransformation,
 )
+from backend.compositional_algorithm.transformations.transformations import (
+    TransitionTransformation,
+)
 
 
 def discover(
@@ -155,9 +158,12 @@ def is_refinement(
     place_transformations = [
         t for t in transformations if isinstance(t(), PlaceTransformation)
     ]
+    transition_transformations = [
+        t for t in transformations if isinstance(t(), TransitionTransformation)
+    ]
 
     # create a deep copy of the begin_net
-    first_net = copy.deepcopy(begin_net)
+    first_net = begin_net.__deepcopy__()
 
     # accidentially the same
     if is_isomorphic(first_net, end_net):
@@ -179,7 +185,6 @@ def is_refinement(
 
             # dequeue the first element in the queue
             current_net, transformation_sequence = queue.popleft()
-            print(f"Petri Net after {transformation_sequence}.")
             view_petri_net(current_net)
 
             # Note: branching logic: we need to apply all possible transformations
@@ -187,10 +192,11 @@ def is_refinement(
             for place in current_net.places:
                 # apply each possible place transformation
                 for place_transformation in place_transformations:
-                    # Note: Deep copy of the current net before applying the transformation -> transformation change places & transitions and sets are immutable.
-                    # net_copy = copy.deepcopy(current_net)
-                    net_copy = current_net.__deepcopy__()
-                    transformed_net = place_transformation.refine(place, net_copy)
+                    # TODO: Necessary? ensures that subsequent transformations are applied to a fresh instance of the net.
+                    # new_net = copy.deepcopy(current_net)
+                    # new_net = current_net.__deepcopy__()
+                    transformed_net = place_transformation.refine(place, current_net)
+                    view_petri_net(transformed_net)
 
                     # check if the new net is the one we are looking for
                     if check_net_valid(transformed_net, end_net):
@@ -206,6 +212,31 @@ def is_refinement(
                         )
                         # add the new net to the visited set
                         visited.add(id(transformed_net))
+
+            # # for each transition in the current net
+            # for transition in current_net.transitions:
+            #     # apply each possible transition transformation
+            #     for transition_transformation in transition_transformations:
+            #         # Note: ensures that subsequent transformations are applied to a fresh instance of the net.
+            #         new_net = copy.deepcopy(current_net)
+            #         transformed_net = transition_transformation.refine(
+            #             transition,
+            #             new_net,
+            #         )
+
+            #         # check if the new net is the one we are looking for
+            #         if check_net_valid(transformed_net, end_net):
+            #             if is_isomorphic(transformed_net, end_net):
+            #                 return True
+            #             # if not, add the new net to the queue and save what transformation was applied
+            #             queue.append(
+            #                 (
+            #                     transformed_net,
+            #                     [*transformation_sequence, transition_transformation],
+            #                 ),
+            #             )
+            #         # add the new net to the visited set
+            #         visited.add(id(transformed_net))
 
     # If no sequence of transformations leads to the target net
     logging.info("No sequence of transformations leads to the target net.")
