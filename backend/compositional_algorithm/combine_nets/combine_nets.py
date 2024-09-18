@@ -10,7 +10,7 @@ class MergeNets:
     Merging two petri nets into one.
 
     Comments:
-        - A rather Simple Implementation as it needs certain naming of the interacting transitions.
+        - A rather Simple Implementation as it needs certain naming of the interacting transitions, like a! and a?.
     """
 
     def __repr__(self) -> str:
@@ -56,7 +56,7 @@ class MergeNets:
 
     @staticmethod
     def connect_sync(net: PetriNet) -> None:
-        """Connects Async transitions.
+        """Connects Sync transitions.
 
         Args:
             net (PetriNet): Petri Net.
@@ -101,7 +101,11 @@ class MergeNets:
         merged_net = merge(nets=[net1, net2])
 
         # adjust the connections properly
-        merged_net.connect_async(merged_net)
-        merged_net.connect_sync(merged_net)
+        MergeNets.connect_async(merged_net)
+        MergeNets.connect_sync(merged_net)
 
         return merged_net
+
+
+# Control the public API of the module
+__all__ = ["MergeNets"]

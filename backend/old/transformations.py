@@ -356,7 +356,7 @@ class P4(PlaceTransformation):
         # Add incoming arcs to p1 and p2
         split_index = (
             len(incoming_arcs) // 2
-        )  # for example, if there are 2 incoming arcs, split_index = 1
+        )
         in_arcs_p1 = incoming_arcs[:split_index]
         in_arcs_p2 = incoming_arcs[split_index:]
         for arc in in_arcs_p1:

@@ -143,25 +143,23 @@ class IP1(BaseInterfacePattern):
         """
         # Create transitions
         self.transitions = {
-            "t_A1_a!": PetriNet.Transition("t_A1_a!", "t_A1_a!"),
-            "t_A2_a?": PetriNet.Transition("t_A2_a?", "t_A2_a?"),
+            "a!": PetriNet.Transition("a!", "a!"),
+            "a?": PetriNet.Transition("a?", "a?"),
         }
-        for index, transition in self.transitions.items():
-            if "t_A1" in index:
-                self.nets["A1"].transitions.add(transition)
-            elif "t_A2" in index:
-                self.nets["A2"].transitions.add(transition)
+        # add transitions to the nets
+        self.nets["A1"].transitions.add(self.transitions["a!"])
+        self.nets["A2"].transitions.add(self.transitions["a?"])
 
     def _define_arcs(self) -> None:
         """Defines the arcs connecting places and transitions."""
         # arcs for A1
         petri_utils.add_arc_from_to(
             self.places["p_A1_1"],
-            self.transitions["t_A1_a!"],
+            self.transitions["a!"],
             self.nets["A1"],
         )
         petri_utils.add_arc_from_to(
-            self.transitions["t_A1_a!"],
+            self.transitions["a!"],
             self.places["p_A1_2"],
             self.nets["A1"],
         )
@@ -169,11 +167,11 @@ class IP1(BaseInterfacePattern):
         # define arcs for A2
         petri_utils.add_arc_from_to(
             self.places["p_A2_1"],
-            self.transitions["t_A2_a?"],
+            self.transitions["a?"],
             self.nets["A2"],
         )
         petri_utils.add_arc_from_to(
-            self.transitions["t_A2_a?"],
+            self.transitions["a?"],
             self.places["p_A2_2"],
             self.nets["A2"],
         )

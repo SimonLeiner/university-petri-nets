@@ -1,16 +1,17 @@
 import inspect
 import logging
 from collections import deque
+from pathlib import Path
 
 import networkx as nx
-import pandas as pd
 from networkx.algorithms import isomorphism
 from pm4py import read_xes
-
-# from pm4py import view_petri_net
+from pm4py import view_petri_net
+from pm4py import write_xes
 from pm4py.objects.petri_net.obj import PetriNet
 from tqdm import tqdm
 
+from backend.compositional_algorithm.combine_nets.combine_nets import MergeNets
 from backend.compositional_algorithm.interface_patterns.interface_patterns import (
     BaseInterfacePattern,
 )
@@ -55,9 +56,10 @@ def discover(
     parameters = list(sig.parameters.values())
     first_param = parameters[0]
 
-    # Check if the first parameter is expected to be a string
+    # Note: check based on what the discover algorithm expects
+    # Split miner needs input path
     if isinstance(first_param.annotation, str):
-        # If the algorithm expects a file path
+        # keep it as it is
         log_input = input_log_path
     else:
         # Convert the input log path to a DataFrame
@@ -193,8 +195,8 @@ def is_refinement(  # noqa: C901
 
             # dequeue the first element in the queue
             current_net, transformation_sequence = queue.popleft()
-            # logging.info(f"Petri Net after {transformation_sequence}.")
-            # view_petri_net(current_net)
+            logging.info(f"Petri Net after {transformation_sequence}.")
+            view_petri_net(current_net)
 
             # Note: branching logic: we need to apply all possible transformations
             # for each place in the current net
@@ -208,10 +210,13 @@ def is_refinement(  # noqa: C901
                     # check if the new net is the one we are looking for
                     if check_net_valid(transformed_net, final_end_net):
                         if is_isomorphic(transformed_net, final_end_net):
-                            logging.info("The nets are isomorphic (P).")
                             transformation_sequence.append(
                                 (place_transformation, place),
                             )
+                            logging.info(
+                                f"The nets are isomorphic (P) after {transformation_sequence}.",
+                            )
+                            view_petri_net(transformed_net)
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
                         queue.append(
@@ -240,10 +245,13 @@ def is_refinement(  # noqa: C901
                     # check if the new net is the one we are looking for
                     if check_net_valid(transformed_net, final_end_net):
                         if is_isomorphic(transformed_net, final_end_net):
-                            logging.info("The nets are isomorphic (T).")
                             transformation_sequence.append(
                                 (transition_transformation, transition),
                             )
+                            logging.info(
+                                f"The nets are isomorphic (T) after {transformation_sequence}.",
+                            )
+                            view_petri_net(transformed_net)
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
                         queue.append(
@@ -268,7 +276,7 @@ def replace() -> None:
 
 
 def compositional_discovery(
-    df_log: pd.DataFrame,
+    input_log_path: str,
     algorithm: callable,
     interface_pattern: BaseInterfacePattern,
     transformations: list[BaseTransformation],
@@ -278,7 +286,7 @@ def compositional_discovery(
     """Compositional Process Discovery Algorithm as described in Algorithm 1.
 
     Args:
-        df_log (pd.DataFrame): The event log for the multi-agent system.
+        input_log_path (str): The path to the event log.
         algorithm (callable): The process discovery algorithm to use.
         interface_pattern (BaseInterfacePattern): The interface pattern to use that consists of A1,...An Agents.
         transformations (list[BaseTransformation]): The list of transformations
@@ -293,6 +301,13 @@ def compositional_discovery(
     Returns:
         multi_agent_net (Petri net): a multi-agent system GWF-net.
     """
+    # Extract the directory and the base filename
+    directory = Path(input_log_path).parent
+    filename = Path(input_log_path).name
+
+    # discover the multi-agent system net
+    df_log = read_xes(input_log_path)
+
     # unique agents:
     unique_agents = df_log[agent_column].unique()
 
@@ -309,8 +324,16 @@ def compositional_discovery(
             # create sub-logs
             df_log_agent = df_log[df_log[agent_column] == agent]
 
+            # create a path to save the log file
+            modified_log_path = Path(directory) / f"agent_{i}_{filename}"
+            write_xes(df_log_agent, modified_log_path)
+
             # discover net. Also have the initial and final markings.
-            gwf_agent_net, _, _ = discover(df_log_agent, algorithm, **algorithm_kwargs)
+            gwf_agent_net, _, _ = discover(
+                input_log_path,
+                algorithm,
+                **algorithm_kwargs,
+            )
 
             # get the corresponding interface subset pattern. Also have the initial and final markings.
             interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i}")
@@ -335,5 +358,12 @@ def compositional_discovery(
             pbar.update(1)
 
     # combine the nets together
+    multi_agent_net = subnets["A1"].__deepcopy__()
+    for i in range(2, len(subnets)):
+        copy_net = subnets[f"A{i}"].__deepcopy__()
+        multi_agent_net = MergeNets.merge(multi_agent_net, copy_net)
+
+    # final plotting
+    view_petri_net(multi_agent_net)
 
     return multi_agent_net

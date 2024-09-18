@@ -6,6 +6,7 @@ from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net.utils.petri_utils import add_place
 from pm4py.objects.petri_net.utils.petri_utils import add_transition
 from pm4py.objects.petri_net.utils.petri_utils import get_transition_by_name
+from pm4py.objects.petri_net.utils.petri_utils import remove_arc
 
 
 class BaseTransformation(metaclass=ABCMeta):
@@ -98,7 +99,7 @@ class P1(PlaceTransformation):
         for out_arc in wanted_place.out_arcs:
             add_arc_from_to(new_place, out_arc.target, net)
 
-        # TODO: What about the marking? -> If p is part of the initial marking, both p1 and p2 must be marked in the new net.
+        # What about the marking? -> If p is part of the initial marking, both p1 and p2 must be marked in the new net.
 
         return net
 
@@ -289,7 +290,7 @@ class P4(PlaceTransformation):
         incoming_arcs = list(wanted_place.in_arcs)
 
         # Check if there are enough incoming arcs to split. Otherwise, return the net as it is.
-        if len(incoming_arcs) > 1:
+        if len(incoming_arcs) <= 1:
             return net
 
         # add new place
@@ -303,14 +304,14 @@ class P4(PlaceTransformation):
 
         # remove arcs from p2 from net, that previously load to p. Add acrs from p2 to net to new place.
         for arc in in_arcs:
-            net.remove_arc(arc)
+            # create one new arc from the source to the new place
             add_arc_from_to(arc.source, new_place, net)
+            # the original arc form the net
+            remove_arc(net, arc)
 
         # post set of p1, p2 are two complete copies of p -> Duplicate the outgoing arcs
         for arc in wanted_place.out_arcs:
             add_arc_from_to(new_place, arc.target, net)
-
-        # What about the marking?
 
         return net
 
