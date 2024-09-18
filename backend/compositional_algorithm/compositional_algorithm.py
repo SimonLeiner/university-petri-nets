@@ -1,4 +1,3 @@
-import copy
 import inspect
 import logging
 from collections import deque
@@ -7,7 +6,8 @@ import networkx as nx
 import pandas as pd
 from networkx.algorithms import isomorphism
 from pm4py import read_xes
-from pm4py import view_petri_net
+
+# from pm4py import view_petri_net
 from pm4py.objects.petri_net.obj import PetriNet
 from tqdm import tqdm
 
@@ -19,6 +19,16 @@ from backend.compositional_algorithm.transformations.transformations import (
 )
 from backend.compositional_algorithm.transformations.transformations import (
     PlaceTransformation,
+)
+from backend.compositional_algorithm.transformations.transformations import (
+    TransitionTransformation,
+)
+
+
+# Configure the logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 
 
@@ -131,7 +141,7 @@ def is_isomorphic(net1: PetriNet, net2: PetriNet) -> bool:
     return isomorphism.DiGraphMatcher(netx_petri_net1, netx_petri_net2).is_isomorphic()
 
 
-def is_refinement(
+def is_refinement(  # noqa: C901
     begin_net: PetriNet,
     end_net: PetriNet,
     transformations: list[BaseTransformation],
@@ -155,12 +165,16 @@ def is_refinement(
     place_transformations = [
         t for t in transformations if isinstance(t(), PlaceTransformation)
     ]
+    transition_transformations = [
+        t for t in transformations if isinstance(t(), TransitionTransformation)
+    ]
 
     # create a deep copy of the begin_net
-    first_net = copy.deepcopy(begin_net)
+    first_net = begin_net.__deepcopy__()
+    final_end_net = end_net.__deepcopy__()
 
     # accidentially the same
-    if is_isomorphic(first_net, end_net):
+    if is_isomorphic(first_net, final_end_net):
         logging.info("The nets are initially isomorphic.")
         return True, []
 
@@ -179,8 +193,8 @@ def is_refinement(
 
             # dequeue the first element in the queue
             current_net, transformation_sequence = queue.popleft()
-            print(f"Petri Net after {transformation_sequence}.")
-            view_petri_net(current_net)
+            # logging.info(f"Petri Net after {transformation_sequence}.")
+            # view_petri_net(current_net)
 
             # Note: branching logic: we need to apply all possible transformations
             # for each place in the current net
@@ -188,46 +202,69 @@ def is_refinement(
                 # apply each possible place transformation
                 for place_transformation in place_transformations:
                     # Note: Deep copy of the current net before applying the transformation -> transformation change places & transitions and sets are immutable.
-                    # net_copy = copy.deepcopy(current_net)
                     net_copy = current_net.__deepcopy__()
                     transformed_net = place_transformation.refine(place, net_copy)
 
                     # check if the new net is the one we are looking for
-                    if check_net_valid(transformed_net, end_net):
-                        if is_isomorphic(transformed_net, end_net):
-                            logging.info("The nets are isomorphic.")
+                    if check_net_valid(transformed_net, final_end_net):
+                        if is_isomorphic(transformed_net, final_end_net):
+                            logging.info("The nets are isomorphic (P).")
+                            transformation_sequence.append(
+                                (place_transformation, place),
+                            )
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
                         queue.append(
                             (
                                 transformed_net,
-                                [*transformation_sequence, place_transformation],
+                                [
+                                    *transformation_sequence,
+                                    (place_transformation, place),
+                                ],
                             ),
                         )
                         # add the new net to the visited set
                         visited.add(id(transformed_net))
+
+            # for each transition in the current net
+            for transition in current_net.transitions:
+                # apply each possible transition transformation
+                for transition_transformation in transition_transformations:
+                    # Note: ensures that subsequent transformations are applied to a fresh instance of the net.
+                    net_copy = current_net.__deepcopy__()
+                    transformed_net = transition_transformation.refine(
+                        transition,
+                        net_copy,
+                    )
+
+                    # check if the new net is the one we are looking for
+                    if check_net_valid(transformed_net, final_end_net):
+                        if is_isomorphic(transformed_net, final_end_net):
+                            logging.info("The nets are isomorphic (T).")
+                            transformation_sequence.append(
+                                (transition_transformation, transition),
+                            )
+                            return True, transformation_sequence
+                        # if not, add the new net to the queue and save what transformation was applied
+                        queue.append(
+                            (
+                                transformed_net,
+                                [
+                                    *transformation_sequence,
+                                    (transition_transformation, transition),
+                                ],
+                            ),
+                        )
+                    # add the new net to the visited set
+                    visited.add(id(transformed_net))
 
     # If no sequence of transformations leads to the target net
     logging.info("No sequence of transformations leads to the target net.")
     return False, []
 
 
-def replace(
-    multi_agent_net: PetriNet,
-    interface_subset_pattern: PetriNet,
-    gwf_agent_net: PetriNet,
-) -> PetriNet:
-    """Substitutes the corresponding part in the interface pattern with the agent model.
-
-    Args:
-        multi_agent_net (PetriNet): The multi-agent system GWF-net.
-        interface_subset_pattern (PetriNet): The corresponding part in the interface pattern.
-        gwf_agent_net (PetriNet): The agent GWF-net.
-
-    Returns:
-        PetriNet: The updated multi-agent system GWF-net.
-    """
-    raise NotImplementedError
+def replace() -> None:
+    """Not Needed with update Implementation."""
 
 
 def compositional_discovery(
@@ -249,17 +286,22 @@ def compositional_discovery(
         algorithm_kwargs (dict): Additional arguments to pass to the algorithm.
 
     Comments:
-        - TODO: Checks agent i for subnet i and not agent i for all subnets.
+        - Assumptions: 1. Identified IP, 2. Prepared log with transactions a!?, b!?,... 3. ...
+        - Only checks Agent 1 for IP-Agent 1 and not the other agents (no nested for loop).
         - Time Complexity: ...
 
     Returns:
         multi_agent_net (Petri net): a multi-agent system GWF-net.
     """
-    # init multi agent system gwf net S
-    multi_agent_net = interface_pattern
-
-    # For each agent in the event log
+    # unique agents:
     unique_agents = df_log[agent_column].unique()
+
+    # Note: No Replace. Build Late -> dict to store the discovered nets for each agent
+    subnets = {}
+    for i in range(1, unique_agents + 1):
+        # get the corresponding interface subset pattern. Also have the initial and final markings.
+        interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i}")
+        subnets[f"A{i}"] = interface_subset_pattern
 
     with tqdm(total=len(unique_agents), desc="Processing Agents") as pbar:
         # for each agent in the event log
@@ -267,11 +309,11 @@ def compositional_discovery(
             # create sub-logs
             df_log_agent = df_log[df_log[agent_column] == agent]
 
-            # discover net
+            # discover net. Also have the initial and final markings.
             gwf_agent_net, _, _ = discover(df_log_agent, algorithm, **algorithm_kwargs)
 
-            # get the corresponding interface subset pattern
-            interface_subset_pattern = interface_pattern.get_net(f"A{i}")
+            # get the corresponding interface subset pattern. Also have the initial and final markings.
+            interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i}")
 
             # check if discovered net is a refinement of the interface pattern for Agent Ai
             check_refinement, transformation_list = is_refinement(
@@ -286,14 +328,12 @@ def compositional_discovery(
             )
 
             if check_refinement:
-                # substitute the agent model with the corresponding part in the interface pattern
-                multi_agent_net = replace(
-                    multi_agent_net,
-                    interface_subset_pattern,
-                    gwf_agent_net,
-                )
+                # Note: Repalce functionality: Update the dictionary
+                subnets[f"A{i}"] = gwf_agent_net
 
             # Update progress bar
             pbar.update(1)
+
+    # combine the nets together
 
     return multi_agent_net

@@ -64,6 +64,10 @@ class P1(PlaceTransformation):
         - If p is part of the initial marking, both p1 and p2 must be marked in the new net.
     """
 
+    def __repr__(self) -> str:
+        """String representation of the P1 object."""
+        return "P1"
+
     @staticmethod
     def refine(place: PetriNet.Place, net: PetriNet) -> PetriNet:
         """Apply a Place duplication.
@@ -117,6 +121,10 @@ class P1(PlaceTransformation):
 class P2(TransitionTransformation):
     """P2 Transformation (Transition Duplication)."""
 
+    def __repr__(self) -> str:
+        """String representation of the P2 object."""
+        return "P2"
+
     @staticmethod
     def refine(transition: PetriNet.Transition, net: PetriNet) -> PetriNet:
         """Apply a Transition duplication.
@@ -129,7 +137,7 @@ class P2(TransitionTransformation):
             - PetriNet: The refined Petri Net.
         """
         # Note: if we create a copy of the net, the places are not the same anymore, just the names
-        wanted_transition = get_transition_by_name(net, place_name=transition.name)
+        wanted_transition = get_transition_by_name(net, transition_name=transition.name)
 
         # Note: can't use "place not in net.places:" since we work with a deep copy of the Petri net and the ids are different.
         if wanted_transition is None:
@@ -174,6 +182,10 @@ class P2(TransitionTransformation):
 class P3(PlaceTransformation):
     """P3 Transformation (Local transition introduction)."""
 
+    def __repr__(self) -> str:
+        """String representation of the P3 object."""
+        return "P3"
+
     @staticmethod
     def refine(
         place: PetriNet.Place,
@@ -185,6 +197,9 @@ class P3(PlaceTransformation):
             place (Place): The place to refine.
             transition (Transition): The transition to introduce.
             net (PetriNet): The Petri Net to refine.
+
+        Comments:
+            - We introduce 2 new places and remove the old one instead of just duplicating the place.
 
         Returns:
             - PetriNet: The refined Petri Net.
@@ -198,17 +213,27 @@ class P3(PlaceTransformation):
             raise ValueError(msg)
 
         # Create new places
-        new_place = add_place(net, name=wanted_place.name)
+        new_place1 = add_place(net, name=wanted_place.name)
+        new_place2 = add_place(net, name=wanted_place.name)
 
         # Note: Create a new transition t. t is not labeled with an interacting action.
         new_transition = add_transition(net, label="t")
 
         # Add arcs: p1 to t, and t to p2
-        add_arc_from_to(wanted_place, new_transition, net)
-        add_arc_from_to(new_transition, new_place, net)
+        add_arc_from_to(new_place1, new_transition, net)
+        add_arc_from_to(new_transition, new_place2, net)
+
+        # # Duplicate incoming arcs from the original place to place 1 and remove the original arcs
+        for arc in wanted_place.in_arcs:
+            add_arc_from_to(arc.source, new_place1, net)
+            net.arcs.remove(arc)
 
         for arc in wanted_place.out_arcs:
-            add_arc_from_to(new_place, arc.target, net)
+            add_arc_from_to(new_place2, arc.target, net)
+            net.arcs.remove(arc)
+
+        # Remove the old place from the net
+        net.places.remove(wanted_place)
 
         # What about the marking?
 
@@ -233,6 +258,10 @@ class P3(PlaceTransformation):
 
 class P4(PlaceTransformation):
     """P4 Transformation (Place split)."""
+
+    def __repr__(self) -> str:
+        """String representation of the P4 object."""
+        return "P4"
 
     @staticmethod
     def refine(
@@ -260,7 +289,7 @@ class P4(PlaceTransformation):
         incoming_arcs = list(wanted_place.in_arcs)
 
         # Check if there are enough incoming arcs to split. Otherwise, return the net as it is.
-        if len(incoming_arcs) <= 1:
+        if len(incoming_arcs) > 1:
             return net
 
         # add new place
@@ -270,16 +299,11 @@ class P4(PlaceTransformation):
         split_index = len(incoming_arcs) // 2
 
         # create subsets p1 and p2.
-        in_arcs_p1 = incoming_arcs[:split_index]
-        in_arcs_p2 = incoming_arcs[split_index:]
+        in_arcs = incoming_arcs[:split_index]
 
-        # subset arcs to old place
-        for arc in in_arcs_p1:
-            add_arc_from_to(arc.source, wanted_place, net)
+        # remove arcs from p2 from net, that previously load to p. Add acrs from p2 to net to new place.
+        for arc in in_arcs:
             net.remove_arc(arc)
-
-        # subset arcs to new place
-        for arc in in_arcs_p2:
             add_arc_from_to(arc.source, new_place, net)
 
         # post set of p1, p2 are two complete copies of p -> Duplicate the outgoing arcs

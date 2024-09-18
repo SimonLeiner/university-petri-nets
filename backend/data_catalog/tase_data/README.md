@@ -1,1 +1,0 @@
-# TASE DATA
