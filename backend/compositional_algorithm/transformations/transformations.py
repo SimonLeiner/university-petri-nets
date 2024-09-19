@@ -70,18 +70,22 @@ class P1(PlaceTransformation):
         return "P1"
 
     @staticmethod
-    def refine(place: PetriNet.Place, net: PetriNet) -> PetriNet:
+    def refine(
+        place: PetriNet.Place,
+        net: PetriNet,
+    ) -> PetriNet:
         """Apply a Place duplication.
 
         Args:
             place (Place): The place to duplicate (Given by name).
             net (PetriNet): The Petri Net to refine.
 
+
         Returns:
             - PetriNet: The refined Petri Net.
         """
         # Note: if we create a copy of the net, the places are not the same anymore, just the names
-        wanted_place = P1.get_place_by_name(net, place_name=place.name)
+        wanted_place = BaseTransformation.get_place_by_name(net, place_name=place.name)
 
         # Note: can't use "place not in net.places:" since we work with a deep copy of the Petri net and the ids are different.
         if wanted_place is None:
@@ -99,7 +103,7 @@ class P1(PlaceTransformation):
         for out_arc in wanted_place.out_arcs:
             add_arc_from_to(new_place, out_arc.target, net)
 
-        # What about the marking? -> If p is part of the initial marking, both p1 and p2 must be marked in the new net.
+        # Don't adjust the initial marking
 
         return net
 
@@ -206,7 +210,7 @@ class P3(PlaceTransformation):
             - PetriNet: The refined Petri Net.
         """
         # Note: if we create a copy of the net, the places are not the same anymore, just the names
-        wanted_place = P1.get_place_by_name(net, place_name=place.name)
+        wanted_place = BaseTransformation.get_place_by_name(net, place_name=place.name)
 
         # Note: can't use "place not in net.places:" since we work with a deep copy of the Petri net and the ids are different.
         if wanted_place is None:
@@ -218,7 +222,11 @@ class P3(PlaceTransformation):
         new_place2 = add_place(net, name=wanted_place.name)
 
         # Note: Create a new transition t. t is not labeled with an interacting action.
-        new_transition = add_transition(net, label="t")
+        new_transition = add_transition(
+            net,
+            name="t",
+            label="t",
+        )
 
         # Add arcs: p1 to t, and t to p2
         add_arc_from_to(new_place1, new_transition, net)
@@ -279,7 +287,7 @@ class P4(PlaceTransformation):
             - PetriNet: The refined Petri Net.
         """
         # Note: if we create a copy of the net, the places are not the same anymore, just the names
-        wanted_place = P1.get_place_by_name(net, place_name=place.name)
+        wanted_place = BaseTransformation.get_place_by_name(net, place_name=place.name)
 
         # Note: can't use "place not in net.places:" since we work with a deep copy of the Petri net and the ids are different.
         if wanted_place is None:

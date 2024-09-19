@@ -1,3 +1,6 @@
+from collections import Counter
+
+from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net.utils.petri_utils import add_place
@@ -86,7 +89,7 @@ class MergeNets:
                 remove_transition(net, trans2)
 
     @staticmethod
-    def merge(net1: PetriNet, net2: PetriNet) -> PetriNet:
+    def merge_nets(net1: PetriNet, net2: PetriNet) -> PetriNet:
         """
         Merging two petri nets into one.
 
@@ -105,6 +108,21 @@ class MergeNets:
         MergeNets.connect_sync(merged_net)
 
         return merged_net
+
+    @staticmethod
+    def merge_markings(net1_marking: Marking, net2_marking: Marking) -> Marking:
+        """
+        Merging two Markings into one.
+
+
+        Args:
+            net1_marking (Marking): First Marking.
+            net2_marking (Marking): Second Marking.
+
+        Returns:
+            Marking: Merged Marking.
+        """
+        return Marking(Counter(net1_marking) + Counter(net2_marking))
 
 
 # Control the public API of the module

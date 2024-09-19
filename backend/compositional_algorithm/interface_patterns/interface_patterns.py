@@ -1431,7 +1431,7 @@ class IP12(BaseInterfacePattern):
 
 # List of supported interface patterns
 INTERFACE_PATTERNS: list[BaseInterfacePattern] = [
-    IP1,
+    IP1(),
     IP2,
     IP3,
     IP4,

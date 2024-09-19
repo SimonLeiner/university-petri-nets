@@ -1,4 +1,6 @@
+import hashlib
 import inspect
+import json
 import logging
 from collections import deque
 from pathlib import Path
@@ -69,7 +71,10 @@ def discover(
     return net, initial_marking, final_marking
 
 
-def check_net_valid(current_net: PetriNet, end_net: PetriNet) -> bool:
+def is_valid(
+    current_net: PetriNet,
+    end_net: PetriNet,
+) -> bool:
     """Checks if the net is valid.
 
     Args:
@@ -77,17 +82,56 @@ def check_net_valid(current_net: PetriNet, end_net: PetriNet) -> bool:
         end_net (PetriNet): The target net.
 
     Comment:
-        - Time complexity: O(1)
+        - Time complexity: O(n)
 
     Returns:
         bool: True if the net is valid
     """
-    # only one must be true to violate the condition
-    return (
+    # only a certain number of places, transitions and arcs
+    valid = (
         len(current_net.places) <= len(end_net.places)
         and len(current_net.transitions) <= len(end_net.transitions)
         and len(current_net.arcs) <= len(end_net.arcs)
     )
+
+    # Identify source places (no incoming arcs) and sink places (no outgoing arcs)
+    curr_net_source_places = [
+        place
+        for place in current_net.places
+        if not any(arc.target == place for arc in current_net.arcs)
+    ]
+    end_net_source_places = [
+        place
+        for place in end_net.places
+        if not any(arc.target == place for arc in end_net.arcs)
+    ]
+    curr_net_sink_places = [
+        place
+        for place in current_net.places
+        if not any(arc.source == place for arc in current_net.arcs)
+    ]
+    end_net_sink_places = [
+        place
+        for place in end_net.places
+        if not any(arc.source == place for arc in end_net.arcs)
+    ]
+    valid = (
+        valid
+        and len(curr_net_source_places) <= len(end_net_source_places)
+        and len(curr_net_sink_places) <= len(end_net_sink_places)
+    )
+
+    # it is highly unlikely to apply a place or transformation split 10 times in a row, wo we prune them from the tree as well
+    max_same = 5
+    place_names = [place.name for place in current_net.places]
+    transition_names = [transition.name for transition in current_net.transitions]
+    all_names = place_names + transition_names
+    name_count = {name: all_names.count(name) for name in set(all_names)}
+    for count in name_count.values():
+        if count > max_same:
+            valid = False
+
+    return valid
 
 
 def convert_petri_net_to_networkx(petri_net: PetriNet) -> nx.DiGraph:
@@ -157,7 +201,9 @@ def is_refinement(  # noqa: C901
 
     Comments:
         - We use BFS to find a sequence of transformations that transforms the input net into the target net.
-        - TODO: We copy the nets so we apply one one sequence at a time. Is it legit to apply them also in parallel? -> Speed up?
+        - We copy the nets so we apply one one sequence at a time.
+        - It is not legit to apply multiple transformations at the same time -> Nets immediately explode without search.
+        - Time complexity: O()
 
     Returns:
         bool: True if the agent GWF-net is a refinement of the corresponding part in the interface pattern.
@@ -185,7 +231,7 @@ def is_refinement(  # noqa: C901
 
     # Initialize the set of visited states
     visited = set()
-    visited.add(id(first_net))
+    visited.add(generate_unique_id(first_net))
 
     # as long as there is an element in the queue
     with tqdm(total=None, desc="Processing Queue") as pbar:
@@ -195,8 +241,10 @@ def is_refinement(  # noqa: C901
 
             # dequeue the first element in the queue
             current_net, transformation_sequence = queue.popleft()
-            logging.info(f"Petri Net after {transformation_sequence}.")
-            view_petri_net(current_net)
+
+            """# plotting of discovered net
+            logging.info("Discovering new net.")
+            view_petri_net(current_net, format="png")"""
 
             # Note: branching logic: we need to apply all possible transformations
             # for each place in the current net
@@ -206,9 +254,13 @@ def is_refinement(  # noqa: C901
                     # Note: Deep copy of the current net before applying the transformation -> transformation change places & transitions and sets are immutable.
                     net_copy = current_net.__deepcopy__()
                     transformed_net = place_transformation.refine(place, net_copy)
+                    unique_net_id = generate_unique_id(transformed_net)
 
                     # check if the new net is the one we are looking for
-                    if check_net_valid(transformed_net, final_end_net):
+                    if unique_net_id not in visited and is_valid(
+                        transformed_net,
+                        final_end_net,
+                    ):
                         if is_isomorphic(transformed_net, final_end_net):
                             transformation_sequence.append(
                                 (place_transformation, place),
@@ -229,7 +281,7 @@ def is_refinement(  # noqa: C901
                             ),
                         )
                         # add the new net to the visited set
-                        visited.add(id(transformed_net))
+                        visited.add(unique_net_id)
 
             # for each transition in the current net
             for transition in current_net.transitions:
@@ -237,13 +289,20 @@ def is_refinement(  # noqa: C901
                 for transition_transformation in transition_transformations:
                     # Note: ensures that subsequent transformations are applied to a fresh instance of the net.
                     net_copy = current_net.__deepcopy__()
+
+                    # create a new net
                     transformed_net = transition_transformation.refine(
                         transition,
                         net_copy,
                     )
+                    # generate a unique id for the new net
+                    unique_net_id = generate_unique_id(transformed_net)
 
                     # check if the new net is the one we are looking for
-                    if check_net_valid(transformed_net, final_end_net):
+                    if unique_net_id not in visited and is_valid(
+                        transformed_net,
+                        final_end_net,
+                    ):
                         if is_isomorphic(transformed_net, final_end_net):
                             transformation_sequence.append(
                                 (transition_transformation, transition),
@@ -264,11 +323,57 @@ def is_refinement(  # noqa: C901
                             ),
                         )
                     # add the new net to the visited set
-                    visited.add(id(transformed_net))
+                    visited.add(unique_net_id)
 
     # If no sequence of transformations leads to the target net
     logging.info("No sequence of transformations leads to the target net.")
     return False, []
+
+
+def get_canonical_representation(petri_net: PetriNet) -> str:
+    """
+    Converts the Petri net to a canonical string representation.
+
+    Args:
+        petri_net (PetriNet): The Petri net object.
+
+    Returns:
+        str: Canonical string representation of the Petri net.
+    """
+    # Extract places, transitions, and arcs
+    places = sorted(petri_net.places, key=lambda p: p.name)
+    transitions = sorted(petri_net.transitions, key=lambda t: t.name)
+    arcs = sorted((arc.source.name, arc.target.name) for arc in petri_net.arcs)
+
+    # Create a dictionary with sorted elements
+    net_representation = {
+        "places": [place.name for place in places],
+        "transitions": [trans.name for trans in transitions],
+        "arcs": arcs,
+    }
+
+    # Convert dictionary to a JSON string
+    return json.dumps(net_representation, separators=(",", ":"), sort_keys=True)
+
+
+def generate_unique_id(petri_net: PetriNet) -> str:
+    """
+    Generates a unique identifier for the given Petri net.
+
+    Args:
+        petri_net (PetriNet): The Petri net object.
+
+    Comments:
+        - If you deepcopies the net, the memory id is not the same anymore
+
+    Returns:
+        str: Unique identifier for the Petri net.
+    """
+    # Get the canonical representation of the Petri net
+    canonical_representation = get_canonical_representation(petri_net)
+
+    # Generate a hash of the canonical representation
+    return hashlib.sha256(canonical_representation.encode("utf-8")).hexdigest()
 
 
 def replace() -> None:
@@ -313,11 +418,8 @@ def compositional_discovery(
 
     # Note: No Replace. Build Late -> dict to store the discovered nets for each agent
     subnets = {}
-    for i in range(1, unique_agents + 1):
-        # get the corresponding interface subset pattern. Also have the initial and final markings.
-        interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i}")
-        subnets[f"A{i}"] = interface_subset_pattern
 
+    # Itherate through the agents
     with tqdm(total=len(unique_agents), desc="Processing Agents") as pbar:
         # for each agent in the event log
         for i, agent in enumerate(unique_agents):
@@ -325,7 +427,7 @@ def compositional_discovery(
             df_log_agent = df_log[df_log[agent_column] == agent]
 
             # create a path to save the log file
-            modified_log_path = Path(directory) / f"agent_{i}_{filename}"
+            modified_log_path = Path(directory) / f"agent_{i+1}_{filename}"
             write_xes(df_log_agent, modified_log_path)
 
             # discover net. Also have the initial and final markings.
@@ -335,13 +437,18 @@ def compositional_discovery(
                 **algorithm_kwargs,
             )
 
+            # plotting of discovered net
+            logging.info(f"Discovered net for Agent {agent}")
+            view_petri_net(gwf_agent_net)
+
             # get the corresponding interface subset pattern. Also have the initial and final markings.
-            interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i}")
+            interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i+1}")
+            subnets[f"A{i}"] = interface_subset_pattern
 
             # check if discovered net is a refinement of the interface pattern for Agent Ai
             check_refinement, transformation_list = is_refinement(
-                gwf_agent_net,
                 interface_subset_pattern,
+                gwf_agent_net,
                 transformations,
             )
 
@@ -352,7 +459,7 @@ def compositional_discovery(
 
             if check_refinement:
                 # Note: Repalce functionality: Update the dictionary
-                subnets[f"A{i}"] = gwf_agent_net
+                subnets[f"A{i+1}"] = gwf_agent_net
 
             # Update progress bar
             pbar.update(1)
