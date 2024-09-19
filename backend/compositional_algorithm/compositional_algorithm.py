@@ -70,8 +70,36 @@ def discover(
     net, initial_marking, final_marking = algorithm(log_input, **algorithm_kwargs)
     return net, initial_marking, final_marking
 
+# TODO:
+def is_transformation_valid(
+    transformation_seq_element: tuple[
+        BaseTransformation,
+        PetriNet.Place | PetriNet.Transition,
+    ],
+    transformation_sequence: list[
+        tuple[BaseTransformation, PetriNet.Place | PetriNet.Transition]
+    ],
+) -> bool:
+    """Checks if the transformation is valid.
 
-def is_valid(
+    Args:
+        transformation_seq_element (BaseTransformation): The transformation to check.
+        transformation_sequence (list): The sequence of transformations.
+
+    Comment:
+        - Time complexity: O(n), since transformation_sequence is a list
+
+    Returns:
+        bool: True if the transformation is valid.
+    """
+    # we only want to a allow a transformation to be applied one at a certain place or transition
+    if transformation_seq_element in transformation_sequence:
+        print(transformation_seq_element)
+        print(transformation_sequence)
+    return  transformation_seq_element not in transformation_sequence
+
+
+def is_net_valid(  # noqa: C901
     current_net: PetriNet,
     end_net: PetriNet,
 ) -> bool:
@@ -87,12 +115,7 @@ def is_valid(
     Returns:
         bool: True if the net is valid
     """
-    # only a certain number of places, transitions and arcs
-    valid = (
-        len(current_net.places) <= len(end_net.places)
-        and len(current_net.transitions) <= len(end_net.transitions)
-        and len(current_net.arcs) <= len(end_net.arcs)
-    )
+    valid = True
 
     # Identify source places (no incoming arcs) and sink places (no outgoing arcs)
     curr_net_source_places = [
@@ -121,17 +144,59 @@ def is_valid(
         and len(curr_net_sink_places) <= len(end_net_sink_places)
     )
 
-    # it is highly unlikely to apply a place or transformation split 10 times in a row, wo we prune them from the tree as well
-    max_same = 5
+    # it is highly unlikely to apply a place or transformation split 10 times in a row, so we prune them from the tree as well
+    """max_same = 4
     place_names = [place.name for place in current_net.places]
     transition_names = [transition.name for transition in current_net.transitions]
     all_names = place_names + transition_names
     name_count = {name: all_names.count(name) for name in set(all_names)}
     for count in name_count.values():
         if count > max_same:
-            valid = False
+            valid = False"""
 
-    return valid
+    # Check the maximum number of outgoing arcs per transition and maximum number of incoming arcs per place
+    max_out_arcs_per_transition = 4
+    max_in_arcs_per_place = 4
+
+    # place out arcs is the same as place in arcs
+    transition_out_arcs = {transition: 0 for transition in current_net.transitions}
+    place_in_arcs = {place: 0 for place in current_net.places}
+    place_out_arcs = {place: 0 for place in current_net.places}
+
+    for arc in current_net.arcs:
+        if isinstance(arc.source, PetriNet.Transition):
+            transition_out_arcs[arc.source] += 1
+        if isinstance(arc.target, PetriNet.Place):
+            place_in_arcs[arc.target] += 1
+        if isinstance(arc.source, PetriNet.Place):
+            place_out_arcs[arc.source] += 1
+        if isinstance(arc.target, PetriNet.Transition):
+            # Transition incoming arcs are not directly counted, they are accounted by the target being a transition
+            pass
+
+    for out_arcs in transition_out_arcs.values():
+        if out_arcs > max_out_arcs_per_transition:
+            valid = False
+            break
+
+    for in_arcs in place_in_arcs.values():
+        if in_arcs > max_in_arcs_per_place:
+            valid = False
+            break
+
+    # temination factor
+    still_valid = (
+        len(current_net.places) <= len(end_net.places)
+        and len(current_net.transitions) <= len(end_net.transitions)
+        and len(current_net.arcs) <= len(end_net.arcs)
+    )
+    if not still_valid:
+        logging.info(
+            f"The net has to many places, transitions or arcs ({len(current_net.places)} vs. {len(end_net.places)} places, {len(current_net.transitions)} vs. {len(end_net.transitions)} transitions, {len(current_net.arcs)} vs. {len(end_net.arcs)} arcs).",
+        )
+
+    # only a certain number of places, transitions and arcs
+    return valid and still_valid
 
 
 def convert_petri_net_to_networkx(petri_net: PetriNet) -> nx.DiGraph:
@@ -233,6 +298,9 @@ def is_refinement(  # noqa: C901
     visited = set()
     visited.add(generate_unique_id(first_net))
 
+    # counter for plotting
+    counter = 0
+
     # as long as there is an element in the queue
     with tqdm(total=None, desc="Processing Queue") as pbar:
         while queue:
@@ -242,9 +310,12 @@ def is_refinement(  # noqa: C901
             # dequeue the first element in the queue
             current_net, transformation_sequence = queue.popleft()
 
-            """# plotting of discovered net
-            logging.info("Discovering new net.")
-            view_petri_net(current_net, format="png")"""
+            # plotting of discovered net every 1000 iterations
+            if counter % 500 == 0:
+                logging.info(
+                    f"Discovering new net ({len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
+                )
+                view_petri_net(current_net, format="png")
 
             # Note: branching logic: we need to apply all possible transformations
             # for each place in the current net
@@ -255,15 +326,23 @@ def is_refinement(  # noqa: C901
                     net_copy = current_net.__deepcopy__()
                     transformed_net = place_transformation.refine(place, net_copy)
                     unique_net_id = generate_unique_id(transformed_net)
+                    transformation_sequence_element = (place_transformation, place)
 
                     # check if the new net is the one we are looking for
-                    if unique_net_id not in visited and is_valid(
-                        transformed_net,
-                        final_end_net,
+                    if (
+                        unique_net_id not in visited
+                        and is_transformation_valid(
+                            transformation_sequence_element,
+                            transformation_sequence,
+                        )
+                        and is_net_valid(
+                            transformed_net,
+                            final_end_net,
+                        )
                     ):
                         if is_isomorphic(transformed_net, final_end_net):
                             transformation_sequence.append(
-                                (place_transformation, place),
+                                transformation_sequence_element,
                             )
                             logging.info(
                                 f"The nets are isomorphic (P) after {transformation_sequence}.",
@@ -276,7 +355,7 @@ def is_refinement(  # noqa: C901
                                 transformed_net,
                                 [
                                     *transformation_sequence,
-                                    (place_transformation, place),
+                                    transformation_sequence_element,
                                 ],
                             ),
                         )
@@ -295,17 +374,27 @@ def is_refinement(  # noqa: C901
                         transition,
                         net_copy,
                     )
-                    # generate a unique id for the new net
                     unique_net_id = generate_unique_id(transformed_net)
+                    transformation_sequence_element = (
+                        transition_transformation,
+                        transition,
+                    )
 
                     # check if the new net is the one we are looking for
-                    if unique_net_id not in visited and is_valid(
-                        transformed_net,
-                        final_end_net,
+                    if (
+                        unique_net_id not in visited
+                        and is_transformation_valid(
+                            transformation_sequence_element,
+                            transformation_sequence,
+                        )
+                        and is_net_valid(
+                            transformed_net,
+                            final_end_net,
+                        )
                     ):
                         if is_isomorphic(transformed_net, final_end_net):
                             transformation_sequence.append(
-                                (transition_transformation, transition),
+                                transformation_sequence_element,
                             )
                             logging.info(
                                 f"The nets are isomorphic (T) after {transformation_sequence}.",
@@ -318,15 +407,22 @@ def is_refinement(  # noqa: C901
                                 transformed_net,
                                 [
                                     *transformation_sequence,
-                                    (transition_transformation, transition),
+                                    transformation_sequence_element,
                                 ],
                             ),
                         )
                     # add the new net to the visited set
                     visited.add(unique_net_id)
 
+            # Update counter
+            counter += 1
+
     # If no sequence of transformations leads to the target net
     logging.info("No sequence of transformations leads to the target net.")
+    logging.info(
+        f"Last net ({len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
+    )
+    view_petri_net(current_net)
     return False, []
 
 
@@ -438,7 +534,9 @@ def compositional_discovery(
             )
 
             # plotting of discovered net
-            logging.info(f"Discovered net for Agent {agent}")
+            logging.info(
+                f"Discovered net for Agent {agent} ({len(gwf_agent_net.places)} places, {len(gwf_agent_net.transitions)} transitions, {len(gwf_agent_net.arcs)} arcs).",
+            )
             view_petri_net(gwf_agent_net)
 
             # get the corresponding interface subset pattern. Also have the initial and final markings.
@@ -468,9 +566,12 @@ def compositional_discovery(
     multi_agent_net = subnets["A1"].__deepcopy__()
     for i in range(2, len(subnets)):
         copy_net = subnets[f"A{i}"].__deepcopy__()
-        multi_agent_net = MergeNets.merge(multi_agent_net, copy_net)
+        multi_agent_net = MergeNets.merge_nets(multi_agent_net, copy_net)
 
     # final plotting
+    logging.info(
+        f"Discovered compositional net ({len(gwf_agent_net.places)} places, {len(gwf_agent_net.transitions)} transitions, {len(gwf_agent_net.arcs)} arcs).",
+    )
     view_petri_net(multi_agent_net)
 
     return multi_agent_net
