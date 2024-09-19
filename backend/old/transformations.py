@@ -7,6 +7,34 @@ from pm4py.objects.petri_net.utils.petri_utils import add_place
 from pm4py.objects.petri_net.utils.petri_utils import add_transition
 
 
+"""# Make a deep copy of the original net
+multiple_refined_net = ip1_net_a1.__deepcopy__()
+
+# Apply each transformation sequentially
+for transformation in place_transformations:
+    new_multiple_refined_net = multiple_refined_net.__deepcopy__()
+    for place in multiple_refined_net.places:
+        new_multiple_refined_net = transformation.refine(
+            place,
+            new_multiple_refined_net,
+        )
+    # Update multiple_refined_net to the latest transformed net
+    multiple_refined_net = new_multiple_refined_net
+
+# Apply each transformation sequentially
+for transformation in transition_transformations:
+    new_multiple_refined_net = multiple_refined_net.__deepcopy__()
+    for transition in multiple_refined_net.transitions:
+        new_multiple_refined_net = transformation.refine(
+            transition,
+            new_multiple_refined_net,
+        )
+    # Update multiple_refined_net to the latest transformed net
+    multiple_refined_net = new_multiple_refined_net
+
+pm4py.view_petri_net(multiple_refined_net, initial_marking, final_marking, format="png")"""
+
+
 class BaseTransformation(metaclass=ABCMeta):
     """Abstract base class for Transformations."""
 
@@ -354,9 +382,7 @@ class P4(PlaceTransformation):
         # Duplicate the incoming arcs
         # Systematically split the incoming arcs
         # Add incoming arcs to p1 and p2
-        split_index = (
-            len(incoming_arcs) // 2
-        )
+        split_index = len(incoming_arcs) // 2
         in_arcs_p1 = incoming_arcs[:split_index]
         in_arcs_p2 = incoming_arcs[split_index:]
         for arc in in_arcs_p1:

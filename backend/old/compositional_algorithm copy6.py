@@ -2,7 +2,7 @@ import hashlib
 import inspect
 import json
 import logging
-from collections import PriorityQueue
+from collections import deque
 from pathlib import Path
 
 import networkx as nx
@@ -215,41 +215,7 @@ def is_isomorphic(net1: PetriNet, net2: PetriNet) -> bool:
     return isomorphism.DiGraphMatcher(netx_petri_net1, netx_petri_net2).is_isomorphic()
 
 
-def priority_identifier(net1: PetriNet, net2: PetriNet) -> float:
-    """Calculates the priority of the Petri nets.
-
-    Args:
-        net1 (PetriNet): The first Petri net.
-        net2 (PetriNet): The second Petri net.
-
-    Comments:
-        - Minimize Distance between nets. The more negative the value, the more similar the nets are.
-        - Transitions are more important than places.
-
-    Returns:
-        float: The priority of the Petri nets.
-    """
-    # transformation difference (total number of transformations)
-    # trans_diff = 1
-
-    # place difference (total number of places)
-
-    # arcs difference (total number of arcs)
-
-    # Convert pm4py Petri nets to networkx graphs
-    netx_petri_net1 = convert_petri_net_to_networkx(net1)
-    netx_petri_net2 = convert_petri_net_to_networkx(net2)
-
-    # Use networkx's optimize_graph_edit_distance function
-    for v in nx.optimize_graph_edit_distance(netx_petri_net1, netx_petri_net2):
-        minv = v
-
-    print(-minv)
-
-    return -minv
-
-
-def is_refinement(  # noqa: C901
+def is_refinement(
     begin_net: PetriNet,
     end_net: PetriNet,
     transformations: list[BaseTransformation],
@@ -265,22 +231,12 @@ def is_refinement(  # noqa: C901
         - We use BFS to find a sequence of transformations that transforms the input net into the target net.
         - We copy the nets so we apply one one sequence at a time.
         - It is not legit to apply multiple transformations at the same time -> Nets immediately explode without search.
-        - Go through transformations first and first place transition is p1 for best performance.
-        - Use Min-heap, meaning it always retrieves the smallest item based on the priority value as queue implementation for faster search.
         - Time complexity: O()
 
     Returns:
         bool: True if the agent GWF-net is a refinement of the corresponding part in the interface pattern.
         list: The sequence of transformations that lead to the target
     """
-    # split in place and transition transformations
-    place_transformations = [
-        t for t in transformations if isinstance(t(), PlaceTransformation)
-    ]
-    transition_transformations = [
-        t for t in transformations if isinstance(t(), TransitionTransformation)
-    ]
-
     # create a deep copy of the begin_net
     first_net = begin_net.__deepcopy__()
     final_end_net = end_net.__deepcopy__()
@@ -290,14 +246,8 @@ def is_refinement(  # noqa: C901
         logging.info("The nets are initially isomorphic.")
         return True, []
 
-    # Handle empty transformations list
-    if not place_transformations and not transition_transformations:
-        logging.info("No transformations provided.")
-        return False, []
-
-    # Create a queue for BFS and add the initial net.
-    priority_queue = PriorityQueue()
-    priority_queue.put((priority_identifier(first_net, final_end_net), first_net, []))
+    # Create a queue for BFS and add the initial net
+    queue = deque([(first_net, [])])
 
     # Initialize the set of visited states
     visited = set()
@@ -308,73 +258,38 @@ def is_refinement(  # noqa: C901
 
     # as long as there is an element in the queue
     with tqdm(total=None, desc="Processing Queue") as pbar:
-        while priority_queue:
+        while queue:
             # Update progress bar
             pbar.update(1)
 
             # dequeue the first element in the queue
-            _, current_net, transformation_sequence = priority_queue.get()
+            current_net, transformation_sequence = queue.popleft()
 
             # plotting of discovered net every 1000 iterations
-            if counter % 1000 == 0:
+            if counter % 5000 == 0:
                 logging.info(
                     f"Discovering new net ({len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
                 )
                 view_petri_net(current_net, format="png")
 
-            # for each transition in the current net
-            for transition in current_net.transitions:
-                # apply each possible transition transformation
-                for transition_transformation in transition_transformations:
-                    # Note: ensures that subsequent transformations are applied to a fresh instance of the net.
-                    net_copy = current_net.__deepcopy__()
-                    transformed_net = transition_transformation.refine(
-                        transition,
-                        net_copy,
-                    )
-                    unique_net_id = generate_unique_id(transformed_net)
-                    transformation_sequence_element = (
-                        transition_transformation,
-                        transition,
-                    )
-
-                    # check if the new net is the one we are looking for
-                    if unique_net_id not in visited and is_net_valid(
-                        transformed_net,
-                        final_end_net,
-                    ):
-                        if is_isomorphic(transformed_net, final_end_net):
-                            transformation_sequence.append(
-                                transformation_sequence_element,
-                            )
-                            logging.info(
-                                f"The nets are isomorphic (T) after {transformation_sequence}.",
-                            )
-                            return True, transformation_sequence
-                        # if not, add the new net to the queue and save what transformation was applied
-                        priority_queue.put(
-                            (
-                                priority_identifier(transformed_net, final_end_net),
-                                transformed_net,
-                                [
-                                    *transformation_sequence,
-                                    transformation_sequence_element,
-                                ],
-                            ),
-                        )
-                        # add the new net to the visited set
-                        visited.add(unique_net_id)
-
             # Note: branching logic: we need to apply all possible transformations
-            # for each place in the current net
-            for place in current_net.places:
+            # for each element in the graph (transition and places)
+            elements = list(current_net.places) + list(current_net.transitions)
+            for element in elements:
                 # apply each possible place transformation
-                for place_transformation in place_transformations:
+                for transformation in transformations:
                     # Note: Deep copy of the current net before applying the transformation -> transformation change places & transitions and sets are immutable.
                     net_copy = current_net.__deepcopy__()
-                    transformed_net = place_transformation.refine(place, net_copy)
-                    unique_net_id = generate_unique_id(transformed_net)
-                    transformation_sequence_element = (place_transformation, place)
+                    if (
+                        isinstance(element, PetriNet.Place)
+                        and isinstance(transformation(), PlaceTransformation)
+                    ) or (
+                        isinstance(element, PetriNet.Transition)
+                        and isinstance(transformation(), TransitionTransformation)
+                    ):
+                        transformed_net = transformation.refine(element, net_copy)
+                        unique_net_id = generate_unique_id(transformed_net)
+                        transformation_sequence_element = (transformation, element)
 
                     # check if the new net is the one we are looking for
                     if unique_net_id not in visited and is_net_valid(
@@ -390,9 +305,8 @@ def is_refinement(  # noqa: C901
                             )
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
-                        priority_queue.put(
+                        queue.append(
                             (
-                                priority_identifier(transformed_net, final_end_net),
                                 transformed_net,
                                 [
                                     *transformation_sequence,

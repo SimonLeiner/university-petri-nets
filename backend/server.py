@@ -3,21 +3,22 @@ import os
 from io import BytesIO
 from pathlib import Path
 
-from compositional_algorithm.compositional_algorithm import compositional_discovery
-from compositional_algorithm.interface_patterns.interface_patterns import (
-    INTERFACE_PATTERNS,
-)
-from compositional_algorithm.transformations.transformations import TRANSFORMATIONS
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
-from models import AlgorithmModel
-from models import InterfaceModel
 from pm4py import read_xes
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+
+from compositional_algorithm.compositional_algorithm import compositional_discovery
+from compositional_algorithm.interface_patterns.interface_patterns import (
+    INTERFACE_PATTERNS,
+)
+from compositional_algorithm.transformations.transformations import TRANSFORMATIONS
+from models import AlgorithmModel
+from models import InterfaceModel
 
 
 # Load environment variables from .env file
@@ -60,7 +61,7 @@ async def discover_process(
         # select wich algorithm to use
         algo_name = algorithm_choice
         if algo_name == "inductive":
-            algo_to_use = inductive_miner.apply
+            algo_to_use = inductive_miner.apply # noise_threshold=0.2
         # TODO: implement split miner
         elif algo_name == "split":
             algo_to_use = "split_miner"

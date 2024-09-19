@@ -2,7 +2,7 @@ import hashlib
 import inspect
 import json
 import logging
-from collections import PriorityQueue
+from collections import deque
 from pathlib import Path
 
 import networkx as nx
@@ -215,40 +215,6 @@ def is_isomorphic(net1: PetriNet, net2: PetriNet) -> bool:
     return isomorphism.DiGraphMatcher(netx_petri_net1, netx_petri_net2).is_isomorphic()
 
 
-def priority_identifier(net1: PetriNet, net2: PetriNet) -> float:
-    """Calculates the priority of the Petri nets.
-
-    Args:
-        net1 (PetriNet): The first Petri net.
-        net2 (PetriNet): The second Petri net.
-
-    Comments:
-        - Minimize Distance between nets. The more negative the value, the more similar the nets are.
-        - Transitions are more important than places.
-
-    Returns:
-        float: The priority of the Petri nets.
-    """
-    # transformation difference (total number of transformations)
-    # trans_diff = 1
-
-    # place difference (total number of places)
-
-    # arcs difference (total number of arcs)
-
-    # Convert pm4py Petri nets to networkx graphs
-    netx_petri_net1 = convert_petri_net_to_networkx(net1)
-    netx_petri_net2 = convert_petri_net_to_networkx(net2)
-
-    # Use networkx's optimize_graph_edit_distance function
-    for v in nx.optimize_graph_edit_distance(netx_petri_net1, netx_petri_net2):
-        minv = v
-
-    print(-minv)
-
-    return -minv
-
-
 def is_refinement(  # noqa: C901
     begin_net: PetriNet,
     end_net: PetriNet,
@@ -266,7 +232,6 @@ def is_refinement(  # noqa: C901
         - We copy the nets so we apply one one sequence at a time.
         - It is not legit to apply multiple transformations at the same time -> Nets immediately explode without search.
         - Go through transformations first and first place transition is p1 for best performance.
-        - Use Min-heap, meaning it always retrieves the smallest item based on the priority value as queue implementation for faster search.
         - Time complexity: O()
 
     Returns:
@@ -295,9 +260,8 @@ def is_refinement(  # noqa: C901
         logging.info("No transformations provided.")
         return False, []
 
-    # Create a queue for BFS and add the initial net.
-    priority_queue = PriorityQueue()
-    priority_queue.put((priority_identifier(first_net, final_end_net), first_net, []))
+    # Create a queue for BFS and add the initial net
+    queue = deque([(first_net, [])])
 
     # Initialize the set of visited states
     visited = set()
@@ -308,12 +272,12 @@ def is_refinement(  # noqa: C901
 
     # as long as there is an element in the queue
     with tqdm(total=None, desc="Processing Queue") as pbar:
-        while priority_queue:
+        while queue:
             # Update progress bar
             pbar.update(1)
 
             # dequeue the first element in the queue
-            _, current_net, transformation_sequence = priority_queue.get()
+            current_net, transformation_sequence = queue.popleft()
 
             # plotting of discovered net every 1000 iterations
             if counter % 1000 == 0:
@@ -352,9 +316,8 @@ def is_refinement(  # noqa: C901
                             )
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
-                        priority_queue.put(
+                        queue.append(
                             (
-                                priority_identifier(transformed_net, final_end_net),
                                 transformed_net,
                                 [
                                     *transformation_sequence,
@@ -362,8 +325,8 @@ def is_refinement(  # noqa: C901
                                 ],
                             ),
                         )
-                        # add the new net to the visited set
-                        visited.add(unique_net_id)
+                    # add the new net to the visited set
+                    visited.add(unique_net_id)
 
             # Note: branching logic: we need to apply all possible transformations
             # for each place in the current net
@@ -390,9 +353,8 @@ def is_refinement(  # noqa: C901
                             )
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
-                        priority_queue.put(
+                        queue.append(
                             (
-                                priority_identifier(transformed_net, final_end_net),
                                 transformed_net,
                                 [
                                     *transformation_sequence,

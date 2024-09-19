@@ -93,7 +93,8 @@ class P1(PlaceTransformation):
             raise ValueError(msg)
 
         # Create a new place
-        new_place = add_place(net, name=wanted_place.name)
+        # new_place = add_place(net, name=wanted_place.name)
+        new_place = add_place(net, name=f"{wanted_place.name}_{len(net.places)!s}")
 
         # Adjust incoming arcs
         for in_arc in wanted_place.in_arcs:
@@ -150,10 +151,15 @@ class P2(TransitionTransformation):
             raise ValueError(msg)
 
         # Create a new transition: t1 and t2 have the same label as t
+        # new_transition = add_transition(
+        #     net,
+        #     name=transition.name,
+        #     label=transition.label,
+        # )
         new_transition = add_transition(
             net,
-            name=transition.name,
-            label=transition.label,
+            name=f"{transition.name}_{len(net.transitions)!s}",
+            label=f"{transition.label}_{len(net.transitions)!s}",
         )
 
         # Adjust incoming arcs
@@ -218,14 +224,21 @@ class P3(PlaceTransformation):
             raise ValueError(msg)
 
         # Create new places
-        new_place1 = add_place(net, name=wanted_place.name)
-        new_place2 = add_place(net, name=wanted_place.name)
+        # new_place1 = add_place(net, name=wanted_place.name)
+        # new_place2 = add_place(net, name=wanted_place.name)
+        new_place1 = add_place(net, name=f"{wanted_place.name}_{len(net.places)!s}")
+        new_place2 = add_place(net, name=f"{wanted_place.name}_{len(net.places)+1!s}")
 
         # Note: Create a new transition t. t is not labeled with an interacting action.
+        # new_transition = add_transition(
+        #     net,
+        #     name="t",
+        #     label="t",
+        # )
         new_transition = add_transition(
             net,
-            name="t",
-            label="t",
+            name=f"t_{len(net.transitions)!s}",
+            label=f"t_{len(net.transitions)!s}",
         )
 
         # Add arcs: p1 to t, and t to p2
@@ -302,7 +315,8 @@ class P4(PlaceTransformation):
             return net
 
         # add new place
-        new_place = add_place(net, wanted_place.name)
+        # new_place = add_place(net, wanted_place.name)
+        new_place = add_place(net, f"{wanted_place.name}_{len(net.places)!s}")
 
         # Systematically split the incoming arcs. For example, if there are 2 incoming arcs, split_index = 1
         split_index = len(incoming_arcs) // 2
