@@ -2,8 +2,9 @@ import hashlib
 import inspect
 import json
 import logging
-from collections import PriorityQueue
+import time
 from pathlib import Path
+from queue import PriorityQueue
 
 import networkx as nx
 from networkx.algorithms import isomorphism
@@ -215,7 +216,7 @@ def is_isomorphic(net1: PetriNet, net2: PetriNet) -> bool:
     return isomorphism.DiGraphMatcher(netx_petri_net1, netx_petri_net2).is_isomorphic()
 
 
-def priority_identifier(net1: PetriNet, net2: PetriNet) -> float:
+def priority_identifier(net1: PetriNet, net2: PetriNet) -> int:
     """Calculates the priority of the Petri nets.
 
     Args:
@@ -227,26 +228,27 @@ def priority_identifier(net1: PetriNet, net2: PetriNet) -> float:
         - Transitions are more important than places.
 
     Returns:
-        float: The priority of the Petri nets.
+        int: The priority of the Petri nets.
     """
     # transformation difference (total number of transformations)
-    # trans_diff = 1
+    transitions_net1 = len(net1.transitions)
+    transitions_net2 = len(net2.transitions)
+    transition_diff = abs(transitions_net1 - transitions_net2)
 
     # place difference (total number of places)
+    places_net1 = len(net1.places)
+    places_net2 = len(net2.places)
+    place_diff = abs(places_net1 - places_net2)
 
     # arcs difference (total number of arcs)
+    arcs_net1 = len(net1.arcs)
+    arcs_net2 = len(net2.arcs)
+    arcs_diff = abs(arcs_net1 - arcs_net2)
 
-    # Convert pm4py Petri nets to networkx graphs
-    netx_petri_net1 = convert_petri_net_to_networkx(net1)
-    netx_petri_net2 = convert_petri_net_to_networkx(net2)
+    # Get the current time since the epoch in milliseconds
+    unique_offset = int(time.time() * 1000000000) % 1000000 * 1e-9
 
-    # Use networkx's optimize_graph_edit_distance function
-    for v in nx.optimize_graph_edit_distance(netx_petri_net1, netx_petri_net2):
-        minv = v
-
-    print(-minv)
-
-    return -minv
+    return 3 * transition_diff + place_diff + arcs_diff + unique_offset
 
 
 def is_refinement(  # noqa: C901
@@ -313,12 +315,12 @@ def is_refinement(  # noqa: C901
             pbar.update(1)
 
             # dequeue the first element in the queue
-            _, current_net, transformation_sequence = priority_queue.get()
+            priority, current_net, transformation_sequence = priority_queue.get()
 
             # plotting of discovered net every 1000 iterations
             if counter % 1000 == 0:
                 logging.info(
-                    f"Discovering new net ({len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
+                    f"Discovering new net ({int(priority)} priority, {len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
                 )
                 view_petri_net(current_net, format="png")
 
