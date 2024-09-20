@@ -15,17 +15,17 @@ from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.obj import PetriNet
 from tqdm import tqdm
 
-from backend.compositional_algorithm.combine_nets.combine_nets import MergeNets
-from backend.compositional_algorithm.interface_patterns.interface_patterns import (
+from compositional_algorithm.combine_nets.combine_nets import MergeNets
+from compositional_algorithm.interface_patterns.interface_patterns import (
     BaseInterfacePattern,
 )
-from backend.compositional_algorithm.transformations.transformations import (
+from compositional_algorithm.transformations.transformations import (
     BaseTransformation,
 )
-from backend.compositional_algorithm.transformations.transformations import (
+from compositional_algorithm.transformations.transformations import (
     PlaceTransformation,
 )
-from backend.compositional_algorithm.transformations.transformations import (
+from compositional_algorithm.transformations.transformations import (
     TransitionTransformation,
 )
 
@@ -66,7 +66,7 @@ def discover(
 
     # Note: check based on what the discover algorithm expects
     # Split miner needs input path
-    if isinstance(first_param.annotation, str):
+    if first_param.annotation is str:
         # keep it as it is
         log_input = input_log_path
     else:

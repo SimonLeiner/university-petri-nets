@@ -46,6 +46,11 @@ app.add_middleware(
 UPLOAD_DIR = "data_catalog/uploads"
 Path(UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
 
+# Define the root route
+@app.get("/")
+async def read_root():
+    return {"message": "Hello, World!"}
+
 
 @app.post("/discover/")
 async def discover_process(

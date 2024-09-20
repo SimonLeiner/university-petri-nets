@@ -1,20 +1,46 @@
 import subprocess
-
+import os
+import time
+from pm4py import convert_to_petri_net, read_bpmn
+from pathlib import Path
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.obj import PetriNet
 
 def split_miner(  # noqa: PLR0913
     input_log_path: str,
-    output_path: str | None = None,
     epsilon: float | None = None,
     eta: float | None = None,
-    use_splitminer2: bool = False,
+    use_splitminer2: bool = True,
     remove_loop_markers: bool = False,
     replace_iors: bool = False,
     parallelism_first: bool = False,
-) -> str:
-    # Path to the Split-Miner JAR file
-    jar_path = "compositional_algorithm/split_miner/split-miner-1.7.1-all.jar"
+) -> tuple[PetriNet, Marking, Marking]:
+    """"
+    Run the Split-Miner algorithm on the provided log file.
+    
+    Args:
+        input_log_path: Path to the input log file.
+        epsilon: The epsilon parameter for the algorithm.
+        eta: The eta parameter for the algorithm.
+        use_splitminer2: Whether to use Split-Miner 2.
+        remove_loop_markers: Whether to remove loop markers.
+        replace_iors: Whether to replace IORs.
+        parallelism_first: Whether to use parallelism first.
+    
+    Comments:
+        - https://github.com/iharsuvorau/split-miner?tab=readme-ov-file
 
-    "/usr/src/workspace/compositional_algorithm/split_miner/split_miner.py"
+    Returns:
+        - A PetriNet object.
+    """
+    # Path to the Split-Miner JAR file
+    jar_path = "/app/backend/compositional_algorithm/split_miner/split-miner-1.7.1-all.jar"
+
+    # create output path from input path
+    dir_name = os.path.dirname(input_log_path)
+    base_name, _ = os.path.splitext(os.path.basename(input_log_path))
+    new_base_name = base_name + "_split_mined.bpmn"
+    output_path = os.path.join(dir_name, new_base_name)
 
     # Base command
     command = ["java", "-jar", jar_path]
@@ -47,11 +73,23 @@ def split_miner(  # noqa: PLR0913
         msg = f"Split-Miner failed with error: {result.stderr}"
         raise RuntimeError(msg)
 
-    return result.stdout
+    start_time = time.time()
+    check_interval=2
+    timeout = 20
+    while True:
+        if Path(output_path).exists():
 
+            # read in npm file
+            bpmn_model = read_bpmn(output_path)
 
-# define log path
-log_path = "data_catalog/compositional_process_discovery_experiment_data/IP-1/IP-1_initial_log.xes"
-print("here")
-result = split_miner(log_path)
-print(result)
+            # convert bpmn model to petri net
+            return convert_to_petri_net(bpmn_model)
+
+        # no file found
+        elif time.time() - start_time >= timeout:
+            print(f"Timeout reached. File {output_path} not found.")
+            raise FileNotFoundError(f"File {output_path} not found.")
+
+        # wait x secs
+        time.sleep(check_interval)
+        

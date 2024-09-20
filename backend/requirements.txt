@@ -25,4 +25,5 @@ networkx
 
 # backend
 fastapi
+python-multipart
 uvicorn
