@@ -1,9 +1,9 @@
 {
 	"name": "university_petri_nets",
-	"build": {
-		"context": "..",
-		"dockerfile": "../dockerfile"
-	},
+	"dockerComposeFile": "../docker-compose.yml",
+  	"service": "backend",
+  	"workspaceFolder": "/usr/src/workspace",
+
 	"customizations": {
 		"vscode": {
 			"settings": {

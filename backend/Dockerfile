@@ -3,7 +3,7 @@
 # linux/amd64
 # cvxopt not working on arm64
 
-# install python 3.12 for platform linux/amd64
+# install python 3.12 for platform linux/amd64: needed vor cxvopt
 FROM --platform=linux/amd64 python:3.12
 
 # set working directory
