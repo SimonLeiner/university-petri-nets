@@ -5,12 +5,17 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi import File
 from fastapi import HTTPException
 from fastapi import UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.responses import Response
 from pm4py import read_xes
+from pm4py import write_pnml
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
+from pm4py.objects.petri_net.obj import Marking
+from pm4py.objects.petri_net.obj import PetriNet
 
 from compositional_algorithm.compositional_algorithm import compositional_discovery
 from compositional_algorithm.interface_patterns.interface_patterns import (
@@ -38,18 +43,66 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[backend_server_url],  # Allow your React app's origin
     allow_credentials=True,
-    allow_methods=["*"],  # You can specify specific HTTP methods if needed
-    allow_headers=["*"],  # You can specify specific headers if needed
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Ensure the uploads directory exists
 UPLOAD_DIR = "data_catalog/uploads"
 Path(UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
 
-# Define the root route
+# Ensure the downloads directory exists
+DOWNLOAD_DIR = "data_catalog/downloads"
+Path(DOWNLOAD_DIR).mkdir(parents=True, exist_ok=True)
+
+
 @app.get("/")
-async def read_root():
-    return {"message": "Hello, World!"}
+async def read_root() -> dict:
+    return {"message": "Welcome to my API!"}
+
+
+@app.post("/upload_file/", response_model=dict, status_code=201)
+async def upload_file(file: UploadFile = File) -> dict:
+    try:
+        # Save the uploaded file to the server
+        file_path = Path(UPLOAD_DIR) / file.filename
+        with Path.open(file_path, "wb") as f:
+            f.write(await file.read())
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail="An error occurred while uploading the file. Please try again.",
+        ) from e
+    else:
+        return {"file_path": file_path}
+
+
+@app.post("/save_petrinet/", response_model=FileResponse, status_code=201)
+async def save_model(
+    petri_net: PetriNet,
+    initial_marking: Marking,
+    final_marking: Marking,
+) -> dict:
+    try:
+        # Define the file path to save the Petri net model
+        file_path = Path(DOWNLOAD_DIR) / "model.pnml"
+
+        # Write the Petri net to a .pnml file
+        write_pnml(petri_net, initial_marking, final_marking, file_path)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail="An error occurred while downloading the model. Please try again.",
+        ) from e
+    else:
+        # Return the file as a response
+        return FileResponse(path=file_path)
+
+
+@app.post("/save_image/")
+async def save_image() -> dict:
+    # TODO: download the model as svg. can be done with graphviz or some other library like plotly
+    raise NotImplementedError
 
 
 @app.post("/discover/")
@@ -96,16 +149,3 @@ async def discover_process(
             status_code=500,
             detail="An error occurred during process discovery.",
         ) from e
-
-
-# # TODO: route to save the model as pnml with pm4py
-# @app.post("/save_model/")
-# async def save_model() -> None:
-#     # https://github.com/pm4py/pm4py-core/blob/release/pm4py/write.py
-#     write_pnml(pn, im, fm, "<path_to_export_to>")
-
-
-# # TODO: route to save the image as .svg with pm4py
-# @app.post("/save_image/")
-# async def save_image() -> dict:
-#     raise NotImplementedError

@@ -19,12 +19,8 @@ from compositional_algorithm.combine_nets.combine_nets import MergeNets
 from compositional_algorithm.interface_patterns.interface_patterns import (
     BaseInterfacePattern,
 )
-from compositional_algorithm.transformations.transformations import (
-    BaseTransformation,
-)
-from compositional_algorithm.transformations.transformations import (
-    PlaceTransformation,
-)
+from compositional_algorithm.transformations.transformations import BaseTransformation
+from compositional_algorithm.transformations.transformations import PlaceTransformation
 from compositional_algorithm.transformations.transformations import (
     TransitionTransformation,
 )
@@ -248,7 +244,7 @@ def priority_identifier(net1: PetriNet, net2: PetriNet) -> int:
     # Get the current time since the epoch in milliseconds
     unique_offset = int(time.time() * 1000000000) % 1000000 * 1e-9
 
-    return transition_diff + place_diff + 3* arcs_diff + unique_offset
+    return transition_diff + place_diff + 3 * arcs_diff + unique_offset
 
 
 def is_refinement(  # noqa: C901
