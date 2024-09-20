@@ -1111,7 +1111,7 @@ class IP8(BaseInterfacePattern):
         self.nets["A3"].transitions.add(self.transitions["ackB?"])
         self.nets["A3"].transitions.add(self.transitions["b?"])
 
-    def _define_arcs(self) -> None:  # noqa: PLR0915
+    def _define_arcs(self) -> None:
         """Defines the arcs connecting places and transitions for IP-8."""
         # define arcs for A1
         petri_utils.add_arc_from_to(
@@ -1156,12 +1156,162 @@ class IP8(BaseInterfacePattern):
         )
 
         # define arcs for A2
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_1"],
+            self.transitions["a?"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_1"],
+            self.transitions["b?"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["a?"],
+            self.places["p_A2_2"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["a?"],
+            self.places["p_A2_3"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["b?"],
+            self.places["p_A2_4"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["b?"],
+            self.places["p_A2_5"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_2"],
+            self.transitions["aR!"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_3"],
+            self.transitions["ackA!"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_4"],
+            self.transitions["ackB!"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_5"],
+            self.transitions["bR!"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["aR!"],
+            self.places["p_A2_6"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["ackA!"],
+            self.places["p_A2_7"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["ackB!"],
+            self.places["p_A2_8"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["bR!"],
+            self.places["p_A2_9"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_6"],
+            self.transitions["c"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_7"],
+            self.transitions["c"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_8"],
+            self.transitions["d"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A2_9"],
+            self.transitions["d"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["c"],
+            self.places["p_A2_10"],
+            self.nets["A2"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["d"],
+            self.places["p_A2_10"],
+            self.nets["A2"],
+        )
 
         # define arcs for A3
+        petri_utils.add_arc_from_to(
+            self.places["p_A3_1"],
+            self.transitions["b!"],
+            self.nets["A3"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["b!"],
+            self.places["p_A3_2"],
+            self.nets["A3"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A3_2"],
+            self.transitions["aR?"],
+            self.nets["A1"],
+        )
+        petri_utils.add_arc_from_to(
+            self.places["p_A3_2"],
+            self.transitions["ackB?"],
+            self.nets["A3"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["aR?"],
+            self.places["p_A3_3"],
+            self.nets["A3"],
+        )
+
+        petri_utils.add_arc_from_to(
+            self.places["p_A3_3"],
+            self.transitions["b?"],
+            self.nets["A3"],
+        )
+        petri_utils.add_arc_from_to(
+            self.transitions["b?"],
+            self.places["p_A3_4"],
+            self.nets["A3"],
+        )
+
+        petri_utils.add_arc_from_to(
+            self.transitions["ackB?"],
+            self.places["p_A3_4"],
+            self.nets["A3"],
+        )
 
     def _define_markings(self) -> None:
         """Defines the initial and final markings for IP-8."""
+        # initial marking for A1, A2 and A3
+        self.initial_markings["A1"][self.places["p_A1_1"]] = 1
+        self.initial_markings["A2"][self.places["p_A2_1"]] = 1
+        self.initial_markings["A3"][self.places["p_A3_1"]] = 1
 
+        # final markings for A1, A2 and A3
+        self.final_markings["A1"][self.places["p_A1_4"]] = 1
+        self.final_markings["A2"][self.places["p_A2_10"]] = 1
+        self.final_markings["A3"][self.places["p_A3_4"]] = 1
 
 
 class IP9(BaseInterfacePattern):
