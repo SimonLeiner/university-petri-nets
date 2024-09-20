@@ -2,7 +2,7 @@
 	"name": "Backend Container",
 	"dockerComposeFile": ["../../docker-compose.yml"],
   	"service": "backend",
-  	"workspaceFolder": "/workspace",
+  	"workspaceFolder": "/app",
 	"customizations": {
 		"vscode": {
 			"settings": {

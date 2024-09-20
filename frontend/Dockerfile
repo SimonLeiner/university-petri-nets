@@ -2,7 +2,7 @@
 FROM --platform=linux/amd64 node:22-bullseye
 
 # Set working directory
-WORKDIR /app
+WORKDIR /app/frontend
 
 # Install packages
 RUN apt-get update && apt-get install -y \
