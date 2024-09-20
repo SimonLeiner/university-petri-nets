@@ -12,7 +12,9 @@ def split_miner(  # noqa: PLR0913
     parallelism_first: bool = False,
 ) -> str:
     # Path to the Split-Miner JAR file
-    jar_path = "/workspaces/university-petri-nets/backend/compositional_algorithm/split_miner/split-miner-1.7.1-all.jar"
+    jar_path = "compositional_algorithm/split_miner/split-miner-1.7.1-all.jar"
+
+    "/usr/src/workspace/compositional_algorithm/split_miner/split_miner.py"
 
     # Base command
     command = ["java", "-jar", jar_path]
@@ -49,5 +51,5 @@ def split_miner(  # noqa: PLR0913
 
 
 # define log path
-log_path = "/workspaces/university-petri-nets/backend/data_catalog/compositional_process_discovery_experiment_data/IP-1/IP-1_initial_log.xes"
+log_path = "data_catalog/compositional_process_discovery_experiment_data/IP-1/IP-1_initial_log.xes"
 split_miner(log_path)

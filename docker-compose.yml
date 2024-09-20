@@ -1,3 +1,4 @@
+version: "3.9"
 services:
   backend:
     container_name: backend
@@ -7,7 +8,7 @@ services:
       - "4000:4000"
     restart: always # Restart policy for the backend service
     volumes:
-      - ./backend:/usr/src/workspace # Mount the backend directory
+      - .:/workspace:cached # Mount the backend directory
 
   frontend:
     container_name: frontend
@@ -19,7 +20,7 @@ services:
     depends_on:
       - backend # Ensure frontend starts after backend
     volumes:
-      - ./frontend:/usr/src/app # Mount the frontend directory
+      - .:/app:cached # Mount the frontend directory
 
 networks:
   app-network:

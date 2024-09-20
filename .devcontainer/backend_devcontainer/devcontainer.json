@@ -1,9 +1,8 @@
 {
-	"name": "university_petri_nets",
-	"dockerComposeFile": "../docker-compose.yml",
+	"name": "Backend Container",
+	"dockerComposeFile": ["../../docker-compose.yml"],
   	"service": "backend",
   	"workspaceFolder": "/workspace",
-	"forwardPorts": [4000, 3000],
 	"customizations": {
 		"vscode": {
 			"settings": {
