@@ -230,17 +230,17 @@ def priority_identifier(net1: PetriNet, net2: PetriNet) -> int:
     Returns:
         int: The priority of the Petri nets.
     """
-    # transformation difference (total number of transformations)
+    # transformation difference (total number of transformations): Opt is 0
     transitions_net1 = len(net1.transitions)
     transitions_net2 = len(net2.transitions)
     transition_diff = abs(transitions_net1 - transitions_net2)
 
-    # place difference (total number of places)
+    # place difference (total number of places): Opt is 0
     places_net1 = len(net1.places)
     places_net2 = len(net2.places)
     place_diff = abs(places_net1 - places_net2)
 
-    # arcs difference (total number of arcs)
+    # arcs difference (total number of arcs): Opt is 0
     arcs_net1 = len(net1.arcs)
     arcs_net2 = len(net2.arcs)
     arcs_diff = abs(arcs_net1 - arcs_net2)
@@ -248,7 +248,7 @@ def priority_identifier(net1: PetriNet, net2: PetriNet) -> int:
     # Get the current time since the epoch in milliseconds
     unique_offset = int(time.time() * 1000000000) % 1000000 * 1e-9
 
-    return 3 * transition_diff + place_diff + arcs_diff + unique_offset
+    return transition_diff + place_diff + 3* arcs_diff + unique_offset
 
 
 def is_refinement(  # noqa: C901
@@ -267,9 +267,9 @@ def is_refinement(  # noqa: C901
         - We use BFS to find a sequence of transformations that transforms the input net into the target net.
         - We copy the nets so we apply one one sequence at a time.
         - It is not legit to apply multiple transformations at the same time -> Nets immediately explode without search.
-        - Go through transformations first and first place transition is p1 for best performance.
+        - Transformations first -> deeper net vs. places first -> wider net.
         - Use Min-heap, meaning it always retrieves the smallest item based on the priority value as queue implementation for faster search.
-        - Time complexity: O()
+        - The priority queue has O(log n) time complexity for insertion and O(1) time complexity for retrieval.
 
     Returns:
         bool: True if the agent GWF-net is a refinement of the corresponding part in the interface pattern.
@@ -324,6 +324,44 @@ def is_refinement(  # noqa: C901
                 )
                 view_petri_net(current_net, format="png")
 
+            # Note: branching logic: we need to apply all possible transformations
+            # for each place in the current net
+            for place in current_net.places:
+                # apply each possible place transformation
+                for place_transformation in place_transformations:
+                    # Note: Deep copy of the current net before applying the transformation -> transformation change places & transitions and sets are immutable.
+                    net_copy = current_net.__deepcopy__()
+                    transformed_net = place_transformation.refine(place, net_copy)
+                    unique_net_id = generate_unique_id(transformed_net)
+                    transformation_sequence_element = (place_transformation, place)
+
+                    # check if the new net is the one we are looking for
+                    if unique_net_id not in visited and is_net_valid(
+                        transformed_net,
+                        final_end_net,
+                    ):
+                        if is_isomorphic(transformed_net, final_end_net):
+                            transformation_sequence.append(
+                                transformation_sequence_element,
+                            )
+                            logging.info(
+                                f"The nets are isomorphic (P) after {transformation_sequence}.",
+                            )
+                            return True, transformation_sequence
+                        # if not, add the new net to the queue and save what transformation was applied
+                        priority_queue.put(
+                            (
+                                priority_identifier(transformed_net, final_end_net),
+                                transformed_net,
+                                [
+                                    *transformation_sequence,
+                                    transformation_sequence_element,
+                                ],
+                            ),
+                        )
+                        # add the new net to the visited set
+                        visited.add(unique_net_id)
+
             # for each transition in the current net
             for transition in current_net.transitions:
                 # apply each possible transition transformation
@@ -351,44 +389,6 @@ def is_refinement(  # noqa: C901
                             )
                             logging.info(
                                 f"The nets are isomorphic (T) after {transformation_sequence}.",
-                            )
-                            return True, transformation_sequence
-                        # if not, add the new net to the queue and save what transformation was applied
-                        priority_queue.put(
-                            (
-                                priority_identifier(transformed_net, final_end_net),
-                                transformed_net,
-                                [
-                                    *transformation_sequence,
-                                    transformation_sequence_element,
-                                ],
-                            ),
-                        )
-                        # add the new net to the visited set
-                        visited.add(unique_net_id)
-
-            # Note: branching logic: we need to apply all possible transformations
-            # for each place in the current net
-            for place in current_net.places:
-                # apply each possible place transformation
-                for place_transformation in place_transformations:
-                    # Note: Deep copy of the current net before applying the transformation -> transformation change places & transitions and sets are immutable.
-                    net_copy = current_net.__deepcopy__()
-                    transformed_net = place_transformation.refine(place, net_copy)
-                    unique_net_id = generate_unique_id(transformed_net)
-                    transformation_sequence_element = (place_transformation, place)
-
-                    # check if the new net is the one we are looking for
-                    if unique_net_id not in visited and is_net_valid(
-                        transformed_net,
-                        final_end_net,
-                    ):
-                        if is_isomorphic(transformed_net, final_end_net):
-                            transformation_sequence.append(
-                                transformation_sequence_element,
-                            )
-                            logging.info(
-                                f"The nets are isomorphic (P) after {transformation_sequence}.",
                             )
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied

@@ -4,7 +4,7 @@
 # cvxopt not working on arm64
 
 # install python 3.12 for platform linux/amd64
-FROM --platform=linux/amd64 python:3.12-slim
+FROM --platform=linux/amd64 python:3.12
 
 # set working directory
 WORKDIR /workspace
@@ -21,6 +21,8 @@ RUN apt-get update && apt-get install --no-install-recommends  -y \
     openssh-client\
     # for psutil
     gcc python3-dev\
+    # Java Runtime Environment
+    openjdk-17-jdk \
     # clean up
     && apt-get clean\
     && rm -rf /var/lib/apt/lists/*

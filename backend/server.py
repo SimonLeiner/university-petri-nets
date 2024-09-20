@@ -61,7 +61,7 @@ async def discover_process(
         # select wich algorithm to use
         algo_name = algorithm_choice
         if algo_name == "inductive":
-            algo_to_use = inductive_miner.apply # noise_threshold=0.2
+            algo_to_use = inductive_miner.apply  # noise_threshold=0.2
         # TODO: implement split miner
         elif algo_name == "split":
             algo_to_use = "split_miner"
@@ -91,3 +91,16 @@ async def discover_process(
             status_code=500,
             detail="An error occurred during process discovery.",
         ) from e
+
+
+# TODO: route to save the model as pnml with pm4py
+@app.post("/save_model/")
+async def save_model() -> None:
+    # https://github.com/pm4py/pm4py-core/blob/release/pm4py/write.py
+    write_pnml(pn, im, fm, "<path_to_export_to>")
+
+
+# TODO: route to save the image as .svg with pm4py
+@app.post("/save_image/")
+async def save_image() -> dict:
+    raise NotImplementedError
