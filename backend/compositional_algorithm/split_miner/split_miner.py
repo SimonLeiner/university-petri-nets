@@ -52,4 +52,6 @@ def split_miner(  # noqa: PLR0913
 
 # define log path
 log_path = "data_catalog/compositional_process_discovery_experiment_data/IP-1/IP-1_initial_log.xes"
-split_miner(log_path)
+print("here")
+result = split_miner(log_path)
+print(result)

@@ -1,27 +1,26 @@
-version: "3.9"
 services:
   backend:
     container_name: backend
     build:
-      context: ./backend
+      context: . # Build context is the root directory
+      dockerfile: backend/Dockerfile # Specify Dockerfile for backend
     ports:
       - "4000:4000"
     restart: always # Restart policy for the backend service
     volumes:
-      - .:/workspace:cached # Mount the backend directory
+      - .:/app # Bind mount the root directory into the container
+    working_dir: /app/backend # Set working directory for the backend service
 
   frontend:
     container_name: frontend
     build:
-      context: ./frontend
+      context: . # Build context is the root directory
+      dockerfile: frontend/Dockerfile # Specify Dockerfile for backend
     ports:
       - "3000:3000"
     restart: always # Restart policy for the frontend service
     depends_on:
       - backend # Ensure frontend starts after backend
     volumes:
-      - .:/app:cached # Mount the frontend directory
-
-networks:
-  app-network:
-    driver: bridge
+      - .:/app # Bind mount the root directory into the container
+    working_dir: /app/frontend # Set working directory for the backend service

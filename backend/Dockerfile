@@ -8,7 +8,7 @@
 FROM --platform=linux/amd64 python:3.12-slim
 
 # set working directory
-WORKDIR /workspace
+WORKDIR /app
 
 # Install dependencies and add Corretto repository
 RUN apt-get update && apt-get install --no-install-recommends -y \
