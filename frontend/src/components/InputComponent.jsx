@@ -7,6 +7,8 @@ const InputComponent = ({
   setFile, // Receive the setter for file state
   miner, // Receive the miner state
   setMiner, // Receive the setter for miner state
+  interfacePattern={interfacePattern}, // Pass the interface pattern state
+  setInterfacePattern={setInterfacePattern}, // Pass the setter for interface pattern
   noiseThreshold, // Receive the noise threshold state
   setNoiseThreshold, // Receive the setter for noise threshold
   existingFiles, // Receive the existing files list
@@ -90,6 +92,11 @@ const InputComponent = ({
     setMiner(event.target.value);
   };
 
+  // Interface pattern changes
+  const handleInterfacePatternChange = (event) => {
+    setInterfacePattern(event.target.value);
+  };
+
   return (
     <div className="input-grid-container">
       {/* Available files section */}
@@ -116,7 +123,7 @@ const InputComponent = ({
       <div className="grid-item">
         <h3>Selected File</h3>
         {file ? (
-          <p style={{ color: 'white' }}>{file.name}</p> // Display the file name
+          <p style={{ color: 'white' }}>{file.name}</p>
         ) : (
           <p>No file selected.</p>
         )}
@@ -125,25 +132,42 @@ const InputComponent = ({
       {/* Algorithm inputs section */}
       <div className="grid-item">
         <h3>Algorithm Input</h3>
-        <label htmlFor="miner-select">
-          Miner Type:
-          <select id="miner-select" value={miner} onChange={handleMinerChange}>
-            <option value="inductive">Inductive Miner</option>
-            <option value="split">Split Miner</option>
-          </select>
-        </label>
+        <div className="input-section">
+          <label htmlFor="miner-select">
+            Miner Type:
+            <select id="miner-select" value={miner} onChange={handleMinerChange}>
+              <option value="inductive">Inductive Miner</option>
+              <option value="split">Split Miner</option>
+            </select>
+          </label>
+        </div>
 
-        <label htmlFor="noise-threshold">
-          Noise Threshold: {noiseThreshold}
-          <input
-            id="noise-threshold"
-            type="range"
-            min="0"
-            max="100"
-            value={noiseThreshold}
-            onChange={handleSliderChange}
-          />
-        </label>
+        <div className="input-section">
+          <label htmlFor="noise-threshold">
+            Noise Threshold: {noiseThreshold}
+            <input
+              id="noise-threshold"
+              type="range"
+              min="0"
+              max="100"
+              value={noiseThreshold}
+              onChange={handleSliderChange}
+            />
+          </label>
+        </div>
+
+        <div className="input-section">
+          <label htmlFor="interface-pattern-select">
+            Interface Pattern:
+            <select id="interface-pattern-select" value={interfacePattern} onChange={handleInterfacePatternChange}>
+              {Array.from({ length: 12 }, (_, i) => `IP${i + 1}`).map((pattern) => (
+                <option key={pattern} value={pattern}>
+                  {pattern}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
     </div>
   );

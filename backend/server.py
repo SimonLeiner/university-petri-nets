@@ -123,7 +123,7 @@ async def discover(
     file: UploadFile,
     algorithm_name: str = Form(...),
     interface_name: str = Form(...),
-    noise_threshold: float = Form(...),
+    noise_threshold: float | None = Form(...),
 ) -> dict:
     try:
         # get the file path

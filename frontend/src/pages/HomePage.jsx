@@ -12,6 +12,7 @@ const HomePage = () => {
   const [existingFiles, setExistingFiles] = useState([]);
   const [dotString, setDotString] = useState('');
   const [miner, setMiner] = useState(''); 
+  const [interfacePattern, setInterfacePattern] = useState('');
   const [noiseThreshold, setNoiseThreshold] = useState(0); 
   const [conformance, setConformance] = useState({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
 
@@ -21,17 +22,19 @@ const HomePage = () => {
       setAlert('error', 'Please select a file.');
       return;
     }
+    if (!interfacePattern) {
+      setAlert('error', 'Please select a interface pattern.');
+      return;
+    }
     if (!miner) {
       setAlert('error', 'Please select a miner.');
       return;
     }
-    if (!noiseThreshold) {
-      setAlert('error', 'Please select a noise threshold.');
-      return;
-    }
+    
     const formData = new FormData();
     formData.append('file', file);
     formData.append('miner', miner);
+    formData.append('interfacePattern', interfacePattern);
     if (miner === 'inductive') {
       formData.append('noiseThreshold', noiseThreshold);
     }
@@ -72,31 +75,34 @@ const HomePage = () => {
   return (
     <div className="home-page">
 
-      {/* Sidebar for file upload and settings */}
-      <InputComponent
-        file={file} // Pass the file state
-        setFile={setFile} // Pass the setter for file state
-        miner={miner} // Pass the miner state
-        setMiner={setMiner} // Pass the setter for miner state
-        noiseThreshold={noiseThreshold} // Pass the noise threshold state
-        setNoiseThreshold={setNoiseThreshold} // Pass the setter for noise threshold
-        existingFiles={existingFiles} // Pass the existing files
-        setExistingFiles={setExistingFiles} // Pass the setter for existing files
-        loading={loading} // Pass the loading
-        setLoading={setLoading} // Pass the setter for loading
-      />
+      {/* Title page */}
+      <header>
+        <h1>Discover Petri Net</h1>
+      </header>
+
+      
 
       {/* Main content area for visualizations and conformance */}
       <div className="main-content">
-        <header>
-          <h1>Discover Petri Net</h1>
-        </header>
 
-        <button onClick={applyAlgorithm} disabled={loading}>
-          Start Calculation
-        </button>
-
+        {/* Main Part */}
         <main>
+
+          {/* Sidebar for file upload and settings */}
+          <InputComponent
+            file={file} // Pass the file state
+            setFile={setFile} // Pass the setter for file state
+            miner={miner} // Pass the miner state
+            setMiner={setMiner} // Pass the setter for miner state
+            interfacePattern={interfacePattern} // Pass the interface pattern state
+            setInterfacePattern={setInterfacePattern} // Pass the setter for interface pattern
+            noiseThreshold={noiseThreshold} // Pass the noise threshold state
+            setNoiseThreshold={setNoiseThreshold} // Pass the setter for noise threshold
+            existingFiles={existingFiles} // Pass the existing files
+            setExistingFiles={setExistingFiles} // Pass the setter for existing files
+            loading={loading} // Pass the loading
+            setLoading={setLoading} // Pass the setter for loading
+          />
 
           {/* Visualization section */}
           <div className="divider"></div>
@@ -112,11 +118,24 @@ const HomePage = () => {
           <ConformanceComponent conformance={conformance} />
 
           {/* Reset Everything Button */}
+          <div className="divider"></div>
           <button onClick={resetEverything} style={{ margin: '10px 0' }}>
             Reset Everything
           </button>
         </main>
       </div>
+
+      {/* Footer */}
+      <div className="divider"></div>
+      <footer className="footer">
+        <div className="footer-content">
+          <p>&copy; {new Date().getFullYear()} Your Company Name. All rights reserved.</p>
+          <p>
+            <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a>
+          </p>
+        </div>
+      </footer>
+
     </div>
   );
 };
