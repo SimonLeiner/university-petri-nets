@@ -3,10 +3,12 @@ import inspect
 import json
 import logging
 import time
+from collections import Counter
 from pathlib import Path
 from queue import PriorityQueue
 
 import networkx as nx
+import numpy as np
 from networkx.algorithms import isomorphism
 from pm4py import read_xes
 from pm4py import view_petri_net
@@ -212,20 +214,35 @@ def is_isomorphic(net1: PetriNet, net2: PetriNet) -> bool:
     return isomorphism.DiGraphMatcher(netx_petri_net1, netx_petri_net2).is_isomorphic()
 
 
-def priority_identifier(net1: PetriNet, net2: PetriNet) -> int:
+def shannon_entropy(array: np.ndarray) -> float:
+    """Calculates the Shannon entropy of the given array."""
+    total = np.sum(array)
+    probs = array / total
+    return -np.sum([p * np.log2(p) for p in probs if p > 0])
+
+
+def priority_identifier(
+    net1: PetriNet,
+    net2: PetriNet,
+    transformation_sequence: list[tuple[BaseTransformation, PetriNet.Place]],
+) -> int:
     """Calculates the priority of the Petri nets.
 
     Args:
         net1 (PetriNet): The first Petri net.
         net2 (PetriNet): The second Petri net.
+        transformation_sequence (list): The sequence of transformations that lead to the target.
 
     Comments:
         - Minimize Distance between nets. The more negative the value, the more similar the nets are.
         - Transitions are more important than places.
+        - The transformation have an Information gain of P1:5->8, P2:5->8, P3:5->9, P4:7->9. Hence I fonly using diff, always takes P3.
+        - Range: [0, log(n)] Maximum entropy is achieved when all classes have equal counts.
 
     Returns:
         int: The priority of the Petri nets.
     """
+    # Note: Equality. The less the better.
     # transformation difference (total number of transformations): Opt is 0
     transitions_net1 = len(net1.transitions)
     transitions_net2 = len(net2.transitions)
@@ -241,10 +258,27 @@ def priority_identifier(net1: PetriNet, net2: PetriNet) -> int:
     arcs_net2 = len(net2.arcs)
     arcs_diff = abs(arcs_net1 - arcs_net2)
 
+    # some kind of normalized net difference (the lower the better -> the more similar the nets are)
+    net_total_diff = transition_diff + place_diff + arcs_diff
+    net_diff = np.log2(net_total_diff)
+
+    # Note: Diversity. The More the better.
+    # Class Diversity - check how many unique classes there are
+    class_types = [item[0] for item in transformation_sequence]
+    class_counts = Counter(class_types)
+    class_counts = np.array(list(class_counts.values()))
+    class_diversity = shannon_entropy(class_counts)
+
+    # Parameter Diversity - assuming the parameters are strings, let's count distinct parameters
+    params = [item[1] for item in transformation_sequence]
+    param_counts = Counter(params)
+    param_counts = np.array(list(param_counts.values()))
+    param_diversity = shannon_entropy(param_counts)
+
     # Get the current time since the epoch in milliseconds
     unique_offset = int(time.time() * 1000000000) % 1000000 * 1e-9
 
-    return transition_diff + place_diff + 3 * arcs_diff + unique_offset
+    return net_diff - class_diversity - param_diversity + unique_offset
 
 
 def is_refinement(  # noqa: C901
