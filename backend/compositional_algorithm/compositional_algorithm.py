@@ -260,20 +260,23 @@ def priority_identifier(
 
     # some kind of normalized net difference (the lower the better -> the more similar the nets are)
     net_total_diff = transition_diff + place_diff + arcs_diff
-    net_diff = np.log2(net_total_diff)
+    net_diff = 0 if net_total_diff == 0 else np.log2(net_total_diff)
 
     # Note: Diversity. The More the better.
-    # Class Diversity - check how many unique classes there are
-    class_types = [item[0] for item in transformation_sequence]
-    class_counts = Counter(class_types)
-    class_counts = np.array(list(class_counts.values()))
-    class_diversity = shannon_entropy(class_counts)
+    if not transformation_sequence:
+        param_diversity, class_diversity = 0, 0
+    else:
+        # Class Diversity - check how many unique classes there are
+        class_types = [item[0] for item in transformation_sequence]
+        class_counts = Counter(class_types)
+        class_counts = np.array(list(class_counts.values()))
+        class_diversity = shannon_entropy(class_counts)
 
-    # Parameter Diversity - assuming the parameters are strings, let's count distinct parameters
-    params = [item[1] for item in transformation_sequence]
-    param_counts = Counter(params)
-    param_counts = np.array(list(param_counts.values()))
-    param_diversity = shannon_entropy(param_counts)
+        # Parameter Diversity - assuming the parameters are strings, let's count distinct parameters
+        params = [item[1] for item in transformation_sequence]
+        param_counts = Counter(params)
+        param_counts = np.array(list(param_counts.values()))
+        param_diversity = shannon_entropy(param_counts)
 
     # Get the current time since the epoch in milliseconds
     unique_offset = int(time.time() * 1000000000) % 1000000 * 1e-9
@@ -329,7 +332,9 @@ def is_refinement(  # noqa: C901
 
     # Create a queue for BFS and add the initial net.
     priority_queue = PriorityQueue()
-    priority_queue.put((priority_identifier(first_net, final_end_net), first_net, []))
+    priority_queue.put(
+        (priority_identifier(first_net, final_end_net, []), first_net, []),
+    )
 
     # Initialize the set of visited states
     visited = set()
@@ -381,7 +386,11 @@ def is_refinement(  # noqa: C901
                         # if not, add the new net to the queue and save what transformation was applied
                         priority_queue.put(
                             (
-                                priority_identifier(transformed_net, final_end_net),
+                                priority_identifier(
+                                    transformed_net,
+                                    final_end_net,
+                                    transformation_sequence,
+                                ),
                                 transformed_net,
                                 [
                                     *transformation_sequence,
@@ -424,7 +433,11 @@ def is_refinement(  # noqa: C901
                         # if not, add the new net to the queue and save what transformation was applied
                         priority_queue.put(
                             (
-                                priority_identifier(transformed_net, final_end_net),
+                                priority_identifier(
+                                    transformed_net,
+                                    final_end_net,
+                                    transformation_sequence,
+                                ),
                                 transformed_net,
                                 [
                                     *transformation_sequence,
