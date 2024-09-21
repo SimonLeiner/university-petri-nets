@@ -128,8 +128,8 @@ const InputComponent = ({
         <label htmlFor="miner-select">
           Miner Type:
           <select id="miner-select" value={miner} onChange={handleMinerChange}>
-            <option value="Inductive Miner">Inductive Miner</option>
-            <option value="Split Miner">Split Miner</option>
+            <option value="inductive">Inductive Miner</option>
+            <option value="split">Split Miner</option>
           </select>
         </label>
 

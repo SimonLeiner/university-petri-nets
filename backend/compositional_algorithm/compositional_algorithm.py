@@ -234,6 +234,7 @@ def priority_identifier(
         transformation_sequence (list): The sequence of transformations that lead to the target.
 
     Comments:
+        - Alternatively Use: https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.similarity.optimize_graph_edit_distance.html
         - Minimize Distance between nets. The more negative the value, the more similar the nets are.
         - Transitions are more important than places.
         - The transformation have an Information gain of P1:5->8, P2:5->8, P3:5->9, P4:7->9. Hence I fonly using diff, always takes P3.
@@ -317,8 +318,8 @@ def is_refinement(  # noqa: C901
     ]
 
     # create a deep copy of the begin_net
-    first_net = begin_net.__deepcopy__()
-    final_end_net = end_net.__deepcopy__()
+    first_net = begin_net  # .__deepcopy__()
+    final_end_net = end_net  # .__deepcopy__()
 
     # accidentially the same
     if is_isomorphic(first_net, final_end_net):
@@ -502,6 +503,30 @@ def generate_unique_id(petri_net: PetriNet) -> str:
     return hashlib.sha256(canonical_representation.encode("utf-8")).hexdigest()
 
 
+def standardize_properties(net: PetriNet) -> PetriNet:
+    """Standardize the properties of the Petri net.
+
+    Args:
+        net (PetriNet): The Petri net to standardize.
+
+    Comments:
+        - Standardize the properties of the Petri net.
+        - Time complexity: O(n) where n is the number of nodes.
+
+    Returns:
+        PetriNet: The standardized Petri net.
+    """
+    # Standardize the names of the places and transitions
+    for place in net.places:
+        place.name = place.name.replace(" ", "_")
+        place.name = MergeNets.encode_element(place)
+    for transition in net.transitions:
+        transition.name = MergeNets.encode_element(transition)
+        transition.label = transition.label.replace(" ", "_")
+
+    return net
+
+
 def compositional_discovery(
     input_log_path: str,
     algorithm: callable,
@@ -554,16 +579,23 @@ def compositional_discovery(
 
             # discover net. Also have the initial and final markings.
             gwf_agent_net, _, _ = discover(
-                input_log_path,
+                modified_log_path,
                 algorithm,
                 **algorithm_kwargs,
             )
+
+            # TODO: standarization/cleanup gwf net
+            # gwf_agent_net = standardize_properties(gwf_agent_net)  # noqa: ERA001
 
             # plotting of discovered net
             logging.info(
                 f"Discovered net for Agent {agent} ({len(gwf_agent_net.places)} places, {len(gwf_agent_net.transitions)} transitions, {len(gwf_agent_net.arcs)} arcs).",
             )
             view_petri_net(gwf_agent_net)
+
+            # remove temp file
+            if Path.exists(modified_log_path):
+                Path(modified_log_path).unlink()
 
             # get the corresponding interface subset pattern. Also have the initial and final markings.
             interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i+1}")
@@ -589,9 +621,9 @@ def compositional_discovery(
             pbar.update(1)
 
     # combine the nets together
-    multi_agent_net = subnets["A1"].__deepcopy__()
+    multi_agent_net = subnets["A1"]  # .__deepcopy__()
     for i in range(2, len(subnets) + 1):
-        copy_net = subnets[f"A{i}"].__deepcopy__()
+        copy_net = subnets[f"A{i}"]  # .__deepcopy__()
         multi_agent_net = MergeNets.merge_nets(multi_agent_net, copy_net)
 
     # final plotting

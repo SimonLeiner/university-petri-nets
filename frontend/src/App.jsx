@@ -8,8 +8,8 @@ function App() {
   return (
     <div className="App">
       <AlertProvider>
-        <HomePage />
         <AlertComponent/>
+        <HomePage />
       </AlertProvider>
 
     </div>

@@ -1,27 +1,31 @@
+import json
 import logging
 import os
-from io import BytesIO
 from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi import File
+from fastapi import Form
 from fastapi import HTTPException
 from fastapi import UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from fastapi.responses import Response
+from pm4py import fitness_alignments
+from pm4py import precision_alignments
 from pm4py import read_xes
+from pm4py import write_pnml
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
 
 from compositional_algorithm.compositional_algorithm import compositional_discovery
 from compositional_algorithm.interface_patterns.interface_patterns import (
     INTERFACE_PATTERNS,
 )
+from compositional_algorithm.split_miner.split_miner import split_miner
 from compositional_algorithm.transformations.transformations import TRANSFORMATIONS
-from models import AlgorithmModel
-from models import InterfaceModel
+from entropy_conformance.entropy_conformance import entropy_conformance
 
 
 # Load environment variables from .env file
@@ -51,6 +55,10 @@ Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
 
 # Ensure Data Exists
 FINAL_DATA_DIR = "/app/backend/data_catalog/final_logs"
+Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
+
+# Ensure Data Exists
+TEMP_DATA_DIR = "/app/backend/data_catalog/temp_files"
 Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
 
 
@@ -110,77 +118,85 @@ async def get_file(filename: str) -> FileResponse:
         return FileResponse(file_path)
 
 
-# @app.post("/save_petrinet/")
-# async def save_model(
-#     petri_net: PetriNet,
-#     initial_marking: Marking,
-#     final_marking: Marking,
-# ) -> FileResponse:
-#     try:
-#         # Define the file path to save the Petri net model
-#         file_path = Path(DOWNLOAD_DIR) / "model.pnml"
-
-#         # Write the Petri net to a .pnml file
-#         write_pnml(petri_net, initial_marking, final_marking, file_path)
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=500,
-#             detail="An error occurred while downloading the model. Please try again.",
-#         ) from e
-#     else:
-#         # Return the file as a response
-#         return FileResponse(
-#             path=file_path, media_type="application/xml", filename="model.pnml"
-#         )
-
-
-@app.post("/save_image/")
-async def save_image() -> dict:
-    # TODO: download the model as svg. can be done with graphviz or some other library like plotly
-    raise NotImplementedError
-
-
 @app.post("/discover/")
-async def discover_process(
+async def discover(
     file: UploadFile,
-    algorithm_choice: AlgorithmModel,
-    interface_choice: InterfaceModel,
+    algorithm_name: str = Form(...),
+    interface_name: str = Form(...),
+    noise_threshold: float = Form(...),
 ) -> dict:
     try:
-        # Upload the log file to the server and convert into a PM4Py log
-        file_content = await file.read()
-        df_log = read_xes(BytesIO(file_content))
+        # get the file path
+        input_log_path = Path(FINAL_DATA_DIR) / file.filename
+        df_log = read_xes(input_log_path)
 
         # select wich algorithm to use
-        algo_name = algorithm_choice
-        if algo_name == "inductive":
-            algo_to_use = inductive_miner.apply  # noise_threshold=0.2
-        # TODO: implement split miner
-        elif algo_name == "split":
-            algo_to_use = "split_miner"
+        if algorithm_name == "inductive":
+            log_input = df_log
+            algorithm = inductive_miner.apply
+            algorithm_kwargs = {"noise_threshold": noise_threshold}
+        elif algorithm_name == "split":
+            log_input = input_log_path
+            algorithm = split_miner
+            algorithm_kwargs = {}
 
         # select the Interface pattern to use
-        interface_name = interface_choice.name.upper()
-        for interface in INTERFACE_PATTERNS:
-            if interface.__name__ == interface_name:
-                interface_to_use = interface
+        for inter in INTERFACE_PATTERNS:
+            if inter.__name__ == interface_name:
+                interface = inter
                 break
 
         # Discover the process model
-        model = await compositional_discovery(
-            df_log=df_log,
-            algorithm=algo_to_use,
-            interface_pattern=interface_to_use,  # or also INTERFACE_PATTERNS for all possible
+        result = await compositional_discovery(
+            input_log_path=log_input,
+            algorithm=algorithm,
+            interface_pattern=interface,  # or also INTERFACE_PATTERNS for all possible
             transformations=TRANSFORMATIONS,
             agent_column="org:resource",
-            algorithm_kwargs=algorithm_choice.parameters,  # Don't have to be specified for split miner
+            algorithm_kwargs=algorithm_kwargs,
         )
 
-        # return a reponse
-        return Response(content=model, media_type="application/xml")
+        # extract the result
+        net, initial_marking, final_marking = result
 
+        # temporarily export to pnml
+        temp_pnml_path = Path(TEMP_DATA_DIR) / "temp_net.pnml"
+        pnml = write_pnml(net, initial_marking, final_marking, temp_pnml_path)
+
+        # alignment based fitness and precision
+        align_precision = fitness_alignments(
+            df_log,
+            net,
+            initial_marking,
+            final_marking,
+        )
+        align_fitness = precision_alignments(
+            df_log,
+            net,
+            initial_marking,
+            final_marking,
+        )
+
+        # entropy based fitness and precision
+        entr_precision, entr_recall = entropy_conformance(
+            input_log_path,
+            temp_pnml_path,
+        )
+
+        # create the response
+        response = {
+            "net": pnml,
+            "conformance": {
+                "Alignment-based Fitness": align_fitness,
+                "Alignment-based Precision": align_precision,
+                "Entropy-based Fitness": entr_precision,
+                "Entropy-based Precision": entr_recall,
+            },
+        }
     except Exception as e:
         raise HTTPException(
             status_code=500,
             detail="An error occurred during process discovery.",
         ) from e
+    else:
+        return Response(content=json.dumps(response), media_type="application/xml")

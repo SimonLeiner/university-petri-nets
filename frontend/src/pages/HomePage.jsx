@@ -10,13 +10,58 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [existingFiles, setExistingFiles] = useState([]);
+  const [dotString, setDotString] = useState('');
   const [miner, setMiner] = useState(''); 
   const [noiseThreshold, setNoiseThreshold] = useState(0); 
   const [conformance, setConformance] = useState({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
 
+  // Call Algorithm
+  const applyAlgorithm = async () => {
+    if (!file) {
+      setAlert('error', 'Please select a file.');
+      return;
+    }
+    if (!miner) {
+      setAlert('error', 'Please select a miner.');
+      return;
+    }
+    if (!noiseThreshold) {
+      setAlert('error', 'Please select a noise threshold.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('miner', miner);
+    if (miner === 'inductive') {
+      formData.append('noiseThreshold', noiseThreshold);
+    }
+    try {
+      setLoading(true);
+      const response = await axios.post(`${import.meta.env.VITE_PYTHON_BACKEND_URL}/discover`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'text',
+        timeout: 10000000000,
+        withCredentials: true,
+      });
+      const jsonData = JSON.parse(response.data); 
+      const parsedDotString = parsePnmlToDot(jsonData.net);
+      setDotString(parsedDotString);
+      setConformance(jsonData.conformance)
+      setLoading(false);
+    } catch (error) {
+      console.error('Error applying algorithm:', error);
+      setAlert('error', 'Error applying algorithm');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   // Reset all states
   const resetEverything = () => {
     setFile(null);
+    setDotString('');
     setMiner('');
     setNoiseThreshold(0);
     setConformance({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
@@ -41,16 +86,15 @@ const HomePage = () => {
         setLoading={setLoading} // Pass the setter for loading
       />
 
-
-
-
-
-
       {/* Main content area for visualizations and conformance */}
       <div className="main-content">
         <header>
           <h1>Discover Petri Net</h1>
         </header>
+
+        <button onClick={applyAlgorithm} disabled={loading}>
+          Start Calculation
+        </button>
 
         <main>
 
