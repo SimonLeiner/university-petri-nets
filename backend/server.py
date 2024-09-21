@@ -10,12 +10,10 @@ from fastapi import HTTPException
 from fastapi import UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.responses import JSONResponse
 from fastapi.responses import Response
 from pm4py import read_xes
-from pm4py import write_pnml
 from pm4py.algo.discovery.inductive import algorithm as inductive_miner
-from pm4py.objects.petri_net.obj import Marking
-from pm4py.objects.petri_net.obj import PetriNet
 
 from compositional_algorithm.compositional_algorithm import compositional_discovery
 from compositional_algorithm.interface_patterns.interface_patterns import (
@@ -36,36 +34,38 @@ logging.basicConfig(level=logging.INFO)
 app = FastAPI()
 
 # Load environment variables
-backend_server_url = os.getenv("PYTHON_BACKEND_URL")
+frontend_url = os.getenv("REACT_FRONTEND_URL")
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[backend_server_url],  # Allow your React app's origin
+    allow_origins=frontend_url,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Ensure the uploads directory exists
-UPLOAD_DIR = "data_catalog/uploads"
-Path(UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
+# Ensure Data Exists
+DATA_DIR = "/app/backend/data_catalog"
+Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
 
-# Ensure the downloads directory exists
-DOWNLOAD_DIR = "data_catalog/downloads"
-Path(DOWNLOAD_DIR).mkdir(parents=True, exist_ok=True)
+# Ensure Data Exists
+FINAL_DATA_DIR = "/app/backend/data_catalog/final_logs"
+Path(DATA_DIR).mkdir(parents=True, exist_ok=True)
 
 
 @app.get("/")
-async def read_root() -> dict:
-    return {"message": "Welcome to my API!"}
+async def read_root() -> JSONResponse:
+    """Welcome message for the API"""
+    return JSONResponse(content={"message": "Welcome to my API!"})
 
 
-@app.post("/upload_file/", response_model=dict, status_code=201)
-async def upload_file(file: UploadFile = File) -> dict:
+@app.post("/upload/")
+async def upload_file(file: UploadFile = File) -> FileResponse:
+    """Upload a file to the server"""
     try:
         # Save the uploaded file to the server
-        file_path = Path(UPLOAD_DIR) / file.filename
+        file_path = Path(FINAL_DATA_DIR) / file.filename
         with Path.open(file_path, "wb") as f:
             f.write(await file.read())
     except Exception as e:
@@ -74,29 +74,64 @@ async def upload_file(file: UploadFile = File) -> dict:
             detail="An error occurred while uploading the file. Please try again.",
         ) from e
     else:
-        return {"file_path": file_path}
+        return FileResponse(file_path)
 
 
-@app.post("/save_petrinet/", response_model=FileResponse, status_code=201)
-async def save_model(
-    petri_net: PetriNet,
-    initial_marking: Marking,
-    final_marking: Marking,
-) -> dict:
+@app.get("/files")
+async def list_files() -> JSONResponse:
+    """List all files in the data directory"""
     try:
-        # Define the file path to save the Petri net model
-        file_path = Path(DOWNLOAD_DIR) / "model.pnml"
-
-        # Write the Petri net to a .pnml file
-        write_pnml(petri_net, initial_marking, final_marking, file_path)
+        # List all files in the uploads directory that end with .xes
+        files = [
+            file.name
+            for file in Path(FINAL_DATA_DIR).iterdir()
+            if file.name.endswith(".xes")
+        ]
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail="An error occurred while downloading the model. Please try again.",
+            detail="An error occurred while listing the files. Please try again.",
         ) from e
     else:
-        # Return the file as a response
-        return FileResponse(path=file_path)
+        return JSONResponse(content={"files": files})
+
+
+@app.get("/files/{filename}")
+async def get_file(filename: str) -> FileResponse:
+    """Download a file from the server"""
+    try:
+        file_path = Path(FINAL_DATA_DIR) / filename
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail="An error occurred while downloading the file. Please try again.",
+        ) from e
+    else:
+        return FileResponse(file_path)
+
+
+# @app.post("/save_petrinet/")
+# async def save_model(
+#     petri_net: PetriNet,
+#     initial_marking: Marking,
+#     final_marking: Marking,
+# ) -> FileResponse:
+#     try:
+#         # Define the file path to save the Petri net model
+#         file_path = Path(DOWNLOAD_DIR) / "model.pnml"
+
+#         # Write the Petri net to a .pnml file
+#         write_pnml(petri_net, initial_marking, final_marking, file_path)
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=500,
+#             detail="An error occurred while downloading the model. Please try again.",
+#         ) from e
+#     else:
+#         # Return the file as a response
+#         return FileResponse(
+#             path=file_path, media_type="application/xml", filename="model.pnml"
+#         )
 
 
 @app.post("/save_image/")

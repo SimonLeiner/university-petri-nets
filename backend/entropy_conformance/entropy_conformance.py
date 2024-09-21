@@ -1,8 +1,9 @@
 import subprocess
 
+
 def entropy_conformance(
-    input_log_path: str,
-    input_model_path: str) -> tuple[float,float]:
+    input_log_path: str, input_model_path: str
+) -> tuple[float, float]:
     """
     Run the jbpt-pm-entropia tool with the provided options.
 
@@ -20,7 +21,15 @@ def entropy_conformance(
     jar_path = "/app/backend/entropy_conformance/jbpt-pm-entropia-1.7.jar"
 
     # Base command
-    command = ["java", "-jar", jar_path, "-empr", "-s", f"-rel={input_log_path}", f"-ret={input_model_path}"]
+    command = [
+        "java",
+        "-jar",
+        jar_path,
+        "-empr",
+        "-s",
+        f"-rel={input_log_path}",
+        f"-ret={input_model_path}",
+    ]
 
     # Run the command
     result = subprocess.run(command, capture_output=True, text=True, check=False)

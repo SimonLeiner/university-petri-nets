@@ -1,32 +1,17 @@
 import React from 'react';
 import './App.css';
+import HomePage from './pages/HomePage';
+import { AlertProvider } from './providers/AlertProvider';
+import AlertComponent from './components/AlertComponent';
 
 function App() {
   return (
     <div className="App">
-      <header>
-        <h1>Data Dashboard</h1>
-      </header>
+      <AlertProvider>
+        <HomePage />
+        <AlertComponent/>
+      </AlertProvider>
 
-      <main>
-        {/* Plotting Section */}
-        <section className="plotting">
-          <h2>Plotting</h2>
-          <div className="plot-area">
-            {/* Plotting content will go here */}
-            <p>This is the plotting section.</p>
-          </div>
-        </section>
-
-        {/* Statistics Section */}
-        <section className="statistics">
-          <h2>Statistics</h2>
-          <div className="statistics-area">
-            {/* Statistics content will go here */}
-            <p>This is the statistics section.</p>
-          </div>
-        </section>
-      </main>
     </div>
   );
 }

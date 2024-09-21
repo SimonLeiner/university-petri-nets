@@ -40,3 +40,62 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Grid */
+.input-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+  grid-template-rows: auto auto; /* Auto height for rows */
+  gap: 20px; /* Space between grid items */
+  padding: 20px; /* Padding around the grid */
+  width: 100%; /* Full width */
+}
+
+.grid-item {
+  border: 1px solid #ccc; /* Optional border */
+  padding: 15px;
+  border-radius: 8px; /* Rounded corners */
+}
+
+h3 {
+  margin-bottom: 10px;
+}
+
+
+/* Table */
+.conformance-area {
+  margin: 20px;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse; /* Merge borders */
+}
+
+th, td {
+  padding: 12px; /* Spacing inside cells */
+  text-align: left; /* Align text to the left */
+  border-bottom: 1px solid #ddd; /* Divider between rows */
+}
+
+th {
+  background-color: #e0e0e0; /* Softer header background color */
+  color: #333; /* Darker text color for better contrast */
+}
+
+tr:hover {
+  background-color: #e0e0e0; /* Softer header background color */
+}
+
+tbody tr:last-child td {
+  border-bottom: none; /* Remove border from the last row */
+}
+
+/* Divider */
+.divider {
+  height: 1px; /* Height of the divider */
+  background-color: white; /* Color of the divider */
+  margin: 20px 0; /* Space around the divider */
+  width: 100%; /* Make the divider span the full width */
+}
