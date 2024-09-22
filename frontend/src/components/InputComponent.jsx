@@ -123,7 +123,26 @@ const InputComponent = ({
 
       {/* Algorithm inputs section */}
       <div className="grid-item">
+
         <h3>Algorithm Input</h3>
+
+        <div className="input-section">
+          <label htmlFor="interface-pattern-select">
+            Interface Pattern:
+            <select
+              id="interface-pattern-select"
+              value={interfacePattern}
+              onChange={handleInterfacePatternChange}
+            >
+              {Array.from({ length: 12 }, (_, i) => `IP${i + 1}`).map((pattern) => (
+                <option key={pattern} value={pattern}>
+                  {pattern}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
         <div className="input-section">
           <label htmlFor="miner-select">
             Miner Type:
@@ -149,22 +168,6 @@ const InputComponent = ({
           </label>
         </div>
 
-        <div className="input-section">
-          <label htmlFor="interface-pattern-select">
-            Interface Pattern:
-            <select
-              id="interface-pattern-select"
-              value={interfacePattern}
-              onChange={handleInterfacePatternChange}
-            >
-              {Array.from({ length: 12 }, (_, i) => `IP${i + 1}`).map((pattern) => (
-                <option key={pattern} value={pattern}>
-                  {pattern}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
       </div>
     </div>
   );

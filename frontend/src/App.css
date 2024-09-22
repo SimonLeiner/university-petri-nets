@@ -4,6 +4,11 @@ html, body {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow-y: auto; /* Allow vertical scrolling */
+  box-sizing: border-box; /* Ensure consistent box model */
+}
+
+*, *::before, *::after {
+  box-sizing: inherit; /* Apply box-sizing globally */
 }
 
 #root {
@@ -11,7 +16,11 @@ html, body {
   max-height: 100vh; /* Allow scrolling if content exceeds viewport height */
   padding: 2rem; /* Adjust padding as needed */
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensure footer stays at the bottom */
 }
+
 
 .logo {
   height: 6em;
@@ -208,8 +217,7 @@ tbody tr:last-child td {
   color: white; /* White text */
   text-align: center; /* Centered text */
   padding: 1rem; /* Padding */
-  position: relative; /* Position relative to the page */
-  bottom: 0; /* Stick to the bottom */
+  margin-top: auto; /* Push footer to the bottom */
   width: 100%; /* Full width */
 }
 

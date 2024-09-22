@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { instance } from '@viz-js/viz';
-import { useAlert } from '../providers/AlertProvider';
+import svgPanZoom from 'svg-pan-zoom';
 
-const VizualizationComponent = ({ dotString }) => {
-  const { setAlert } = useAlert();
+const VisualizationComponent = ({ dotString, pnmlString }) => {
   const containerRef = useRef(null);
+  const [zoomInstance, setZoomInstance] = useState(null);
 
   useEffect(() => {
     // Only proceed if dotString is valid
@@ -16,8 +16,24 @@ const VizualizationComponent = ({ dotString }) => {
         return viz.renderSVGElement(dotString);
       })
       .then((svgElement) => {
-        containerRef.current.innerHTML = ''; // Clear any previous content
+        // Clear previous content
+        containerRef.current.innerHTML = '';
         containerRef.current.appendChild(svgElement);
+
+        // Initialize svgPanZoom
+        if (zoomInstance) {
+          zoomInstance.destroy(); // Clean up previous instance if it exists
+        }
+        const newZoomInstance = svgPanZoom(svgElement, {
+          zoomEnabled: true,
+          controlIconsEnabled: true,
+          fit: true,
+          center: true,
+          minZoom: 0.1,
+          maxZoom: 10,
+
+        });
+        setZoomInstance(newZoomInstance);
       })
       .catch((error) => {
         console.error('Error rendering the graph:', error);
@@ -25,17 +41,22 @@ const VizualizationComponent = ({ dotString }) => {
 
     // Cleanup on component unmount
     return () => {
-      containerRef.current.innerHTML = '';
+      if (zoomInstance) {
+        zoomInstance.destroy(); // Ensure the zoom instance is destroyed
+      }
+      containerRef.current.innerHTML = ''; // Clear content
     };
   }, [dotString]);
 
+  const resetZoom = () => {
+    if (zoomInstance) {
+      zoomInstance.reset();
+    }
+  };
+
   const saveSVG = () => {
     const svgElement = containerRef.current.querySelector('svg');
-    if (!svgElement) {
-      console.error('No Viz provided');
-      setAlert('error', 'No Viz provided');
-      return;
-    }
+    if (!svgElement) return;
 
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(svgElement);
@@ -55,8 +76,11 @@ const VizualizationComponent = ({ dotString }) => {
     <section className="visualization">
       <h2>Visualizations</h2>
       <div className="visualization-area">
-        <div ref={containerRef} style={{ overflow: 'auto', maxHeight: '400px', marginBottom : '10px 0'}} />
-        <button onClick={saveSVG}>
+        <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden' }} />
+        <button onClick={resetZoom} style={{ margin: '10px' }}>
+          Reset Zoom
+        </button>
+        <button onClick={saveSVG} style={{ margin: '10px' }}>
           Save as SVG
         </button>
       </div>
@@ -64,5 +88,4 @@ const VizualizationComponent = ({ dotString }) => {
   );
 };
 
-export default VizualizationComponent;
-
+export default VisualizationComponent;

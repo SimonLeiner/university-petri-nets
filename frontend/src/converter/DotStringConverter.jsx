@@ -1,10 +1,3 @@
-import { DOMParser } from 'xmldom';
-
-/**
- * Converts PNML content to a DOT string representation of a Petri net.
- * @param {string} pnmlContent - The PNML XML content as a string.
- * @returns {string} - The DOT string representation of the Petri net.
- */
 export const convertPnmlToDot = (pnmlContent) => {
   try {
     const parser = new DOMParser();
@@ -13,42 +6,56 @@ export const convertPnmlToDot = (pnmlContent) => {
     
     let dotString = 'digraph PetriNet {\n';
     dotString += '  rankdir=LR;\n';
-    dotString += '  node [shape=circle];\n';
-    dotString += '  node [shape=box];\n\n';
+    dotString += '  node [shape=circle];\n'; // Default shape for places
+    dotString += '  node [shape=box];\n'; // Default shape for transitions
 
-    let uniqueResources = new Set();
-    const colors = ['#D3D3D3', '#708090', '#696969', '#C0C0C0', '#F5F5F5', '#DCDCDC'];
+    // Colors for different markings
+    const initialMarkingColor = '#007070'; // Teal for initial marking
+    const finalMarkingColor = '#007070'; // Teal for final marking
+    const normalColor = '#ffffff'; // Default color for places
 
-    // Extract unique resources from places
-    Array.from(netElement.getElementsByTagName('place')).forEach(place => {
-      const placeName = place.getElementsByTagName('name')[0]?.getElementsByTagName('text')[0]?.textContent || place.getAttribute('id');
-      if (placeName) {
-        const resourceName = placeName.split(':')[0].trim();
-        if (resourceName) {
-          uniqueResources.add(resourceName);
-        }
-      }
-    });
-
-    uniqueResources = Array.from(uniqueResources);  
-    
     // Add places to the DOT string
     Array.from(netElement.getElementsByTagName('place')).forEach(place => {
       const placeId = place.getAttribute('id');
       const placeName = place.getElementsByTagName('name')[0]?.getElementsByTagName('text')[0]?.textContent || placeId;
+      const initialMarking = place.getElementsByTagName('initialMarking')[0]?.getElementsByTagName('text')[0]?.textContent;
+      
+      // Use a set for final markings
+      const finalMarkings = new Set(
+        Array.from(netElement.getElementsByTagName('finalmarkings')[0]?.getElementsByTagName('marking')).map(marking => 
+          marking.getElementsByTagName('place')[0].getAttribute('idref')
+        )
+      );
+
+      let color = normalColor; // Default color
+      let penWidth = 1; // Default border thickness
+
+      if (initialMarking) {
+        color = initialMarkingColor;
+        penWidth = 3; // Increase border thickness for initial marking
+      } else if (finalMarkings.has(placeId)) {
+        color = finalMarkingColor;
+        penWidth = 3; // Increase border thickness for final marking
+      }
+
       if (placeId) {
-        dotString += `  "${placeId}" [label="${placeName.split(':')[1]?.trim() || placeId}", shape=circle, color="${colors[uniqueResources.indexOf(placeName.split(':')[0].trim()) % uniqueResources.length]}"];\n`;
+        dotString += `  "${placeId}" [label="${placeName}", shape=circle, style="filled", fillcolor="${color}", penwidth="${penWidth}"];\n`;
       }
     });
+
 
     // Add transitions to the DOT string
     Array.from(netElement.getElementsByTagName('transition')).forEach(transition => {
       const transitionId = transition.getAttribute('id');
       const transitionName = transition.getElementsByTagName('name')[0]?.getElementsByTagName('text')[0]?.textContent || transitionId;
+
       if (transitionId) {
-        dotString += `  "${transitionId}" [label="${transitionName.split(':')[1]?.trim() || transitionId}", shape=box, color="${colors[uniqueResources.indexOf(transitionName.split(':')[0].trim()) % uniqueResources.length]}"];\n`;
+        const fillColor = (transitionId.includes('tau') || transitionId.includes('skip')) ? 'black' : 'white';
+
+        dotString += `  "${transitionId}" [label="${transitionName || transitionId}", shape=box, style="filled", fillcolor="${fillColor}"];\n`;
       }
     });
+
 
     // Add arcs to the DOT string
     Array.from(netElement.getElementsByTagName('arc')).forEach(arc => {
@@ -58,7 +65,7 @@ export const convertPnmlToDot = (pnmlContent) => {
     });
 
     dotString += '}\n';
-    return dotString.replace(/:/g, "__"); // Replace colons in labels
+    return dotString.replace(/:/g, "__"); // Replace colons in labels to avoid DOT syntax issues
   } catch (error) {
     console.error('Error parsing PNML to DOT:', error);
     return '';
