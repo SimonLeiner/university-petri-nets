@@ -3,18 +3,18 @@ import { useAlert } from '../providers/AlertProvider';
 import axios from 'axios';
 
 const InputComponent = ({
-  file, // Receive the file state
-  setFile, // Receive the setter for file state
-  miner, // Receive the miner state
-  setMiner, // Receive the setter for miner state
-  interfacePattern={interfacePattern}, // Pass the interface pattern state
-  setInterfacePattern={setInterfacePattern}, // Pass the setter for interface pattern
-  noiseThreshold, // Receive the noise threshold state
-  setNoiseThreshold, // Receive the setter for noise threshold
-  existingFiles, // Receive the existing files list
-  setExistingFiles, // Receive the setter for existing files
-  loading, // Receive the loading state
-  setLoading, // Receive the setter for loading
+  file,
+  setFile,
+  miner,
+  setMiner,
+  interfacePattern,
+  setInterfacePattern,
+  noiseThreshold,
+  setNoiseThreshold,
+  existingFiles,
+  setExistingFiles,
+  loading,
+  setLoading,
 }) => {
   // Alerts
   const { setAlert } = useAlert();
@@ -30,9 +30,7 @@ const InputComponent = ({
     try {
       setLoading(true);
       const response = await axios.post(`${import.meta.env.VITE_PYTHON_BACKEND_URL}/upload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
       setAlert('success', "File uploaded successfully");
       fetchExistingFiles(); // Refresh file list after upload
@@ -46,7 +44,7 @@ const InputComponent = ({
 
   // File selection handler
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]); // This should set the entire file object
+    setFile(event.target.files[0]);
   };
 
   // Fetch existing files on mount
@@ -59,7 +57,6 @@ const InputComponent = ({
     }
   };
 
-  // Fetch existing files on mount
   useEffect(() => {
     fetchExistingFiles();
   }, []);
@@ -73,8 +70,8 @@ const InputComponent = ({
           responseType: 'blob',
         });
         const fileBlob = response.data;
-        const file = new File([fileBlob], selectedFileName);
-        setFile(file);
+        const newFile = new File([fileBlob], selectedFileName);
+        setFile(newFile);
       } catch (error) {
         console.error('Error fetching the file:', error);
         setAlert('error', `Error fetching the file: ${error.message}`);
@@ -116,7 +113,7 @@ const InputComponent = ({
       <div className="grid-item">
         <h3>Upload File</h3>
         <input type="file" onChange={handleFileChange} />
-        <button onClick={onFileUpload}>Upload</button>
+        <button style={{marginTop: '20px'}} onClick={onFileUpload}>Upload</button>
       </div>
 
       {/* Display selected file section */}
@@ -152,6 +149,7 @@ const InputComponent = ({
               max="100"
               value={noiseThreshold}
               onChange={handleSliderChange}
+              className="slider"
             />
           </label>
         </div>
@@ -159,7 +157,11 @@ const InputComponent = ({
         <div className="input-section">
           <label htmlFor="interface-pattern-select">
             Interface Pattern:
-            <select id="interface-pattern-select" value={interfacePattern} onChange={handleInterfacePatternChange}>
+            <select
+              id="interface-pattern-select"
+              value={interfacePattern}
+              onChange={handleInterfacePatternChange}
+            >
               {Array.from({ length: 12 }, (_, i) => `IP${i + 1}`).map((pattern) => (
                 <option key={pattern} value={pattern}>
                   {pattern}
@@ -174,3 +176,5 @@ const InputComponent = ({
 };
 
 export default InputComponent;
+
+

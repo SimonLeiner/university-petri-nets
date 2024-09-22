@@ -70,6 +70,100 @@ h3 {
   margin: 10px 0; /* Space between inputs */
 }
 
+/* Input Styles */
+select, input[type="file"] {
+  width: 100%; /* Full width of the container */
+  padding: 10px;
+  margin-top: 10px; /* Space above the element */
+  border-radius: 5px;
+  border: 1px solid #ccc; /* Light border */
+  font-size: 16px;
+  background-color: rgb(26, 26, 26); ; /* Dark background */
+  box-sizing: border-box; /* Ensure consistent box model */
+}
+
+select:focus, input[type="file"]:focus {
+  outline: none;
+  border-color: #646cffaa; /* Light blue border on focus */
+  box-shadow: 0 0 5px rgba(97, 218, 251, 0.5); /* Soft focus shadow */
+}
+
+/* Style for Noise Threshold Slider */
+input[type="range"] {
+  width: 100%; /* Full width */
+  height: 8px; /* Set track height */
+  background: rgb(26, 26, 26); /* Light background for the slider track */
+  border-radius: 5px; /* Rounded track corners */
+  outline: none; /* Remove outline on focus */
+  transition: background 0.3s ease; /* Smooth background transition */
+}
+
+input[type="range"]:hover {
+  background: rgb(26, 26, 26); /* Slightly darker track on hover */
+}
+
+input[type="range"]:focus {
+  background: #646cffaa; /* Apply the custom blue color when focused */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default thumb styling */
+  appearance: none;
+  width: 18px; /* Thumb width */
+  height: 18px; /* Thumb height */
+  border-radius: 0; /* Square thumb */
+  background: rgb(26, 26, 26); /* Custom thumb color */
+  cursor: pointer; /* Pointer on hover */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #5a5ce0; /* Slightly darker blue on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  background: #4e50cc; /* Darker blue when actively dragging */
+  transform: scale(1.2); /* Enlarge further when active */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px; /* Thumb width */
+  height: 18px; /* Thumb height */
+  border-radius: 0; /* Square thumb */
+  background: rgb(26, 26, 26); /* Custom thumb color */
+  cursor: pointer; /* Pointer on hover */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  background: #5a5ce0; /* Slightly darker blue on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+input[type="range"]::-moz-range-thumb:active {
+  background: #4e50cc; /* Darker blue when actively dragging */
+  transform: scale(1.2); /* Enlarge further when active */
+}
+
+input[type="range"]::-moz-focus-outer {
+  border: 0; /* Hide Firefox focus outline */
+}
+
+.input-section label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between label and slider value */
+  margin-bottom: 10px;
+}
+
+input[type="range"] {
+  margin-top: 10px; /* Space between slider and label */
+}
+
+
 /* Table */
 .conformance-area {
   margin: 20px;
@@ -88,12 +182,12 @@ th, td {
 }
 
 th {
-  background-color: #e0e0e0; /* Softer header background color */
-  color: #333; /* Darker text color for better contrast */
+  background-color: #333; /* Dark background color */
+  color: #ddd; /* White text color for better contrast */
 }
 
 tr:hover {
-  background-color: #e0e0e0; /* Softer header background color */
+  background-color: #333;
 }
 
 tbody tr:last-child td {

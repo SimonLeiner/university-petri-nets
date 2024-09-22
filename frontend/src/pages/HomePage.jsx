@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import InputComponent from '../components/InputComponent';
 import { useAlert } from '../providers/AlertProvider';
 import ConformanceComponent from '../components/ConformanceComponent';
+import VizualizationComponent from '../components/VisualizationComponent copy';
+import axios from 'axios';
+import { convertPnmlToDot } from '../converter/DotStringConverter';
 
 const HomePage = () => {
 
@@ -49,7 +52,7 @@ const HomePage = () => {
         withCredentials: true,
       });
       const jsonData = JSON.parse(response.data); 
-      const parsedDotString = parsePnmlToDot(jsonData.net);
+      const parsedDotString = convertPnmlToDot(jsonData.net);
       setDotString(parsedDotString);
       setConformance(jsonData.conformance)
       setLoading(false);
@@ -80,8 +83,6 @@ const HomePage = () => {
         <h1>Discover Petri Net</h1>
       </header>
 
-      
-
       {/* Main content area for visualizations and conformance */}
       <div className="main-content">
 
@@ -106,12 +107,7 @@ const HomePage = () => {
 
           {/* Visualization section */}
           <div className="divider"></div>
-          <section className="visualization">
-            <h2>Visualizations</h2>
-            <div className="visualization-area">
-              <p>This is the visualization section.</p>
-            </div>
-          </section>
+          <VizualizationComponent dotString={dotString} />
 
           {/* Conformance section */}
           <div className="divider"></div>
@@ -129,9 +125,9 @@ const HomePage = () => {
       <div className="divider"></div>
       <footer className="footer">
         <div className="footer-content">
-          <p>&copy; {new Date().getFullYear()} Your Company Name. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Discovering architecture-aware and sound process models of multi-agent systems: a composition approach by Simon Leiner.</p>
           <p>
-            <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a>
+            <a href="https://data.niaid.nih.gov/resources?id=zenodo_5830862" target="_blank">Research Paper</a>
           </p>
         </div>
       </footer>
