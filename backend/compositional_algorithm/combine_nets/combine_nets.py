@@ -137,7 +137,7 @@ class MergeNets:
         return initial_marking, final_marking, net
 
     @staticmethod
-    def merge_nets(net1: PetriNet, net2: PetriNet) -> tuple[Marking, Marking, PetriNet]:
+    def merge_nets(net1: PetriNet, net2: PetriNet) -> PetriNet:
         """
         Merging two petri nets into one.
 
@@ -146,17 +146,14 @@ class MergeNets:
             net2 (PetriNet): Second Petri Net.
 
         Returns:
-            tuple[Marking, Marking, PetriNet]: Initial and Final Markings and the Merged Petri Net.
+            PetriNet: Merged Petri Net.
         """
         # merge the two nets
         merged_net = merge(nets=[net1, net2])
 
         # adjust the connections properly
         merged_net = MergeNets.connect_async(merged_net)
-        merged_net = MergeNets.connect_sync(merged_net)
-
-        # define the markings
-        return MergeNets.add_markings(merged_net)
+        return MergeNets.connect_sync(merged_net)
 
     @staticmethod
     def merge_markings(net1_marking: Marking, net2_marking: Marking) -> Marking:

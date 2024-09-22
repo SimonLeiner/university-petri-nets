@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import InputComponent from '../components/InputComponent';
 import { useAlert } from '../providers/AlertProvider';
 import ConformanceComponent from '../components/ConformanceComponent';
-import VizualizationComponent from '../components/VisualizationComponent copy';
+import VizualizationComponent from '../components/VisualizationComponent';
 import axios from 'axios';
 import { convertPnmlToDot } from '../converter/DotStringConverter';
+import { LinearProgress } from '@mui/material';
 
 const HomePage = () => {
 
@@ -13,9 +14,10 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [existingFiles, setExistingFiles] = useState([]);
-  const [dotString, setDotString] = useState('');
-  const [miner, setMiner] = useState(''); 
-  const [interfacePattern, setInterfacePattern] = useState('');
+  const [pnml_content, setPnmlContent] = useState("");
+  const [dotString, setDotString] = useState("");
+  const [miner, setMiner] = useState('inductive'); 
+  const [interfacePattern, setInterfacePattern] = useState('IP1');
   const [noiseThreshold, setNoiseThreshold] = useState(0); 
   const [conformance, setConformance] = useState({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
 
@@ -25,21 +27,21 @@ const HomePage = () => {
       setAlert('error', 'Please select a file.');
       return;
     }
-    if (!interfacePattern) {
-      setAlert('error', 'Please select a interface pattern.');
-      return;
-    }
     if (!miner) {
       setAlert('error', 'Please select a miner.');
+      return;
+    }
+    if (!interfacePattern) {
+      setAlert('error', 'Please select a interface pattern.');
       return;
     }
     
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('miner', miner);
-    formData.append('interfacePattern', interfacePattern);
+    formData.append('algorithm_name', miner);
+    formData.append('interface_name', interfacePattern);
     if (miner === 'inductive') {
-      formData.append('noiseThreshold', noiseThreshold);
+      formData.append('noise_threshold', noiseThreshold);
     }
     try {
       setLoading(true);
@@ -48,12 +50,17 @@ const HomePage = () => {
           'Content-Type': 'multipart/form-data',
         },
         responseType: 'text',
-        timeout: 10000000000,
+        timeout: 1000000000000000,
         withCredentials: true,
       });
+      // extract the values
       const jsonData = JSON.parse(response.data); 
-      const parsedDotString = convertPnmlToDot(jsonData.net);
+      // get the pnml net
+      setPnmlContent(jsonData.pnml_content)
+      // Get Dot string
+      const parsedDotString = convertPnmlToDot(jsonData.pnml_content);
       setDotString(parsedDotString);
+      // Get conformance values
       setConformance(jsonData.conformance)
       setLoading(false);
     } catch (error) {
@@ -64,15 +71,36 @@ const HomePage = () => {
     }
   }
 
+  const savePNML = () => {
+    if (!pnml_content) {
+      console.error('No PNML content provided');
+      setAlert('error', 'No PNML content provided');
+      return;
+    }
+  
+    const blob = new Blob([pnml_content], { type: 'application/xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+  
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'petri_net.pnml';  // Specify the correct filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+  
+
   // Reset all states
   const resetEverything = () => {
     setFile(null);
-    setDotString('');
-    setMiner('');
+    setPnmlNet("");
+    setPnmlContent("");
+    setMiner("inductive");
     setNoiseThreshold(0);
     setConformance({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
     setLoading(false);
-    setAlert('info', 'All states have been reset');
+    setAlert("info", "All states have been reset");
   };
   
   return (
@@ -101,9 +129,21 @@ const HomePage = () => {
             setNoiseThreshold={setNoiseThreshold} // Pass the setter for noise threshold
             existingFiles={existingFiles} // Pass the existing files
             setExistingFiles={setExistingFiles} // Pass the setter for existing files
-            loading={loading} // Pass the loading
-            setLoading={setLoading} // Pass the setter for loading
           />
+
+          {/* Run Algorithm section */}
+          <section className="model">
+            <h2>Run Process Discovery</h2>
+            {loading && <LinearProgress color="secondary" style={{ marginBottom: '10px' }}/>}
+            <div className="model-area">
+              <button onClick={applyAlgorithm} disabled={loading}>
+                {loading ? 'Discovering Algorithm and Checking Confomrance...' : 'Run Algorithm'}
+              </button>
+              <button onClick={savePNML} style={{ margin: '10px' }}>
+                Save Model as PNML
+              </button>
+            </div>
+          </section>
 
           {/* Visualization section */}
           <div className="divider"></div>

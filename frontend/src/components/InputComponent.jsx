@@ -13,10 +13,7 @@ const InputComponent = ({
   setNoiseThreshold,
   existingFiles,
   setExistingFiles,
-  loading,
-  setLoading,
 }) => {
-  // Alerts
   const { setAlert } = useAlert();
 
   // Function to handle file upload
@@ -28,7 +25,6 @@ const InputComponent = ({
     const formData = new FormData();
     formData.append('file', file);
     try {
-      setLoading(true);
       const response = await axios.post(`${import.meta.env.VITE_PYTHON_BACKEND_URL}/upload`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -38,7 +34,6 @@ const InputComponent = ({
       console.error('Error uploading file:', error);
       setAlert('error', 'Error uploading file');
     } finally {
-      setLoading(false);
     }
   };
 
@@ -146,7 +141,7 @@ const InputComponent = ({
               id="noise-threshold"
               type="range"
               min="0"
-              max="100"
+              max="1"
               value={noiseThreshold}
               onChange={handleSliderChange}
               className="slider"

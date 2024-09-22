@@ -626,10 +626,13 @@ def compositional_discovery(
         copy_net = subnets[f"A{i}"]  # .__deepcopy__()
         multi_agent_net = MergeNets.merge_nets(multi_agent_net, copy_net)
 
+    # manage the markings
+    initial_marking, final_marking, net = MergeNets.add_markings(multi_agent_net)
+
     # final plotting
     logging.info(
         f"Discovered compositional net ({len(gwf_agent_net.places)} places, {len(gwf_agent_net.transitions)} transitions, {len(gwf_agent_net.arcs)} arcs).",
     )
-    view_petri_net(multi_agent_net)
+    view_petri_net(multi_agent_net, initial_marking, final_marking, format="png")
 
-    return multi_agent_net
+    return multi_agent_net, initial_marking, final_marking

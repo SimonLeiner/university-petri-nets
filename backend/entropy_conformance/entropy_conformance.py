@@ -2,7 +2,8 @@ import subprocess
 
 
 def entropy_conformance(
-    input_log_path: str, input_model_path: str
+    input_log_path: str,
+    input_model_path: str,
 ) -> tuple[float, float]:
     """
     Run the jbpt-pm-entropia tool with the provided options.

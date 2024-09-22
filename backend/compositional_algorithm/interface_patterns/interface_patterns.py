@@ -1051,17 +1051,17 @@ class IP8(BaseInterfacePattern):
             "p_A2_1": PetriNet.Place("p_A2_1"),  # Initial Marking for A2
             "p_A2_2": PetriNet.Place("p_A2_2"),
             "p_A2_3": PetriNet.Place("p_A2_3"),
-            "p_A2_4": PetriNet.Place("p_A2_4"),  # Final Marking for A2
-            "p_A3_1": PetriNet.Place("p_A3_1"),  # Initial Marking for A2
+            "p_A2_4": PetriNet.Place("p_A2_4"),
+            "p_A2_5": PetriNet.Place("p_A2_5"),
+            "p_A2_6": PetriNet.Place("p_A2_6"),
+            "p_A2_7": PetriNet.Place("p_A2_7"),
+            "p_A2_8": PetriNet.Place("p_A2_8"),
+            "p_A2_9": PetriNet.Place("p_A2_9"),
+            "p_A2_10": PetriNet.Place("p_A2_10"),  # Final Marking for A2
+            "p_A3_1": PetriNet.Place("p_A3_1"),  # Initial Marking for A3
             "p_A3_2": PetriNet.Place("p_A3_2"),
             "p_A3_3": PetriNet.Place("p_A3_3"),
-            "p_A3_4": PetriNet.Place("p_A3_4"),
-            "p_A3_5": PetriNet.Place("p_A3_5"),
-            "p_A3_6": PetriNet.Place("p_A3_6"),
-            "p_A3_7": PetriNet.Place("p_A3_7"),
-            "p_A3_8": PetriNet.Place("p_A3_8"),
-            "p_A3_9": PetriNet.Place("p_A3_9"),
-            "p_A3_10": PetriNet.Place("p_A3_10"),  # Final Marking for A2
+            "p_A3_4": PetriNet.Place("p_A3_4"),  # Final Marking for A3
         }
         for index, place in self.places.items():
             if "p_A1" in index:
@@ -1099,12 +1099,12 @@ class IP8(BaseInterfacePattern):
 
         self.nets["A2"].transitions.add(self.transitions["a?"])
         self.nets["A2"].transitions.add(self.transitions["b?"])
-        self.nets["A3"].transitions.add(self.transitions["aR!"])
-        self.nets["A3"].transitions.add(self.transitions["ackA!"])
-        self.nets["A3"].transitions.add(self.transitions["ackB!"])
-        self.nets["A3"].transitions.add(self.transitions["bR!"])
-        self.nets["A3"].transitions.add(self.transitions["c"])
-        self.nets["A3"].transitions.add(self.transitions["d"])
+        self.nets["A2"].transitions.add(self.transitions["aR!"])
+        self.nets["A2"].transitions.add(self.transitions["ackA!"])
+        self.nets["A2"].transitions.add(self.transitions["ackB!"])
+        self.nets["A2"].transitions.add(self.transitions["bR!"])
+        self.nets["A2"].transitions.add(self.transitions["c"])
+        self.nets["A2"].transitions.add(self.transitions["d"])
 
         self.nets["A3"].transitions.add(self.transitions["b!"])
         self.nets["A3"].transitions.add(self.transitions["aR?"])
@@ -1837,6 +1837,7 @@ class IP12(BaseInterfacePattern):
         petri_utils.add_arc_from_to(
             self.transitions["s"],
             self.places["p_A2_2"],
+            self.nets["A2"],
         )
         petri_utils.add_arc_from_to(
             self.transitions["a?"],
@@ -1878,17 +1879,17 @@ class IP12(BaseInterfacePattern):
 # List of supported interface patterns
 INTERFACE_PATTERNS: list[BaseInterfacePattern] = [
     IP1(),
-    IP2,
-    IP3,
-    IP4,
-    IP5,
-    IP6,
-    IP7,
-    IP8,
-    IP9,
-    IP10,
-    IP11,
-    IP12,
+    IP2(),
+    IP3(),
+    IP4(),
+    IP5(),
+    IP6(),
+    IP7(),
+    IP8(),
+    IP9(),
+    IP10(),
+    IP11(),
+    IP12(),
 ]
 
 # Control the public API of the module
