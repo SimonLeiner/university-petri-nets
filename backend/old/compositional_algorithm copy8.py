@@ -12,8 +12,7 @@ import numpy as np
 from networkx.algorithms import isomorphism
 from networkx.algorithms import optimize_graph_edit_distance
 from pm4py import read_xes
-
-# from pm4py import view_petri_net  # noqa: ERA001
+from pm4py import view_petri_net
 from pm4py import write_xes
 from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.obj import PetriNet
@@ -354,9 +353,9 @@ def is_refinement(  # noqa: C901
         t for t in transformations if isinstance(t(), TransitionTransformation)
     ]
 
-    # Not needed specifically, but good practive to not modify the original nets
-    first_net = begin_net.__deepcopy__()
-    final_end_net = end_net.__deepcopy__()
+    # No need, since we are not changing the nets
+    first_net = begin_net  # .__deepcopy__()
+    final_end_net = end_net  # .__deepcopy__()
 
     # accidentially the same
     if is_isomorphic(first_net, final_end_net):
@@ -395,8 +394,7 @@ def is_refinement(  # noqa: C901
                 logging.info(
                     f"Discovering new net ({int(priority)} priority, {len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
                 )
-                # no plotting if used as backend
-                # view_petri_net(current_net, format="png") # noqa: ERA001
+                view_petri_net(current_net, format="png")
 
             # Note: branching logic: we need to apply all possible transformations
             # for each place in the current net
@@ -421,6 +419,8 @@ def is_refinement(  # noqa: C901
                             logging.info(
                                 f"The nets are isomorphic (P) after {transformation_sequence}.",
                             )
+                            view_petri_net(transformed_net)
+                            logging.info("a")
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
                         priority_queue.put(
@@ -468,6 +468,8 @@ def is_refinement(  # noqa: C901
                             logging.info(
                                 f"The nets are isomorphic (T) after {transformation_sequence}.",
                             )
+                            view_petri_net(transformed_net)
+                            logging.info("a")
                             return True, transformation_sequence
                         # if not, add the new net to the queue and save what transformation was applied
                         priority_queue.put(
@@ -486,9 +488,6 @@ def is_refinement(  # noqa: C901
                         )
                         # add the new net to the visited set
                         visited.add(unique_net_id)
-
-            # release the memory
-            del current_net
 
             # Update counter
             counter += 1
@@ -599,7 +598,6 @@ def compositional_discovery(
     filename = Path(input_log_path).name
 
     # discover the multi-agent system net
-    logging.info("Processing the entire event log.")
     df_log = read_xes(input_log_path)
 
     # unique agents:
@@ -617,13 +615,12 @@ def compositional_discovery(
 
             # create a path to save the log file
             modified_log_path = (
-                f"/app/backend/data_catalog/temp_files/agent_{i+1}_{filename}"
+                Path("/app/backend/data_catalog/temp_files") / f"agent_{i+1}_{filename}"
             )
             write_xes(df_log_agent, modified_log_path)
 
             # discover net. Also have the initial and final markings.
-            logging.info(f"Processing the event log for Agent {agent}.")
-            gwf_agent_net, initial_marking, final_marking = discover(
+            gwf_agent_net, _, _ = discover(
                 modified_log_path,
                 algorithm,
                 **algorithm_kwargs,
@@ -636,33 +633,28 @@ def compositional_discovery(
             logging.info(
                 f"Discovered net for Agent {agent} ({len(gwf_agent_net.places)} places, {len(gwf_agent_net.transitions)} transitions, {len(gwf_agent_net.arcs)} arcs).",
             )
-            # no plotting if used as backend
-            # view_petri_net(gwf_agent_net, initial_marking, final_marking, format="png")  # noqa: ERA001
+            view_petri_net(gwf_agent_net)
 
             # remove temp file
-            if Path.exists(Path(modified_log_path)):
+            if Path.exists(modified_log_path):
                 Path(modified_log_path).unlink()
 
             # get the corresponding interface subset pattern. Also have the initial and final markings.
             interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i+1}")
-            subnets[f"A{i+1}"] = interface_subset_pattern
+            subnets[f"A{i}"] = interface_subset_pattern
 
             # check if discovered net is a refinement of the interface pattern for Agent Ai
-            # check_refinement, transformation_list = is_refinement(
-            #     interface_subset_pattern,
-            #     gwf_agent_net,
-            #     transformations,
-            # )
-            # log the result
-            check_refinement = True
-            transformation_list = []
+            check_refinement, transformation_list = is_refinement(
+                interface_subset_pattern,
+                gwf_agent_net,
+                transformations,
+            )
 
-            # logging
+            # log the result
             logging.info(
                 f"Agent {agent} is a refinement: {check_refinement} with transformations: {transformation_list}",
             )
 
-            # replacing
             if check_refinement:
                 # Note: Repalce functionality: Update the dictionary
                 subnets[f"A{i+1}"] = gwf_agent_net
@@ -671,8 +663,10 @@ def compositional_discovery(
             pbar.update(1)
 
     # combine the nets together: no copying of nets!
-    nets = list(subnets.values())
-    multi_agent_net = MergeNets.merge_nets(nets)
+    multi_agent_net = subnets["A1"]
+    for i in range(2, len(subnets) + 1):
+        copy_net = subnets[f"A{i}"]
+        multi_agent_net = MergeNets.merge_nets(multi_agent_net, copy_net)
 
     # manage the markings
     initial_marking, final_marking = MergeNets.add_markings(multi_agent_net)
@@ -681,7 +675,6 @@ def compositional_discovery(
     logging.info(
         f"Discovered compositional net ({len(gwf_agent_net.places)} places, {len(gwf_agent_net.transitions)} transitions, {len(gwf_agent_net.arcs)} arcs).",
     )
-    # no plotting if used as backend
-    # view_petri_net(multi_agent_net, initial_marking, final_marking, format="png")  # noqa: ERA001
+    view_petri_net(multi_agent_net, initial_marking, final_marking, format="png")
 
     return multi_agent_net, initial_marking, final_marking

@@ -15,6 +15,7 @@ const HomePage = () => {
   const [file, setFile] = useState(null);
   const [existingFiles, setExistingFiles] = useState([]);
   const [pnml_content, setPnmlContent] = useState("");
+  const [svg, setSvg] = useState("");
   const [dotString, setDotString] = useState("");
   const [miner, setMiner] = useState('inductive'); 
   const [interfacePattern, setInterfacePattern] = useState('IP1');
@@ -55,8 +56,10 @@ const HomePage = () => {
       });
       // extract the values
       const jsonData = JSON.parse(response.data); 
+      // get the svg
+      setSvg(jsonData.pnml_viz); //  ? `data:image/svg+xml;base64,${jsonData.pnml_viz}` : ''
       // get the pnml net
-      setPnmlContent(jsonData.pnml_content)
+      setPnmlContent(jsonData.pnml_content);
       // Get Dot string
       const parsedDotString = convertPnmlToDot(jsonData.pnml_content);
       setDotString(parsedDotString);
@@ -77,10 +80,8 @@ const HomePage = () => {
       setAlert('error', 'No PNML content provided');
       return;
     }
-  
     const blob = new Blob([pnml_content], { type: 'application/xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-  
     const link = document.createElement('a');
     link.href = url;
     link.download = 'petri_net.pnml';  // Specify the correct filename
@@ -92,10 +93,11 @@ const HomePage = () => {
   
 
   // Reset all states
-  const resetEverything = () => {
+  const resetEverything = () => {e
     setFile(null);
     setPnmlNet("");
     setPnmlContent("");
+    setSvg("");
     setMiner("inductive");
     setNoiseThreshold(0);
     setConformance({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
@@ -147,7 +149,8 @@ const HomePage = () => {
 
           {/* Visualization section */}
           <div className="divider"></div>
-          <VizualizationComponent dotString={dotString} />
+          {/* <VizualizationComponent dotString={dotString} /> */}
+          <VizualizationComponent viz={svg} />
 
           {/* Conformance section */}
           <div className="divider"></div>

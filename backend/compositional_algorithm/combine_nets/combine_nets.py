@@ -32,23 +32,24 @@ class MergeNets:
         if isinstance(element, PetriNet.Place):
             default_string += element.name
         else:
-            default_string += element.label if element.label != None else element.name
+            default_string += (
+                element.label if element.label is not None else element.name
+            )
         return default_string
 
     @staticmethod
-    def connect_async(net: PetriNet) -> PetriNet:
+    def connect_async(net: PetriNet) -> None:
         """Connects Async transitions.
 
         Args:
             net (PetriNet): Petri Net.
 
         Comments:
+            - "Inplace"
             - It connects transitions with labels containing '!' (message sent) and connects
             them to corresponding transitions with labels containing '?' (message received).
             - It creates a new place for each pair of asynchronous transitions and connects the transitions to this new place.
 
-        Returns:
-            PetriNet: Petri Net.
         """
         # for every transition
         for trans in net.transitions:
@@ -76,21 +77,20 @@ class MergeNets:
                     add_arc_from_to(new_place, recv_trans, net)
 
     @staticmethod
-    def connect_sync(net: PetriNet) -> PetriNet:
+    def connect_sync(net: PetriNet) -> None:
         """Connects Sync transitions.
 
         Args:
             net (PetriNet): Petri Net.
 
         Comments:
+            - "Inplace"
             - Identifyies transitions with the same name and merging their incoming and outgoing arcs.
             - Removes duplicate transitions and marks the remaining transitions as "sync."
 
-        Returns:
-            PetriNet: Petri Net.
         """
-        # TODO: shallow copy since we are modifiying the list
-        transitions = net.transitions
+        # shallow copy since we need the transitions from the original net and we modify
+        transitions = net.transitions.copy()
 
         # for every transition
         for trans in transitions:
@@ -98,18 +98,54 @@ class MergeNets:
             sync_transitions = [
                 t for t in transitions if t.name == trans.name and t != trans
             ]
+
+            # If there are other transitions with the same name
             for trans2 in sync_transitions:
                 # Add missing arcs to the original transition
                 for arc in trans2.in_arcs.copy():
                     add_arc_from_to(arc.source, trans, net)
                 for arc in trans2.out_arcs.copy():
                     add_arc_from_to(trans, arc.target, net)
+
                 # Mark transition as synchronous
                 trans.properties["resource"] = "sync"
+
                 # Remove the duplicate transition
                 remove_transition(net, trans2)
 
-        return net
+    @staticmethod
+    def merge_nets(nets: list[PetriNet]) -> PetriNet:
+        """
+        Merging two petri nets into one.
+
+        Args:
+            nets (list[PetriNet]): List
+
+        Returns:
+            PetriNet: Merged Petri Net.
+        """
+        # merge the two nets
+        merged_net = merge(nets=nets)
+
+        # adjust the connections properly
+        MergeNets.connect_async(merged_net)
+        MergeNets.connect_sync(merged_net)
+
+        return merged_net
+
+    @staticmethod
+    def merge_markings(net1_marking: Marking, net2_marking: Marking) -> Marking:
+        """
+        Merging two Markings into one.
+
+        Args:
+            net1_marking (Marking): First Marking.
+            net2_marking (Marking): Second Marking.
+
+        Returns:
+            Marking: Merged Marking.
+        """
+        return Marking(Counter(net1_marking) + Counter(net2_marking))
 
     @staticmethod
     def add_markings(net: PetriNet) -> tuple[Marking, Marking]:
@@ -134,41 +170,7 @@ class MergeNets:
             if not place.out_arcs:
                 final_marking[place] = 1
 
-        return initial_marking, final_marking, net
-
-    @staticmethod
-    def merge_nets(net1: PetriNet, net2: PetriNet) -> PetriNet:
-        """
-        Merging two petri nets into one.
-
-        Args:
-            net1 (PetriNet): First Petri Net.
-            net2 (PetriNet): Second Petri Net.
-
-        Returns:
-            PetriNet: Merged Petri Net.
-        """
-        # merge the two nets
-        merged_net = merge(nets=[net1, net2])
-
-        # adjust the connections properly
-        merged_net = MergeNets.connect_async(merged_net)
-        return MergeNets.connect_sync(merged_net)
-
-    @staticmethod
-    def merge_markings(net1_marking: Marking, net2_marking: Marking) -> Marking:
-        """
-        Merging two Markings into one.
-
-
-        Args:
-            net1_marking (Marking): First Marking.
-            net2_marking (Marking): Second Marking.
-
-        Returns:
-            Marking: Merged Marking.
-        """
-        return Marking(Counter(net1_marking) + Counter(net2_marking))
+        return initial_marking, final_marking
 
 
 # Control the public API of the module
