@@ -21,23 +21,6 @@ class MergeNets:
         return f"<{self.__class__.__name__}>"
 
     @staticmethod
-    def _encode_element(element: PetriNet.Place | PetriNet.Transition) -> str:
-        """Make Sure resource in properties is used if available, otherwise use default_string. Not Used at the Moment."""
-        default_string = ""
-        if "resource" in element.properties:
-            default_string += element.properties["resource"]
-        else:
-            default_string += "undefined"
-        default_string += ":"
-        if isinstance(element, PetriNet.Place):
-            default_string += element.name
-        else:
-            default_string += (
-                element.label if element.label is not None else element.name
-            )
-        return default_string
-
-    @staticmethod
     def connect_async(net: PetriNet) -> None:
         """Connects Async transitions.
 

@@ -1,3 +1,4 @@
+import difflib
 from collections import Counter
 
 from pm4py.objects.petri_net.obj import Marking
@@ -34,7 +35,6 @@ class MergeNets:
             - It creates a new place for each pair of asynchronous transitions and connects the transitions to this new place.
 
         """
-        # for every transition
         for send_trans in net.transitions:
             # check if trans is sending
             if send_trans.label and "!" in send_trans.label:
@@ -42,16 +42,42 @@ class MergeNets:
                 async_label = send_trans.label
                 recv_label = async_label.replace("!", "?")
 
-                # Find the receiving transition
-                recv_trans = next(
-                    (t for t in net.transitions if t.label == recv_label),
-                    None,
+                # recieving transitions
+                recieving_transitions1 = [
+                    t for t in net.transitions if t.label and recv_label in t.label
+                ]
+                recieving_transitions2 = [
+                    t for t in net.transitions if t.label and t.label in recv_label
+                ]
+                # combine lists and make unique
+                recieving_transitions = list(
+                    set(recieving_transitions1 + recieving_transitions2),
                 )
-                if recv_trans:
-                    # Create a new place and add arcs
-                    new_place = add_place(net, f"p_{async_label}")
-                    add_arc_from_to(send_trans, new_place, net)
-                    add_arc_from_to(new_place, recv_trans, net)
+
+                # very similar, but not subsets like: "Activity C_m2?" and "Activity CZ_m2?"
+                threshold = 0.7
+                for t in net.transitions:
+                    if t.label:  # noqa: SIM102
+                        if (
+                            recv_label
+                            and "?" in t.label
+                            and t.label not in recieving_transitions
+                            and t.label != recv_label
+                        ):
+                            similarity = difflib.SequenceMatcher(
+                                None,
+                                t.label,
+                                recv_label,
+                            ).ratio()
+                            if similarity >= threshold:
+                                recieving_transitions.append(t)
+
+                for recv_trans in recieving_transitions:
+                    if recv_trans:
+                        # Create a new place and add arcs
+                        new_place = add_place(net, f"p_{async_label}")
+                        add_arc_from_to(send_trans, new_place, net)
+                        add_arc_from_to(new_place, recv_trans, net)
 
     @staticmethod
     def connect_sync(net: PetriNet) -> None:

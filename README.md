@@ -28,15 +28,33 @@ Your web interface should allow for the following configurations:
 
 ## Getting Started
 
-1. Clone the repository:
+**Clone the repository:**
 
 ```bash
 git clone https://github.com/SimonLeiner/quantum-scope.git
 ```
 
-2. TODO: Setup the environment:
+**Setup the environment:**
 
-We recomment using devcontainer for development. You can find the devcontainer configuration in the `.devcontainer` folder. Adjust the configuration to your needs.
+- We recomment using devcontainer for development. You can find the devcontainer configuration in the appropriate `.devcontainer` folders. Adjust the configuration to your needs.
+
+CD into the project directory and run the following command:
+
+```
+docker compose up -d
+```
+
+Ensure that the containers are up and running:
+
+```
+docker compose ps
+```
+
+If you make changes to the Dockerfile or dependencies, rebuild the containers with:
+
+```
+docker compose up --build -d
+```
 
 ## Main Paper "Discovering architecture-aware and sound process models of multi-agent systems: a compositional approach"
 
@@ -44,10 +62,7 @@ We recomment using devcontainer for development. You can find the devcontainer c
 
 ## Other Resources
 
-- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab01_2024.pdf
-- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab02_2024.pdf
-- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab03_2024.pdf
-- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/lab04_2024.pdf
+- Lab Course Files
 
 ## References
 
@@ -56,3 +71,4 @@ We recomment using devcontainer for development. You can find the devcontainer c
 - https://github.com/pm4py/pm4py-core
 - https://github.com/Gmod4phun/PetriNetParser
 - https://github.com/Dominik-Hillmann/petrinets
+- ...

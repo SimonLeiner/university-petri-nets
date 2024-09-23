@@ -46,7 +46,7 @@ class BaseTransformation(metaclass=ABCMeta):
 
 
 class PlaceTransformation(BaseTransformation):
-    pass
+    """Place Naming: For example p_A1_1."""
 
 
 class TransitionTransformation(BaseTransformation):

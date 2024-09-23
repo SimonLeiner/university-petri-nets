@@ -218,13 +218,12 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 
-# temporarily files
+# data directory
 temp_files/
-
 tase_data/
-
 final_logs/
-
 colliery_validation/
-
 compositional_process_discovery_experiment_data/
+
+# old stuff
+old/

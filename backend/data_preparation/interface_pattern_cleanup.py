@@ -35,9 +35,11 @@ def determine_agent(ip_type: str, concept_name: str) -> list:  # noqa: C901
         return ["Agent 1"]
 
     # q/e (only in IP-1) -> Agent 2
-    if concept_name.startswith("q"):
+    if concept_name.startswith(("q", "e")):
         return ["Agent 2"]
-    return ["Unknown"]
+
+    msg = f"Unknown concept name: {concept_name}"
+    raise ValueError(msg)
 
 
 def add_org_resource(ip_type: str, input_path: str, output_path: str) -> None:

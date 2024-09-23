@@ -4,6 +4,7 @@ import json
 import logging
 import time
 from collections import Counter
+from collections import deque
 from pathlib import Path
 from queue import PriorityQueue
 
@@ -323,6 +324,165 @@ def priority_identifier(
     return net_diff - class_diversity - param_diversity + unique_offset
 
 
+def _is_refinement(  # noqa: C901
+    begin_net: PetriNet,
+    end_net: PetriNet,
+    transformations: list[BaseTransformation],
+) -> tuple[bool, list[BaseTransformation]]:
+    """Checks if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern.
+
+    Args:
+        begin_net (PetriNet): The corresponding part in the interface pattern.
+        end_net (PetriNet): The agent GWF-net.
+        transformations (list): The list of transformations to apply.
+
+    Comments:
+        - We use BFS to find a sequence of transformations that transforms the input net into the target net.
+        - We copy the nets so we apply one one sequence at a time.
+        - It is not legit to apply multiple transformations at the same time -> Nets immediately explode without search.
+        - Go through transformations first and first place transition is p1 for best performance.
+        - Time complexity: O()
+
+    Returns:
+        bool: True if the agent GWF-net is a refinement of the corresponding part in the interface pattern.
+        list: The sequence of transformations that lead to the target
+    """
+    # split in place and transition transformations
+    place_transformations = [
+        t for t in transformations if isinstance(t(), PlaceTransformation)
+    ]
+    transition_transformations = [
+        t for t in transformations if isinstance(t(), TransitionTransformation)
+    ]
+
+    # create a deep copy of the begin_net
+    first_net = begin_net.__deepcopy__()
+    final_end_net = end_net.__deepcopy__()
+
+    # accidentially the same
+    if is_isomorphic(first_net, final_end_net):
+        logging.info("The nets are initially isomorphic.")
+        return True, []
+
+    # Handle empty transformations list
+    if not place_transformations and not transition_transformations:
+        logging.info("No transformations provided.")
+        return False, []
+
+    # Create a queue for BFS and add the initial net
+    queue = deque([(first_net, [])])
+
+    # Initialize the set of visited states
+    visited = set()
+    visited.add(generate_unique_id(first_net))
+
+    # counter for plotting
+    counter = 0
+
+    # as long as there is an element in the queue
+    with tqdm(total=None, desc="Processing Queue") as pbar:
+        while queue:
+            # Update progress bar
+            pbar.update(1)
+
+            # dequeue the first element in the queue
+            current_net, transformation_sequence = queue.popleft()
+
+            # plotting of discovered net every 1000 iterations
+            if counter % 10 == 0:
+                logging.info(
+                    f"Discovering new net ({len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
+                )
+                # no plotting if used as backend
+                # view_petri_net(current_net, format="png") # noqa: ERA001
+
+            # for each transition in the current net
+            for transition in current_net.transitions:
+                # apply each possible transition transformation
+                for transition_transformation in transition_transformations:
+                    # Note: ensures that subsequent transformations are applied to a fresh instance of the net.
+                    net_copy = current_net.__deepcopy__()
+                    transformed_net = transition_transformation.refine(
+                        transition,
+                        net_copy,
+                    )
+                    unique_net_id = generate_unique_id(transformed_net)
+                    transformation_sequence_element = (
+                        transition_transformation,
+                        transition,
+                    )
+
+                    # check if the new net is the one we are looking for
+                    if unique_net_id not in visited and is_net_valid(
+                        transformed_net,
+                        final_end_net,
+                    ):
+                        if is_isomorphic(transformed_net, final_end_net):
+                            transformation_sequence.append(
+                                transformation_sequence_element,
+                            )
+                            logging.info(
+                                f"The nets are isomorphic (T) after {transformation_sequence}.",
+                            )
+                            return True, transformation_sequence
+                        # if not, add the new net to the queue and save what transformation was applied
+                        queue.append(
+                            (
+                                transformed_net,
+                                [
+                                    *transformation_sequence,
+                                    transformation_sequence_element,
+                                ],
+                            ),
+                        )
+                    # add the new net to the visited set
+                    visited.add(unique_net_id)
+
+            # Note: branching logic: we need to apply all possible transformations
+            # for each place in the current net
+            for place in current_net.places:
+                # apply each possible place transformation
+                for place_transformation in place_transformations:
+                    # Note: Deep copy of the current net before applying the transformation -> transformation change places & transitions and sets are immutable.
+                    net_copy = current_net.__deepcopy__()
+                    transformed_net = place_transformation.refine(place, net_copy)
+                    unique_net_id = generate_unique_id(transformed_net)
+                    transformation_sequence_element = (place_transformation, place)
+
+                    # check if the new net is the one we are looking for
+                    if unique_net_id not in visited and is_net_valid(
+                        transformed_net,
+                        final_end_net,
+                    ):
+                        if is_isomorphic(transformed_net, final_end_net):
+                            transformation_sequence.append(
+                                transformation_sequence_element,
+                            )
+                            logging.info(
+                                f"The nets are isomorphic (P) after {transformation_sequence}.",
+                            )
+                            return True, transformation_sequence
+                        # if not, add the new net to the queue and save what transformation was applied
+                        queue.append(
+                            (
+                                transformed_net,
+                                [
+                                    *transformation_sequence,
+                                    transformation_sequence_element,
+                                ],
+                            ),
+                        )
+                        # add the new net to the visited set
+                        visited.add(unique_net_id)
+
+            # Update counter
+            counter += 1
+
+    # If no sequence of transformations leads to the target net
+    logging.info("No sequence of transformations leads to the target net.")
+    return False, []
+
+
 def is_refinement(  # noqa: C901
     begin_net: PetriNet,
     end_net: PetriNet,
@@ -394,7 +554,7 @@ def is_refinement(  # noqa: C901
             # plotting of discovered net every 1000 iterations
             if counter % 500 == 0:
                 logging.info(
-                    f"Discovering new net ({int(priority)} priority, {len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
+                    f"Discovering new net ({priority} priority, {len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
                 )
                 # no plotting if used as backend
                 # view_petri_net(current_net, format="png") # noqa: ERA001
@@ -575,6 +735,16 @@ def standardize_properties_log(df_log: pd.DataFrame) -> pd.DataFrame:
         conditions.append(~df_log["msgType"].isin(["send", "receive"]))
         choices.append("")
 
+    elif "msgName" in df_log.columns and "msgRole" in df_log.columns:
+        conditions.append(df_log["msgRole"] == "send")
+        choices.append("_" + df_log["msgName"] + "!")
+
+        conditions.append(df_log["msgRole"] == "receive")
+        choices.append("_" + df_log["msgName"] + "?")
+
+        conditions.append(~df_log["msgRole"].isin(["send", "receive"]))
+        choices.append("")
+
     elif "Message:Sent" in df_log.columns and "Message:Rec" in df_log.columns:
         conditions.append(df_log["Message:Sent"] != "null")
         choices.append("_" + df_log["Message:Sent"] + "!")
@@ -588,35 +758,15 @@ def standardize_properties_log(df_log: pd.DataFrame) -> pd.DataFrame:
         )
         choices.append("")
 
-    # Use numpy.select to assign the new values
-    new_values = np.select(conditions, choices, default="")
+    # Only apply np.select if there are valid conditions
+    if conditions:
+        # Use numpy.select to assign the new values
+        new_values = np.select(conditions, choices, default="")
 
-    # Append new values to the existing values in the concept:name column
-    df_log["concept:name"] = df_log["concept:name"] + new_values
+        # Append new values to the existing values in the concept:name column
+        df_log["concept:name"] = df_log["concept:name"] + new_values
 
-
-def standardize_properties_net(net: PetriNet) -> PetriNet:
-    """Standardize the properties of the Petri net.
-
-    Args:
-        net (PetriNet): The Petri net to standardize.
-
-    Comments:
-        - Standardize the properties of the Petri net.
-        - Time complexity: O(n) where n is the number of nodes.
-
-    Returns:
-        PetriNet: The standardized Petri net.
-    """
-    # Standardize the names of the places and transitions
-    for place in net.places:
-        place.name = place.name.replace(" ", "_")
-        place.name = MergeNets.encode_element(place)
-    for transition in net.transitions:
-        transition.name = MergeNets.encode_element(transition)
-        transition.label = transition.label.replace(" ", "_")
-
-    return net
+    return df_log
 
 
 def compositional_discovery(
@@ -656,7 +806,7 @@ def compositional_discovery(
     df_log = standardize_properties_log(df_log)
 
     # unique agents:
-    unique_agents = df_log[agent_column].unique()
+    unique_agents = df_log[agent_column].unique().tolist()
 
     # Note: No Replace. Build Late -> dict to store the discovered nets for each agent
     subnets = {}
@@ -682,9 +832,6 @@ def compositional_discovery(
                 **algorithm_kwargs,
             )
 
-            # standarization/cleanup gwf net
-            gwf_agent_net = standardize_properties_net(gwf_agent_net)
-
             # plotting of discovered net
             logging.info(
                 f"Discovered net for Agent {agent} ({len(gwf_agent_net.places)} places, {len(gwf_agent_net.transitions)} transitions, {len(gwf_agent_net.arcs)} arcs).",
@@ -700,15 +847,15 @@ def compositional_discovery(
             interface_subset_pattern, _, _ = interface_pattern.get_net(f"A{i+1}")
             subnets[f"A{i+1}"] = interface_subset_pattern
 
-            # check if discovered net is a refinement of the interface pattern for Agent Ai
-            # check_refinement, transformation_list = is_refinement(
-            #     interface_subset_pattern,
-            #     gwf_agent_net,
-            #     transformations,
-            # )
-            # log the result
-            check_refinement = True
-            transformation_list = []
+            # TODO: check if discovered net is a refinement of the interface pattern for Agent Ai
+            check_refinement, transformation_list = is_refinement(  # _is_refinement
+                interface_subset_pattern,
+                gwf_agent_net,
+                transformations,
+            )
+            # TODO: log the result
+            # check_refinement = True
+            # transformation_list = []
 
             # logging
             logging.info(
