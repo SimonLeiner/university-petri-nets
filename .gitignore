@@ -221,3 +221,6 @@ cython_debug/
 # temporarily files
 temp_files/
 
+tase_data/
+
+final_logs/

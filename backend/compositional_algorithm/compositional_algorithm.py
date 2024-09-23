@@ -9,6 +9,7 @@ from queue import PriorityQueue
 
 import networkx as nx
 import numpy as np
+import pandas as pd
 from networkx.algorithms import isomorphism
 from networkx.algorithms import optimize_graph_edit_distance
 from pm4py import read_xes
@@ -544,8 +545,57 @@ def generate_unique_id(petri_net: PetriNet) -> str:
     return hashlib.sha256(canonical_representation.encode("utf-8")).hexdigest()
 
 
-# TODO: # Standardize the properties of the Petri net
-def standardize_properties(net: PetriNet) -> PetriNet:
+def standardize_properties_log(df_log: pd.DataFrame) -> pd.DataFrame:
+    """Standardize the properties of the Log.
+
+    Args:
+        df_log (pd.DataFrame): The log to standardize.
+
+    Comments:
+        -
+
+    Returns:
+        pd.DataFrame: The standardized log.
+    """
+    # Standardize the name resource columns
+    if "org:resource" not in df_log.columns:
+        df_log = df_log.rename(columns={"org:group": "org:resource"})
+
+    # Create conditions and choices
+    conditions = []
+    choices = []
+
+    if "msgFlow" in df_log.columns and "msgType" in df_log.columns:
+        conditions.append(df_log["msgType"] == "send")
+        choices.append("_" + df_log["msgFlow"] + "!")
+
+        conditions.append(df_log["msgType"] == "receive")
+        choices.append("_" + df_log["msgFlow"] + "?")
+
+        conditions.append(~df_log["msgType"].isin(["send", "receive"]))
+        choices.append("")
+
+    elif "Message:Sent" in df_log.columns and "Message:Rec" in df_log.columns:
+        conditions.append(df_log["Message:Sent"] != "null")
+        choices.append("_" + df_log["Message:Sent"] + "!")
+
+        conditions.append(df_log["Message:Rec"] != "null")
+        choices.append("_" + df_log["Message:Rec"] + "?")
+
+        # # Check if both Message:Sent and Message:Rec are null
+        conditions.append(
+            (df_log["Message:Sent"] == "null") & (df_log["Message:Rec"] == "null"),
+        )
+        choices.append("")
+
+    # Use numpy.select to assign the new values
+    new_values = np.select(conditions, choices, default="")
+
+    # Append new values to the existing values in the concept:name column
+    df_log["concept:name"] = df_log["concept:name"] + new_values
+
+
+def standardize_properties_net(net: PetriNet) -> PetriNet:
     """Standardize the properties of the Petri net.
 
     Args:
@@ -602,6 +652,9 @@ def compositional_discovery(
     logging.info("Processing the entire event log.")
     df_log = read_xes(input_log_path)
 
+    # standarization/cleanup total log
+    df_log = standardize_properties_log(df_log)
+
     # unique agents:
     unique_agents = df_log[agent_column].unique()
 
@@ -629,8 +682,8 @@ def compositional_discovery(
                 **algorithm_kwargs,
             )
 
-            # TODO: standarization/cleanup gwf net
-            # gwf_agent_net = standardize_properties(gwf_agent_net)  # noqa: ERA001
+            # standarization/cleanup gwf net
+            gwf_agent_net = standardize_properties_net(gwf_agent_net)
 
             # plotting of discovered net
             logging.info(

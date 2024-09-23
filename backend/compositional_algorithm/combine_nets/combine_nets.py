@@ -21,23 +21,6 @@ class MergeNets:
         return f"<{self.__class__.__name__}>"
 
     @staticmethod
-    def encode_element(element: PetriNet.Place | PetriNet.Transition) -> str:
-        """Make Sure recourse in properties is used if available, otherwise use default_string."""
-        default_string = ""
-        if "resource" in element.properties:
-            default_string += element.properties["resource"]
-        else:
-            default_string += "undefined"
-        default_string += ":"
-        if isinstance(element, PetriNet.Place):
-            default_string += element.name
-        else:
-            default_string += (
-                element.label if element.label is not None else element.name
-            )
-        return default_string
-
-    @staticmethod
     def connect_async(net: PetriNet) -> None:
         """Connects Async transitions.
 
@@ -52,15 +35,12 @@ class MergeNets:
 
         """
         # for every transition
-        for trans in net.transitions:
+        for send_trans in net.transitions:
             # check if trans is sending
-            if trans.label and "!" in trans.label:
+            if send_trans.label and "!" in send_trans.label:
                 # Find the receiving transition
-                async_label = trans.label
+                async_label = send_trans.label
                 recv_label = async_label.replace("!", "?")
-
-                # Update properties of the sending transition
-                trans.properties.update({"resource": "!"})
 
                 # Find the receiving transition
                 recv_trans = next(
@@ -68,12 +48,9 @@ class MergeNets:
                     None,
                 )
                 if recv_trans:
-                    recv_trans.properties.update({"resource": "?"})
-
                     # Create a new place and add arcs
-                    new_place = add_place(net, async_label)
-                    new_place.properties.update({"resource": True})
-                    add_arc_from_to(trans, new_place, net)
+                    new_place = add_place(net, f"p_{async_label}")
+                    add_arc_from_to(send_trans, new_place, net)
                     add_arc_from_to(new_place, recv_trans, net)
 
     @staticmethod
@@ -106,9 +83,6 @@ class MergeNets:
                     add_arc_from_to(arc.source, trans, net)
                 for arc in trans2.out_arcs.copy():
                     add_arc_from_to(trans, arc.target, net)
-
-                # Mark transition as synchronous
-                trans.properties["resource"] = "sync"
 
                 # Remove the duplicate transition
                 remove_transition(net, trans2)
