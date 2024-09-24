@@ -1,4 +1,3 @@
-import base64
 import json
 import logging
 import os
@@ -15,12 +14,12 @@ from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from fastapi.responses import Response
 from pm4py import discover_petri_net_inductive
-from pm4py import save_vis_petri_net
 
 # from pm4py import fitness_alignments
 # from pm4py import precision_alignments
 # from pm4py import read_xes
 from pm4py import write_pnml
+from pm4py.visualization.petri_net import visualizer as pn_visualizer
 
 from compositional_algorithm.compositional_algorithm import compositional_discovery
 from compositional_algorithm.interface_patterns.interface_patterns import (
@@ -150,10 +149,7 @@ async def discover(
                 interface = inter
                 break
 
-        logging.info(interface)
-        logging.info("Get here")
-
-        # TODO: # Discover the process model
+        # Discover the process model
         net, initial_marking, final_marking = compositional_discovery(
             input_log_path=str(input_log_path),
             algorithm=algorithm,
@@ -163,11 +159,13 @@ async def discover(
             **algorithm_kwargs,
         )
 
-        # temporarily export to pnml
+        # temporarily export to pnml: save the Petri net to a file for entropy conformance
         temp_pnml_path = Path(TEMP_DATA_DIR) / "temp_net.pnml"
-        temp_viz_path = Path(TEMP_DATA_DIR) / "temp_net.svg"
         write_pnml(net, initial_marking, final_marking, str(temp_pnml_path))
-        save_vis_petri_net(net, initial_marking, final_marking, str(temp_viz_path))
+
+        # Directed graph source code in the DOT language.
+        gviz = pn_visualizer.apply(net, initial_marking, final_marking)
+        dot = gviz.source
 
         # TODO: alignment based fitness and precision
         # align_precision = fitness_alignments(
@@ -183,34 +181,30 @@ async def discover(
         #     final_marking,
         # )
 
-        # # TODO: entropy based fitness and precision
+        # TODO: entropy based fitness and precision
         # entr_precision, entr_recall = entropy_conformance(
         #     input_log_path,
         #     temp_pnml_path,
         # )
 
-        align_fitness = 1# noqa: ERA001
-        align_precision = 1# noqa: ERA001
-        entr_precision = 1# noqa: ERA001
-        entr_recall = 1  # noqa: ERA001
+        # TODO: remove
+        align_fitness = 1
+        align_precision = 1
+        entr_precision = 1
+        entr_recall = 1
 
         # can't go from Petri net to json directly
         with Path.open(temp_pnml_path, "r") as pnml_file:
             pnml_content = pnml_file.read()
-        with Path.open(temp_viz_path, "rb") as viz_file:
-            viz_content = viz_file.read()
-            svg_base64 = base64.b64encode(viz_content).decode("utf-8")
 
         # remove temp file
         if Path.exists(temp_pnml_path):
             Path(temp_pnml_path).unlink()
-        if Path.exists(temp_viz_path):
-            Path(temp_viz_path).unlink()
 
         # Note: instead of sending the file, could aslo just provide the path: create the response
         response = {
             "pnml_content": pnml_content,
-            "pnml_viz": svg_base64,
+            "pnml_viz": dot,
             "conformance": {
                 "Alignment-based Fitness": align_fitness,
                 "Alignment-based Precision": align_precision,

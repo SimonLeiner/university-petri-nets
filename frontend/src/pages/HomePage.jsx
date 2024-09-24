@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import InputComponent from '../components/InputComponent';
 import { useAlert } from '../providers/AlertProvider';
 import ConformanceComponent from '../components/ConformanceComponent';
-import VizualizationComponent from '../components/VisualizationComponent';
+import VizualizationComponent1 from '../components/VisualizationComponent';
+// import VizualizationComponent2 from '../components/VisualizationComponent2';
 import axios from 'axios';
-import { convertPnmlToDot } from '../converter/DotStringConverter';
 import { LinearProgress } from '@mui/material';
 
 const HomePage = () => {
@@ -16,7 +16,6 @@ const HomePage = () => {
   const [existingFiles, setExistingFiles] = useState([]);
   const [pnml_content, setPnmlContent] = useState("");
   const [svg, setSvg] = useState("");
-  const [dotString, setDotString] = useState("");
   const [miner, setMiner] = useState('inductive'); 
   const [interfacePattern, setInterfacePattern] = useState('IP1');
   const [noiseThreshold, setNoiseThreshold] = useState(0); 
@@ -66,9 +65,6 @@ const HomePage = () => {
       setSvg(jsonData.pnml_viz); //  ? `data:image/svg+xml;base64,${jsonData.pnml_viz}` : ''
       // get the pnml net
       setPnmlContent(jsonData.pnml_content);
-      // Get Dot string
-      const parsedDotString = convertPnmlToDot(jsonData.pnml_content);
-      setDotString(parsedDotString);
       // Get conformance values
       setConformance(jsonData.conformance)
       setLoading(false);
@@ -107,17 +103,22 @@ const HomePage = () => {
   
 
   // Reset all states
-  const resetEverything = () => {e
+  const resetEverything = () => {
     setFile(null);
-    setPnmlNet("");
     setPnmlContent("");
     setSvg("");
     setMiner("inductive");
     setNoiseThreshold(0);
-    setConformance({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
+    setConformance({
+      "Alignment-based Fitness": 0,
+      "Alignment-based Precision": 0,
+      "Entropy-based Fitness": 0,
+      "Entropy-based Precision": 0,
+    });
     setLoading(false);
     setAlert("info", "All states have been reset");
   };
+  
   
   return (
     <div className="home-page">
@@ -166,8 +167,8 @@ const HomePage = () => {
 
           {/* Visualization section */}
           <div className="divider"></div>
-          {/* <VizualizationComponent dotString={dotString} /> */}
-          <VizualizationComponent viz={svg} />
+          <VizualizationComponent1 dotString={svg} />
+          {/* <VizualizationComponent2 viz={svg} /> */}
 
           {/* Conformance section */}
           <div className="divider"></div>
