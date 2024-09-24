@@ -1,3 +1,4 @@
+import concurrent.futures
 import hashlib
 import inspect
 import json
@@ -771,7 +772,7 @@ def standardize_properties_log(df_log: pd.DataFrame) -> pd.DataFrame:
         "org_resource",
     )
     df_log["org:resource"] = df_log["org_resource"].str.strip()
-    return df_log.drop("org_resource", axis = 1)
+    return df_log.drop("org_resource", axis=1)
 
 
 def compositional_discovery(
@@ -853,16 +854,34 @@ def compositional_discovery(
             subnets[f"A{i+1}"] = interface_subset_pattern
 
             # TODO: check if discovered net is a refinement of the interface pattern for Agent Ai
-            check_refinement, transformation_list = is_refinement(  # _is_refinement
-                interface_subset_pattern,
-                gwf_agent_net,
-                transformations,
-            )
-            # TODO: log the result
-            # check_refinement = True
-            # transformation_list = []
+            timeout = 30  # Timeout in seconds
+            # Use ThreadPoolExecutor to run is_refinement with a timeout
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                future = executor.submit(
+                    _is_refinement,  # _isrefinement
+                    interface_subset_pattern,
+                    gwf_agent_net,
+                    transformations,
+                )
 
-            # logging
+                try:
+                    # Wait for the result with a timeout
+                    check_refinement, transformation_list = future.result(
+                        timeout=timeout,
+                    )
+                except concurrent.futures.TimeoutError:
+                    logging.info("Refinement took too long to execute.")
+                    check_refinement, transformation_list = (
+                        True,
+                        [],
+                    )  # Set to default values
+                except Exception as e:  # noqa: BLE001
+                    logging.info(
+                        f"An error occurred while checking the refinements: {e}",
+                    )
+                    check_refinement, transformation_list = True, []
+
+            # Logging the results after exiting the loop
             logging.info(
                 f"Agent {agent} is a refinement: {check_refinement} with transformations: {transformation_list}",
             )

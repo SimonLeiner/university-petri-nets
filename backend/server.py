@@ -133,7 +133,6 @@ async def discover(
     try:
         # get the file path
         input_log_path = Path(FINAL_DATA_DIR) / file.filename
-        # df_log = read_xes(str(input_log_path))
 
         # select wich algorithm to use
         if algorithm_name == "inductive":
@@ -145,9 +144,14 @@ async def discover(
 
         # select the Interface pattern to use
         for inter in INTERFACE_PATTERNS:
+            logging.info(inter)
+            logging.info(interface_name)
             if inter.name == interface_name:
                 interface = inter
                 break
+
+        logging.info(interface)
+        logging.info("Get here")
 
         # TODO: # Discover the process model
         net, initial_marking, final_marking = compositional_discovery(
@@ -165,7 +169,7 @@ async def discover(
         write_pnml(net, initial_marking, final_marking, str(temp_pnml_path))
         save_vis_petri_net(net, initial_marking, final_marking, str(temp_viz_path))
 
-        # TODO: # alignment based fitness and precision
+        # TODO: alignment based fitness and precision
         # align_precision = fitness_alignments(
         #     df_log,
         #     net,
@@ -179,15 +183,16 @@ async def discover(
         #     final_marking,
         # )
 
-        # TODO: # entropy based fitness and precision
+        # # TODO: entropy based fitness and precision
         # entr_precision, entr_recall = entropy_conformance(
         #     input_log_path,
         #     temp_pnml_path,
         # )
-        align_fitness = 1
-        align_precision = 1
-        entr_precision = 1
-        entr_recall = 1
+
+        align_fitness = 1# noqa: ERA001
+        align_precision = 1# noqa: ERA001
+        entr_precision = 1# noqa: ERA001
+        entr_recall = 1  # noqa: ERA001
 
         # can't go from Petri net to json directly
         with Path.open(temp_pnml_path, "r") as pnml_file:

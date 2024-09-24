@@ -21,6 +21,8 @@ const HomePage = () => {
   const [interfacePattern, setInterfacePattern] = useState('IP1');
   const [noiseThreshold, setNoiseThreshold] = useState(0); 
   const [conformance, setConformance] = useState({"Alignment-based Fitness": 0, "Alignment-based Precision": 0, "Entropy-based Fitness": 0, "Entropy-based Precision": 0});
+  const [cancelTokenSource, setCancelTokenSource] = useState(null); // Track cancel token source
+
 
   // Call Algorithm
   const applyAlgorithm = async () => {
@@ -44,6 +46,9 @@ const HomePage = () => {
     if (miner === 'inductive') {
       formData.append('noise_threshold', noiseThreshold);
     }
+    // Create a cancel token for this request
+    const source = axios.CancelToken.source();
+    setCancelTokenSource(source);
     try {
       setLoading(true);
       const response = await axios.post(`${import.meta.env.VITE_PYTHON_BACKEND_URL}/discover`, formData, {
@@ -52,6 +57,7 @@ const HomePage = () => {
         },
         responseType: 'text',
         timeout: 1000000000000000,
+        cancelToken: source.token, // Attach the cancel token to the request
         withCredentials: true,
       });
       // extract the values
@@ -71,8 +77,16 @@ const HomePage = () => {
       setAlert('error', 'Error applying algorithm');
     } finally {
       setLoading(false);
+      setCancelTokenSource(null); // Reset cancel token source
     }
   }
+
+  const stopAlgorithm = () => {
+    if (cancelTokenSource) {
+      cancelTokenSource.cancel('Algorithm execution has been stopped.');
+      setAlert('info', 'Algorithm execution has been stopped.');
+    }
+  };
 
   const savePNML = () => {
     if (!pnml_content) {
@@ -140,6 +154,9 @@ const HomePage = () => {
             <div className="model-area">
               <button onClick={applyAlgorithm} disabled={loading}>
                 {loading ? 'Discovering Algorithm and Checking Confomrance...' : 'Run Algorithm'}
+              </button>
+              <button onClick={stopAlgorithm} style={{ margin: '10px' }} disabled={!cancelTokenSource}>
+                Stop Algorithm
               </button>
               <button onClick={savePNML} style={{ margin: '10px' }}>
                 Save Model as PNML

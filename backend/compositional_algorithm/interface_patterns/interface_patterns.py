@@ -202,7 +202,7 @@ class IP2(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-2."""
         # Call the superclass constructor
-        super().__init__("IP-2", 2)
+        super().__init__("IP2", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p9 and pa, pb for IP-2.
@@ -344,7 +344,7 @@ class IP3(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-3."""
         # Call the superclass constructor
-        super().__init__("IP-3", 2)
+        super().__init__("IP3", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p4 and pa, pb for IP-3."""
@@ -440,7 +440,7 @@ class IP4(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-4."""
         # Call the superclass constructor
-        super().__init__("IP-4", 2)
+        super().__init__("IP4", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p4 and pa, pb for IP-4."""
@@ -542,7 +542,7 @@ class IP5(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-5."""
         # Call the superclass constructor
-        super().__init__("IP-5", 2)
+        super().__init__("IP5", 2)
 
     def _define_places(self) -> None:
         """Defines places p0 to p9 and pa to pd for IP-5."""
@@ -736,7 +736,7 @@ class IP6(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-6."""
         # Call the superclass constructor
-        super().__init__("IP-6", 2)
+        super().__init__("IP6", 2)
 
     def _define_places(self) -> None:
         """Defines places P1 to P6 and Pa to Pd for IP-6."""
@@ -887,7 +887,7 @@ class IP7(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-7."""
         # Call the superclass constructor
-        super().__init__("IP-7", 2)
+        super().__init__("IP7", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p6, pa to pc, and additional places for IP-7."""
@@ -1030,14 +1030,14 @@ class IP7(BaseInterfacePattern):
 
 
 class IP8(BaseInterfacePattern):
-    """An Iterative Implementation of IP-4,
+    """An Iterative Implementation of IP-8,
     such that the message exchange continues till an Agent X does not need reponses from Agent Y.
     """
 
     def __init__(self) -> None:
         """Initializes the IP-8."""
         # Call the superclass constructor
-        super().__init__("IP-8", 3)
+        super().__init__("IP8", 3)
 
     def _define_places(self) -> None:
         """Defines places p1 to p15, pa to pc, and additional places for IP-8."""
@@ -1320,7 +1320,7 @@ class IP9(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-9."""
         # Call the superclass constructor
-        super().__init__("IP-9", 2)
+        super().__init__("IP9", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p6, a1, a2, pa, and pb for IP-9."""
@@ -1446,7 +1446,7 @@ class IP10(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-10."""
         # Call the superclass constructor
-        super().__init__("IP-10", 2)
+        super().__init__("IP10", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p6, a1, a2, a, and b for IP-10."""
@@ -1570,7 +1570,7 @@ class IP11(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-11."""
         # Call the superclass constructor
-        super().__init__("IP-11", 2)
+        super().__init__("IP11", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p7 and a, b for IP-11."""
@@ -1733,7 +1733,7 @@ class IP12(BaseInterfacePattern):
     def __init__(self) -> None:
         """Initializes the IP-12."""
         # Call the superclass constructor
-        super().__init__("IP-12", 2)
+        super().__init__("IP12", 2)
 
     def _define_places(self) -> None:
         """Defines places p1 to p6, a, b, A1, and A2 for IP-12."""
