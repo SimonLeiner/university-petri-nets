@@ -60,12 +60,11 @@ def add_org_resource(ip_type: str, input_path: str, output_path: str) -> None:
                         if org_elem.getAttribute("key") == "org:resource":
                             event.removeChild(org_elem)
 
-                    # Add new org:resource elements
-                    for agent in agents:
-                        org_resource_elem = dom.createElement("string")
-                        org_resource_elem.setAttribute("key", "org:resource")
-                        org_resource_elem.setAttribute("value", agent)
-                        event.appendChild(org_resource_elem)
+                    # Add new org:resource element
+                    org_resource_elem = dom.createElement("string")
+                    org_resource_elem.setAttribute("key", "org:resource")
+                    org_resource_elem.setAttribute("value", ",".join(agents))
+                    event.appendChild(org_resource_elem)
                     break
 
     # Write the modified XML to the output file

@@ -766,7 +766,12 @@ def standardize_properties_log(df_log: pd.DataFrame) -> pd.DataFrame:
         # Append new values to the existing values in the concept:name column
         df_log["concept:name"] = df_log["concept:name"] + new_values
 
-    return df_log
+    # Split rows where org:resource contains multiple agents: case 2 Agents
+    df_log = df_log.assign(org_resource=df_log["org:resource"].str.split(",")).explode(
+        "org_resource",
+    )
+    df_log["org:resource"] = df_log["org_resource"].str.strip()
+    return df_log.drop("org_resource", axis = 1)
 
 
 def compositional_discovery(

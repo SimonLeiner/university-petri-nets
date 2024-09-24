@@ -92,26 +92,40 @@ class MergeNets:
             - Removes duplicate transitions and marks the remaining transitions as "sync."
 
         """
-        # shallow copy since we need the transitions from the original net and we modify
-        transitions = net.transitions.copy()
+        # Shallow copy since we need the transitions from the original net and we modify
+        transitions1 = net.transitions.copy()
 
-        # for every transition
-        for trans in transitions:
-            # Find other transitions with the same name
-            sync_transitions = [
-                t for t in transitions if t.name == trans.name and t != trans
-            ]
+        # Set to keep track of processed transitions
+        processed_transitions = set()
 
-            # If there are other transitions with the same name
+        # For every transition
+        for trans in transitions1:
+            # Skip if already processed
+            if trans in processed_transitions:
+                continue
+
+            # Find other transitions with the same label
+            sync_transitions = []
+            for t in net.transitions:
+                if t.label and (t.label == trans.label and t != trans):
+                    sync_transitions.append(t)  # noqa: PERF401
+
+            # If there are other transitions with the same label
             for trans2 in sync_transitions:
-                # Add missing arcs to the original transition
+                # Merge arcs into the original transition (trans)
                 for arc in trans2.in_arcs.copy():
                     add_arc_from_to(arc.source, trans, net)
                 for arc in trans2.out_arcs.copy():
                     add_arc_from_to(trans, arc.target, net)
 
-                # Remove the duplicate transition
+                # Remove the duplicate transition (trans2) but keep the original (trans) intact
                 remove_transition(net, trans2)
+
+                # Mark trans2 as processed
+                processed_transitions.add(trans2)
+
+            # Mark trans as processed
+            processed_transitions.add(trans)
 
     @staticmethod
     def merge_nets(nets: list[PetriNet]) -> PetriNet:
