@@ -174,9 +174,7 @@ async def discover(  # noqa: C901
             conf_final_marking,
             str(temp_pnml_path),
         )
-
         try:
-            # TODO: alignment based fitness and precision
             align_fitness_all = fitness_alignments(
                 df_log,
                 conf_net,
@@ -185,19 +183,30 @@ async def discover(  # noqa: C901
             )
             # returns a dict
             align_fitness = align_fitness_all["averageFitness"]
+        except Exception:  # noqa: BLE001
+            align_fitness = 0
 
+        try:
             align_precision = precision_alignments(
                 df_log,
                 conf_net,
                 conf_initial_marking,
                 conf_final_marking,
             )
+        except Exception:  # noqa: BLE001
+            align_precision = 0
 
+        try:
             # TODO: entropy based fitness and precision
             entr_precision, entr_recall = entropy_conformance(
                 input_log_path,
                 temp_pnml_path,
             )
+
+        except Exception:  # noqa: BLE001
+            # TODO: base values
+            entr_precision = 0
+            entr_recall = 0
 
             # check if nan -> convert to 0
             if math.isnan(align_fitness):
@@ -208,13 +217,6 @@ async def discover(  # noqa: C901
                 entr_precision = 0
             if math.isnan(entr_recall):
                 entr_recall = 0
-
-        except Exception:  # noqa: BLE001
-            # TODO: base values
-            align_fitness = 0
-            align_precision = 0
-            entr_precision = 0
-            entr_recall = 0
 
         # can't go from Petri net to json directly
         with Path.open(temp_pnml_path, "r") as pnml_file:
