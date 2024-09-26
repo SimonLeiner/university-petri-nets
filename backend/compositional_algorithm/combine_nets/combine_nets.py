@@ -72,7 +72,7 @@ class MergeNets:
 
                                 # very similar, but not subsets like: "Activity C_m2?" and "Activity CZ_m2?"
                                 threshold = 0.7
-                                if differences <= 4:  # noqa: PLR2004
+                                if differences <= 4 or differences >= 8:  # noqa: PLR2004
                                     similarity = difflib.SequenceMatcher(
                                         None,
                                         t.label,
