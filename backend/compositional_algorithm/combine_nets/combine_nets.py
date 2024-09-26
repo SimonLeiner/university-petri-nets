@@ -5,6 +5,7 @@ from pm4py.objects.petri_net.obj import Marking
 from pm4py.objects.petri_net.obj import PetriNet
 from pm4py.objects.petri_net.utils.petri_utils import add_arc_from_to
 from pm4py.objects.petri_net.utils.petri_utils import add_place
+from pm4py.objects.petri_net.utils.petri_utils import add_transition
 from pm4py.objects.petri_net.utils.petri_utils import merge
 from pm4py.objects.petri_net.utils.petri_utils import remove_transition
 
@@ -54,23 +55,31 @@ class MergeNets:
                     set(recieving_transitions1 + recieving_transitions2),
                 )
 
-                # very similar, but not subsets like: "Activity C_m2?" and "Activity CZ_m2?"
-                threshold = 0.7
-                for t in net.transitions:
-                    if t.label:  # noqa: SIM102
-                        if (
-                            recv_label
-                            and "?" in t.label
-                            and t.label not in recieving_transitions
-                            and t.label != recv_label
-                        ):
-                            similarity = difflib.SequenceMatcher(
-                                None,
-                                t.label,
-                                recv_label,
-                            ).ratio()
-                            if similarity >= threshold:
-                                recieving_transitions.append(t)
+                if len(recv_label) > 5:  # noqa: PLR2004
+                    for t in net.transitions:
+                        if t.label:  # noqa: SIM102
+                            if (
+                                recv_label
+                                and "?" in t.label
+                                and t.label not in recieving_transitions
+                                and t.label != recv_label
+                            ):
+                                differences = sum(
+                                    1
+                                    for a, b in zip(t.label, recv_label, strict=False)
+                                    if a != b
+                                )
+
+                                # very similar, but not subsets like: "Activity C_m2?" and "Activity CZ_m2?"
+                                threshold = 0.7
+                                if differences <= 4:  # noqa: PLR2004
+                                    similarity = difflib.SequenceMatcher(
+                                        None,
+                                        t.label,
+                                        recv_label,
+                                    ).ratio()
+                                    if similarity >= threshold:
+                                        recieving_transitions.append(t)
 
                 for recv_trans in recieving_transitions:
                     if recv_trans:
@@ -175,16 +184,67 @@ class MergeNets:
         # initial marking is a place with no input arcs
         initial_marking = Marking()
         for place in net.places:
-            if not place.in_arcs:
+            if len(place.in_arcs) == 0:
                 initial_marking[place] = 1
 
         # final marking is a place with no output arcs
         final_marking = Marking()
         for place in net.places:
-            if not place.out_arcs:
+            if len(place.out_arcs) == 0:
                 final_marking[place] = 1
 
         return initial_marking, final_marking
+
+    @staticmethod
+    def conformance_adapter(net: PetriNet) -> PetriNet:
+        """Adjust the net for conformance calculation.
+
+        Args:
+            net (PetriNet): Petri Net.
+
+
+        Comments:
+            - Since Precision/Fitness and Entropy need a single start and end place, this function is used to adjust the net.
+            - Intrudoce a place and transition to the net to have a single start and end place.
+
+        Returns:
+            PetriNet: Adjusted Petri Net.
+        """
+        # want new net
+        conf_net = net.__deepcopy__()
+
+        # add a new start place
+        start_place = add_place(conf_net, "Start")
+        # add a new transition
+        start_transition = add_transition(
+            conf_net,
+            name="Start",
+            label="Start",
+        )
+
+        # add a new end place
+        end_place = add_place(conf_net, "End")
+        # add a new transition
+        end_transition = add_transition(
+            conf_net,
+            name="End",
+            label="End",
+        )
+
+        # add arcs
+        add_arc_from_to(end_transition, end_place, conf_net)
+        add_arc_from_to(start_place, start_transition, conf_net)
+        for place in conf_net.places:
+            # begin
+            if len(place.in_arcs) == 0 and place != start_place:
+                add_arc_from_to(start_transition, place, conf_net)
+            # end
+            if len(place.out_arcs) == 0 and place != end_place:
+                add_arc_from_to(place, end_transition, conf_net)
+
+        # add marking
+        initial_marking, final_marking = MergeNets.add_markings(conf_net)
+        return conf_net, initial_marking, final_marking
 
 
 # Control the public API of the module

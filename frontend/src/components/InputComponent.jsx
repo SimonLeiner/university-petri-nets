@@ -76,7 +76,7 @@ const InputComponent = ({
 
   // Slider changes
   const handleSliderChange = (event) => {
-    setNoiseThreshold(event.target.value);
+    setNoiseThreshold(parseFloat(event.target.value)); // Convert to float
   };
 
   // Miner changes
@@ -155,12 +155,13 @@ const InputComponent = ({
 
         <div className="input-section">
           <label htmlFor="noise-threshold">
-            Noise Threshold: {noiseThreshold}
+            Noise Thresh.: {noiseThreshold}
             <input
               id="noise-threshold"
               type="range"
               min="0"
               max="1"
+              step="0.01"
               value={noiseThreshold}
               onChange={handleSliderChange}
               className="slider"
@@ -174,5 +175,3 @@ const InputComponent = ({
 };
 
 export default InputComponent;
-
-

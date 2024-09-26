@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { instance } from '@viz-js/viz';
 import svgPanZoom from 'svg-pan-zoom';
 
 const VisualizationComponent = ({ dotString }) => {
   const containerRef = useRef(null);
-  const [zoomInstance, setZoomInstance] = useState(null);
+  const zoomInstanceRef = useRef(null); // UseRef for zoomInstance
 
   useEffect(() => {
     // Only proceed if dotString is valid
@@ -12,18 +12,24 @@ const VisualizationComponent = ({ dotString }) => {
 
     // Create a new Viz instance
     instance()
-      .then((viz) => {
-        return viz.renderSVGElement(dotString);
-      })
+      .then((viz) => viz.renderSVGElement(dotString))
       .then((svgElement) => {
         // Clear previous content
-        containerRef.current.innerHTML = '';
-        containerRef.current.appendChild(svgElement);
-
-        // Initialize svgPanZoom
-        if (zoomInstance) {
-          zoomInstance.destroy(); // Clean up previous instance if it exists
+        if (containerRef.current) {
+          containerRef.current.innerHTML = '';
+          containerRef.current.appendChild(svgElement);
         }
+
+        // Clean up any existing svgPanZoom instance safely
+        if (zoomInstanceRef.current) {
+          try {
+            zoomInstanceRef.current.destroy();
+          } catch (error) {
+            console.warn('Error during destroy of svgPanZoom instance:', error);
+          }
+        }
+
+        // Initialize new svgPanZoom instance
         const newZoomInstance = svgPanZoom(svgElement, {
           zoomEnabled: true,
           controlIconsEnabled: true,
@@ -31,9 +37,9 @@ const VisualizationComponent = ({ dotString }) => {
           center: true,
           minZoom: 0.1,
           maxZoom: 10,
-
         });
-        setZoomInstance(newZoomInstance);
+
+        zoomInstanceRef.current = newZoomInstance; // Save instance in ref
       })
       .catch((error) => {
         console.error('Error rendering the graph:', error);
@@ -41,8 +47,12 @@ const VisualizationComponent = ({ dotString }) => {
 
     // Cleanup on component unmount
     return () => {
-      if (zoomInstance && zoomInstance.destroy) {
-        zoomInstance.destroy(); // Ensure the zoom instance is destroyed
+      if (zoomInstanceRef.current) {
+        try {
+          zoomInstanceRef.current.destroy(); // Ensure the zoom instance is destroyed
+        } catch (error) {
+          console.warn('Error during destroy of svgPanZoom instance on unmount:', error);
+        }
       }
       if (containerRef.current) {
         containerRef.current.innerHTML = ''; // Clear content
@@ -51,8 +61,8 @@ const VisualizationComponent = ({ dotString }) => {
   }, [dotString]);
 
   const resetZoom = () => {
-    if (zoomInstance) {
-      zoomInstance.reset();
+    if (zoomInstanceRef.current) {
+      zoomInstanceRef.current.reset(); // Reset zoom if instance exists
     }
   };
 

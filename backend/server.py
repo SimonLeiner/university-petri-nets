@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 import os
 from pathlib import Path
 
@@ -14,22 +15,20 @@ from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from fastapi.responses import Response
 from pm4py import discover_petri_net_inductive
-
-# from pm4py import fitness_alignments
-# from pm4py import precision_alignments
-# from pm4py import read_xes
+from pm4py import fitness_alignments
+from pm4py import precision_alignments
+from pm4py import read_xes
 from pm4py import write_pnml
 from pm4py.visualization.petri_net import visualizer as pn_visualizer
 
+from compositional_algorithm.combine_nets.combine_nets import MergeNets
 from compositional_algorithm.compositional_algorithm import compositional_discovery
 from compositional_algorithm.interface_patterns.interface_patterns import (
     INTERFACE_PATTERNS,
 )
 from compositional_algorithm.split_miner.split_miner import split_miner
 from compositional_algorithm.transformations.transformations import TRANSFORMATIONS
-
-
-# from entropy_conformance.entropy_conformance import entropy_conformance
+from entropy_conformance.entropy_conformance import entropy_conformance
 
 
 # Load environment variables from .env file
@@ -123,15 +122,16 @@ async def get_file(filename: str) -> FileResponse:
 
 
 @app.post("/discover/")
-async def discover(
+async def discover(  # noqa: C901
     file: UploadFile,
     algorithm_name: str = Form(...),
     interface_name: str = Form(...),
-    noise_threshold: float | None = Form(...),
+    noise_threshold: float = Form(...),
 ) -> dict:
     try:
         # get the file path
         input_log_path = Path(FINAL_DATA_DIR) / file.filename
+        df_log = read_xes(str(input_log_path))
 
         # select wich algorithm to use
         if algorithm_name == "inductive":
@@ -143,8 +143,6 @@ async def discover(
 
         # select the Interface pattern to use
         for inter in INTERFACE_PATTERNS:
-            logging.info(inter)
-            logging.info(interface_name)
             if inter.name == interface_name:
                 interface = inter
                 break
@@ -159,39 +157,64 @@ async def discover(
             **algorithm_kwargs,
         )
 
-        # temporarily export to pnml: save the Petri net to a file for entropy conformance
-        temp_pnml_path = Path(TEMP_DATA_DIR) / "temp_net.pnml"
-        write_pnml(net, initial_marking, final_marking, str(temp_pnml_path))
-
         # Directed graph source code in the DOT language.
         gviz = pn_visualizer.apply(net, initial_marking, final_marking)
         dot = gviz.source
 
-        # TODO: alignment based fitness and precision
-        # align_precision = fitness_alignments(
-        #     df_log,
-        #     net,
-        #     initial_marking,
-        #     final_marking,
-        # )
-        # align_fitness = precision_alignments(
-        #     df_log,
-        #     net,
-        #     initial_marking,
-        #     final_marking,
-        # )
+        # net for conformance calculation
+        conf_net, conf_initial_marking, conf_final_marking = (
+            MergeNets.conformance_adapter(net)
+        )
 
-        # TODO: entropy based fitness and precision
-        # entr_precision, entr_recall = entropy_conformance(
-        #     input_log_path,
-        #     temp_pnml_path,
-        # )
+        # temporarily export to pnml: save the Petri net to a file for entropy conformance
+        temp_pnml_path = Path(TEMP_DATA_DIR) / "temp_net.pnml"
+        write_pnml(
+            conf_net,
+            conf_initial_marking,
+            conf_final_marking,
+            str(temp_pnml_path),
+        )
 
-        # TODO: remove
-        align_fitness = 1
-        align_precision = 1
-        entr_precision = 1
-        entr_recall = 1
+        try:
+            # TODO: alignment based fitness and precision
+            align_fitness_all = fitness_alignments(
+                df_log,
+                conf_net,
+                conf_initial_marking,
+                conf_final_marking,
+            )
+            # returns a dict
+            align_fitness = align_fitness_all["averageFitness"]
+
+            align_precision = precision_alignments(
+                df_log,
+                conf_net,
+                conf_initial_marking,
+                conf_final_marking,
+            )
+
+            # TODO: entropy based fitness and precision
+            entr_precision, entr_recall = entropy_conformance(
+                input_log_path,
+                temp_pnml_path,
+            )
+
+            # check if nan -> convert to 0
+            if math.isnan(align_fitness):
+                align_fitness = 0
+            if math.isnan(align_precision):
+                align_precision = 0
+            if math.isnan(entr_precision):
+                entr_precision = 0
+            if math.isnan(entr_recall):
+                entr_recall = 0
+
+        except Exception:  # noqa: BLE001
+            # TODO: base values
+            align_fitness = 0
+            align_precision = 0
+            entr_precision = 0
+            entr_recall = 0
 
         # can't go from Petri net to json directly
         with Path.open(temp_pnml_path, "r") as pnml_file:

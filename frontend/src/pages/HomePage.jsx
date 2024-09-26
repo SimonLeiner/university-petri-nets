@@ -42,9 +42,7 @@ const HomePage = () => {
     formData.append('file', file);
     formData.append('algorithm_name', miner);
     formData.append('interface_name', interfacePattern);
-    if (miner === 'inductive') {
-      formData.append('noise_threshold', noiseThreshold);
-    }
+    formData.append('noise_threshold', noiseThreshold);
     // Create a cancel token for this request
     const source = axios.CancelToken.source();
     setCancelTokenSource(source);

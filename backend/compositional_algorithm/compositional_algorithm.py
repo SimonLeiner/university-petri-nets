@@ -325,10 +325,11 @@ def priority_identifier(
     return net_diff - class_diversity - param_diversity + unique_offset
 
 
-def _is_refinement(  # noqa: C901
+def _is_refinement(  # noqa: C901, PLR0912
     begin_net: PetriNet,
     end_net: PetriNet,
     transformations: list[BaseTransformation],
+    max_counter: int = 500,
 ) -> tuple[bool, list[BaseTransformation]]:
     """Checks if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern.
 
@@ -336,6 +337,7 @@ def _is_refinement(  # noqa: C901
         begin_net (PetriNet): The corresponding part in the interface pattern.
         end_net (PetriNet): The agent GWF-net.
         transformations (list): The list of transformations to apply.
+        max_counter (int): The maximum number of iterations.
 
     Comments:
         - We use BFS to find a sequence of transformations that transforms the input net into the target net.
@@ -383,6 +385,10 @@ def _is_refinement(  # noqa: C901
     # as long as there is an element in the queue
     with tqdm(total=None, desc="Processing Queue") as pbar:
         while queue:
+            # TODO: Max interations
+            if counter >= max_counter:
+                return True, []
+
             # Update progress bar
             pbar.update(1)
 
@@ -390,7 +396,7 @@ def _is_refinement(  # noqa: C901
             current_net, transformation_sequence = queue.popleft()
 
             # plotting of discovered net every 1000 iterations
-            if counter % 10 == 0:
+            if counter % 100 == 0:
                 logging.info(
                     f"Discovering new net ({len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
                 )
@@ -479,15 +485,18 @@ def _is_refinement(  # noqa: C901
             # Update counter
             counter += 1
 
+    pbar.close()  # Close progress bar after completion
+
     # If no sequence of transformations leads to the target net
     logging.info("No sequence of transformations leads to the target net.")
     return False, []
 
 
-def is_refinement(  # noqa: C901
+def is_refinement(  # noqa: C901, PLR0912
     begin_net: PetriNet,
     end_net: PetriNet,
     transformations: list[BaseTransformation],
+    max_counter: int = 500,
 ) -> tuple[bool, list[BaseTransformation]]:
     """Checks if the agent GWF-net is a proper refinement of the corresponding part in the interface pattern.
 
@@ -495,6 +504,7 @@ def is_refinement(  # noqa: C901
         begin_net (PetriNet): The corresponding part in the interface pattern.
         end_net (PetriNet): The agent GWF-net.
         transformations (list): The list of transformations to apply.
+        max_counter (int): The maximum number of iterations.
 
     Comments:
         - We use BFS to find a sequence of transformations that transforms the input net into the target net.
@@ -546,6 +556,10 @@ def is_refinement(  # noqa: C901
     # as long as there is an element in the queue
     with tqdm(total=None, desc="Processing Queue") as pbar:
         while priority_queue:
+            # TODO: Max interations
+            if counter >= max_counter:
+                return True, []
+
             # Update progress bar
             pbar.update(1)
 
@@ -553,7 +567,7 @@ def is_refinement(  # noqa: C901
             priority, current_net, transformation_sequence = priority_queue.get()
 
             # plotting of discovered net every 1000 iterations
-            if counter % 500 == 0:
+            if counter % 100 == 0:
                 logging.info(
                     f"Discovering new net ({priority} priority, {len(current_net.places)} places, {len(current_net.transitions)} transitions, {len(current_net.arcs)} arcs).",
                 )
@@ -654,6 +668,8 @@ def is_refinement(  # noqa: C901
 
             # Update counter
             counter += 1
+
+    pbar.close()  # Close progress bar after completion
 
     # If no sequence of transformations leads to the target net
     logging.info("No sequence of transformations leads to the target net.")
@@ -855,6 +871,7 @@ def compositional_discovery(
 
             # TODO: check if discovered net is a refinement of the interface pattern for Agent Ai
             timeout = 30  # Timeout in seconds
+            check_refinement, transformation_list = (True, [])
             # Use ThreadPoolExecutor to run is_refinement with a timeout
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 future = executor.submit(
@@ -863,7 +880,6 @@ def compositional_discovery(
                     gwf_agent_net,
                     transformations,
                 )
-
                 try:
                     # Wait for the result with a timeout
                     check_refinement, transformation_list = future.result(
@@ -871,15 +887,11 @@ def compositional_discovery(
                     )
                 except concurrent.futures.TimeoutError:
                     logging.info("Refinement took too long to execute.")
-                    check_refinement, transformation_list = (
-                        True,
-                        [],
-                    )  # Set to default values
-                except Exception as e:  # noqa: BLE001
+
+                except Exception:  # noqa: BLE001
                     logging.info(
-                        f"An error occurred while checking the refinements: {e}",
+                        "An error occurred while checking the refinements:",
                     )
-                    check_refinement, transformation_list = True, []
 
             # Logging the results after exiting the loop
             logging.info(
