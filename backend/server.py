@@ -19,10 +19,12 @@ from pm4py import fitness_alignments
 from pm4py import precision_alignments
 from pm4py import read_xes
 from pm4py import write_pnml
+from pm4py import write_xes
 from pm4py.visualization.petri_net import visualizer as pn_visualizer
 
 from compositional_algorithm.combine_nets.combine_nets import MergeNets
 from compositional_algorithm.compositional_algorithm import compositional_discovery
+from compositional_algorithm.compositional_algorithm import standardize_properties_log
 from compositional_algorithm.interface_patterns.interface_patterns import (
     INTERFACE_PATTERNS,
 )
@@ -122,7 +124,7 @@ async def get_file(filename: str) -> FileResponse:
 
 
 @app.post("/discover/")
-async def discover(  # noqa: C901
+async def discover(  # noqa: C901, PLR0912, PLR0915
     file: UploadFile,
     algorithm_name: str = Form(...),
     interface_name: str = Form(...),
@@ -132,6 +134,7 @@ async def discover(  # noqa: C901
         # get the file path
         input_log_path = Path(FINAL_DATA_DIR) / file.filename
         df_log = read_xes(str(input_log_path))
+        df_log = standardize_properties_log(df_log)
 
         # select wich algorithm to use
         if algorithm_name == "inductive":
@@ -174,6 +177,11 @@ async def discover(  # noqa: C901
             conf_final_marking,
             str(temp_pnml_path),
         )
+
+        # temporarily export to pnml: save the Petri net to a file for entropy conformance
+        temp_xes_path = Path(TEMP_DATA_DIR) / "temp_log.xes"
+        write_xes(df_log, str(temp_xes_path))
+
         try:
             align_fitness_all = fitness_alignments(
                 df_log,
@@ -199,8 +207,8 @@ async def discover(  # noqa: C901
         try:
             # TODO: entropy based fitness and precision
             entr_precision, entr_recall = entropy_conformance(
-                input_log_path,
-                temp_pnml_path,
+                str(temp_xes_path),
+                str(temp_pnml_path),
             )
 
         except Exception:  # noqa: BLE001
@@ -233,6 +241,9 @@ async def discover(  # noqa: C901
         # remove temp file
         if Path.exists(temp_pnml_path):
             Path(temp_pnml_path).unlink()
+
+        if Path.exists(temp_xes_path):
+            Path(temp_xes_path).unlink()
 
         # Note: instead of sending the file, could aslo just provide the path: create the response
         response = {

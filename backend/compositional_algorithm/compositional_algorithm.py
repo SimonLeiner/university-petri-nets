@@ -788,9 +788,10 @@ def standardize_properties_log(df_log: pd.DataFrame) -> pd.DataFrame:
         "org_resource",
     )
     df_log["org:resource"] = df_log["org_resource"].str.strip()
+    df_log = df_log.drop("org_resource", axis=1)
 
     # Drop columns where column name doesn't contain ":"
-    return df_log.drop("org_resource", axis=1)
+    return df_log[[col for col in df_log.columns if ":" in col]]
 
 
 def compositional_discovery(
