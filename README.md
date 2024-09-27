@@ -58,7 +58,7 @@ docker compose up --build -d
 
 ## Main Paper "Discovering architecture-aware and sound process models of multi-agent systems: a compositional approach"
 
-- /Users/simonleiner/TUM/Master/SS_2024/PetriNetze/Task/gwf.pdf
+- https://data.niaid.nih.gov/resources?id=zenodo_5830862
 
 ## Other Resources
 

@@ -208,6 +208,7 @@ async def discover(  # noqa: C901
             entr_precision = 0
             entr_recall = 0
 
+        try:
             # check if nan -> convert to 0
             if math.isnan(align_fitness):
                 align_fitness = 0
@@ -217,6 +218,13 @@ async def discover(  # noqa: C901
                 entr_precision = 0
             if math.isnan(entr_recall):
                 entr_recall = 0
+
+        except Exception:  # noqa: BLE001
+            # TODO: base values
+            align_fitness = 0
+            align_precision = 0
+            entr_precision = 0
+            entr_recall = 0
 
         # can't go from Petri net to json directly
         with Path.open(temp_pnml_path, "r") as pnml_file:

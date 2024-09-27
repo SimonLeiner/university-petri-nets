@@ -76,7 +76,7 @@ develop-eggs/
 dist/
 eggs/
 .eggs/
-lib/
+# lib/
 lib64/
 parts/
 sdist/
@@ -227,3 +227,5 @@ compositional_process_discovery_experiment_data/
 
 # old stuff
 old/
+
+# lib directory needed for split miner

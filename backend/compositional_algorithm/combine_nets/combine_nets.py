@@ -219,7 +219,7 @@ class MergeNets:
         start_transition = add_transition(
             conf_net,
             name="Start",
-            label="Start",
+            label="",
         )
 
         # add a new end place
@@ -228,7 +228,7 @@ class MergeNets:
         end_transition = add_transition(
             conf_net,
             name="End",
-            label="End",
+            label="",
         )
 
         # add arcs
