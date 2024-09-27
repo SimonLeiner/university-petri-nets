@@ -56,6 +56,13 @@ If you make changes to the Dockerfile or dependencies, rebuild the containers wi
 docker compose up --build -d
 ```
 
+## Logs 
+
+- All the logs unzipped is to large for git.
+- Hence only displays slected log files.
+- If you want to use all files, unzip the corresponding files in the final_logs directory.
+
+
 ## Main Paper "Discovering architecture-aware and sound process models of multi-agent systems: a compositional approach"
 
 - https://data.niaid.nih.gov/resources?id=zenodo_5830862
