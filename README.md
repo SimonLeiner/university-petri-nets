@@ -31,7 +31,7 @@ Your web interface should allow for the following configurations:
 **Clone the repository:**
 
 ```bash
-git clone https://github.com/SimonLeiner/quantum-scope.git
+git clone https://github.com/SimonLeiner/university-petri-nets.git
 ```
 
 **Setup the environment:**
